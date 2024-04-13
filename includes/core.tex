@@ -1,0 +1,528 @@
+\section{Mračná bodov a ich spracovanie}
+\noindent Mračno bodov je kolekcia bodov v 3D priestore, kde každý bod reprezentuje polohu v priestore pomocou XYZ súradníc a okrem týchto základných priestorových údajov môže každý bod obsahovať informácie o ich farbe, intenzite a v prípade potreby aj ďalšie špecifické parametre. Spájaním veľkého množstva týchto bodov do jedného súboru zo spoločnom súradnicovým systémom je možné úplne zachytiť geometriu akéhokoľvek 3D objektu. Vďaka schopnosti poskytovať priestorové súradnice povrchov objektov sa mračná bodov stali preferovaným typom dát pre 3D vizualizáciu rôznorodých prostredí. Mračna bodov sa osvedčili ako jedny z najvhodnejších zdrojov údajov, najmä pri mapovaní rozsiahlych mestských prostredí, pretože získané 3D body obsahujú priame priestorové súradnice geometrických povrchov, čo výrazne zjednodušuje procesy modelovania povrchov a geometrickej rekonštrukcie. \cite{voxel_grid} 
+\newline\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=15cm]{img/ukazka_pc.png}
+  \caption{Ukážka mračna bodov}
+  \label{vzhladobr}
+\end{figure}	
+\newline\indent Mračna bodov ďalej často nachádzajú využitie v rôznych oblastiach, ako je počítačové videnie, modelovanie terénu, robotika či v rámci medicíny. Spôsoby získavania mračna bodov zahŕňajú rôzne metódy a techniky, pričom každá ponúka jedinečné výhody. Medzi najpopulárnejšie prístupy v oblasti robotiky a priemyslu patrí využitie \acrshort{lidar}-u, stereo kamery a hĺbkovej kamery.
+
+\subsection{Dátové štruktúry pre spracovanie mračna bodov}
+\noindent Neupravené mračná bodov sú obvykle neštruktúrované, majú nerovnomernú hustotu bodov a navyše, ich kvalita môže byť odlišná v rôznych častiach, čo býva považované za nevhodné pre ich adekvátnu použiteľnosť. Okrem toho pri mračnách bodov získaných z viacerých zdrojov je zvyčajne veľké množstvo prekrývajúcich bodov, čo zbytočne zvyšuje pamäťové a výpočtové nároky. \cite{voxel_grid} \cite{struktury} \newline\indent Pri mnohých algoritmoch je kritické získať informácie o susedných bodoch, avšak v prípade veľkých a neštruktúrovaných mračien je táto úloha časovo a výpočtovo náročná. Preto pre tento účel existujú dátové štruktúry, ktoré umožňujú organizáciu mračna bodov do efektívnejších usporiadaní.
+
+\subsubsection{Voxelová mriežka}
+\noindent Voxelová mriežka (z ang. Voxel grid) je zložená z voxelov, ktoré sa dajú charakterizovať ako elementárne bloky 3D priestoru. Môžeme ich predstaviť ako 3D analógiu pixelov. Majú síce tvar kvádrov so stenami, rohmi a hranami, ale dátovo nie sú nikdy uložené ako celé kvádre. Namiesto toho sa vo voxelovej reprezentácií používa buď stredný bod alebo rohové body (tj. vrcholy) kvádra pre jeho celú reprezentáciu. Keď sa dva voxely dotýkajú stenou, rohom alebo hranou, sú považované za susedné. Celé mračno bodov je takto rozdelené na osobitné voxely, pričom body vo vnútri daného voxelu sú reprezentované týmto voxelom a zároveň daný voxel je reprezentovaný týmito bodmi. To znamená, že každý voxel je charakterizovaný pomocou počtu, farby, intenzity a rozloženia daných bodov, z čoho sa dajú vyvodiť užitočné informácie. \cite{voxel_grid} 
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=15cm]{img/pc_vs_vox.jpg}
+  \caption{Voxelová reprezentácia mračna bodov - (a) Originálne mračno bodov (b) Voxelová reprezentácia \cite{voxel_grid}}
+  \label{vzhladobr}
+\end{figure}
+\newline\indent Vo všeobecnosti, pri voxelizácií mračien bodov existujú štyri kroky. Prvý krok spočíva v výpočte ohraničenia mračna bodov, ktoré definuje priestor, ktorý sa má rozdeliť. V druhom kroku je definovaný priestor rastrovaný do pravidelných buniek tvaru kvádra s určitou veľkosťou (poznamenajte, že tieto bunky sú indexované). Potom je mračno bodov segmentované na malé časti týmito bunkami. Nakoniec sú rozdelené podmnožiny bodov reprezentované voxelmi, pričom sa z týchto bodov vypočítavajú príslušné vlastnosti. \cite{voxel_grid}
+\newline\indent Vďaka svojím vlastnostiam nachádzajú voxelové mriežky uplatnenie v mnohých oblastiach ako sú predspracovanie údajov, modelovanie, registrácia, segmentácia a klasifikácia mračien bodov. 
+
+\subsubsection{K-d strom}
+\noindent K-d strom (k-dimenzionálny strom), je špecializovaná dátová štruktúra používaná na efektívnu organizáciu viacrozmerných dát. K-d strom funguje tak, že organizuje viacrozmerný priestor do hierarchickej binárnej stromovej štruktúry. Primárne sa používa na rýchle vyhľadávanie najbližšieho suseda, čo je kritická operácia v rôznych aplikáciách, ako je robotika, \acrshort{lidar} odometria a mapovanie a práca s mračnami bodov. \cite{kd_tree_new} \cite{kd_tree_old} 
+\newline\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=14cm]{img/kd-tree.png}
+  \caption{Reprezentácia k-d stromu v 2D priestore \cite{kd_tree}}
+  \label{vzhladobr}
+\end{figure}
+\newline\indent Vytvorenie k-d stromu spočíva v postupnom delení priestoru pozdĺž všetkých dimenzií, pričom ako bod delenia volíme hodnotu mediánu bodov v danom intervale. Tento spôsob vedie ku vzniku vyváženého stromu, až ku stromu kde každá podmnožina obsahuje len jeden bod. Pri vytváraní stromu pomocou mediánu je časová zložitosť O(n log\textsubscript{2} n). Je možné použiť aj iné spôsoby rozdelenia ako medián, avšak tie nemusia vždy zabezpečiť rovnovážne vytvorenie stromu. \cite{kd_tree_old} 
+\newline\indent Ako už bolo spomínané hlavným využitím k-d stromov v oblasti mračien bodov je vyhľadávanie najbližších susedov. Ak je už k-d strom vytvorený, algoritmus začína v koreni stromu a rekurzívne ním prechádza, pričom si vyberá vetvu, ktorá je najbližšie k zadanému bodu. Tento proces pokračuje, pokým sa nedosiahne listový uzol. Najbližší sused sa potom urči spätným pohybom stromu a skontrolovaním bližších susedov v ostatných vetvách. \cite{kd_tree_old}
+
+\subsubsection{Oktálový strom}
+\noindent Oktálový strom je dátová štruktúra navrhnutá na manipuláciu s 3D dátami, najmä mračnami bodov získaných zo zariadení ako laserové skenery. Organizuje priestor do kociek (alebo kvádrov), pričom každá kocka môže byť rozdelená na ďalších osem menších kociek. Oktalový strom je analógiou pre kvadrátový strom využívaný v 2D priestore. Kľúčovým konceptom tejto štruktúry je efektívne ukladanie dát prostredníctvom delenia priestoru len tam, kde sú existujúce body. \cite{oct_tree} 
+\newline\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=12cm]{img/octree_full.png}
+  \caption{Tradičná reprezentácia oktálového stromu \cite{oct_tree_img}}
+  \label{vzhladobr}
+\end{figure}
+\newline\indent V procese tvorby oktálového stromu dochádza k rekurzívnemu deleniu 3D priestoru na osem menších kociek, ktoré pokračuje až do splnenia určených zastavovacích podmienok. Tieto podmienky môžu zahŕňať dosiahnutie maximálnej úrovne delenia, čo zodpovedá najmenšiemu rozmeru kocky, alebo môžu byť viazané na minimálny počet bodov, pri ktorom delenie pokračuje. Kocky pre ktoré bolo delenie ukončené sú označené ako tzv. listy a obsahujú informácie o všetkých príslušných bodoch. \cite{oct_tree}
+\newline\indent Aj napriek tomu, že oktalový strom je považovaný za pamäťovo efektívnejšiu verziu voxelovej mriežky, má niekoľko nedostatkov, ktoré je možné vylepšiť. Optimalizovaná implementácia oktálového stromu eliminuje zbytočné dáta v pamäti a využíva ju efektívnejšie, pričom zachováva rýchle prístupové operácie. Na rozdiel od tradičných implementácií, ktoré ukladajú redundantné informácie o prázdnych bunkách, táto optimalizovaná verzia minimalizuje využívanie pamäte tým, že dynamicky pridáva pamäť len pre potrebné uzly a listy. Napriek zníženiu miesta v pamäti udržiava efektívne prístupové operácie z časovou zložitosťou O(log n). \cite{oct_tree}
+\newline\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=11cm]{img/oct_tree_part.jpg}
+  \caption{Optimalizovaná reprezentácia oktálového stromu (Bunky obsahujúce body označené šedou farbou) \cite{oct_tree}}
+  \label{vzhladobr}
+\end{figure}
+\newline\indent Vďaka svojím vlastnostiam a efektívnej štruktúre nachádzajú oktálové stromy využitia v mnohých oblastiach ako sú počítačové videnie, robotika, grafika a vizualizácia.  V prípade robotiky a práce s mračnami bodov sa využívajú pre nájdenie najbližšieho suseda ale aj kompresiu dát a pod vzorkovanie.
+
+\subsection{Filtrácia mračna bodov}
+\noindent Mračná bodov získavané z rôznych typov senzorov, či už cenovo dostupných alebo drahých, často trpia prítomnosťou šumu a odľahlých hodnôt, ktoré sú výsledkom obmedzení samotných senzorov, vplyvu osvetlenia či charakteru povrchu. Tieto nepresnosti vyžadujú využitie rôzných filtračných operácií, aby sa zabezpečila presnosť a vhodnosť pre ich ďalšie spracovanie. Prístupy filtrovania pre mračná bodov možno kategorizovať do niekoľkých skupín, medzi ktoré patria štatisticky založené metódy alebo metódy založené na susednosti. \cite{point_cloud_filtering}
+
+\subsubsection{Štatisticky založené metódy} \label{section::sor}
+\noindent Štatistické metódy detekcie odľahlých hodnôt spočívajú v použití štatistických konceptov na identifikáciu výnimočných (odlišných) hodnôt v súbore údajov. Využívajú koncepty, ako sú priemer, medián, štandardná odchýlka, kvartály a vzdialenosti, na identifikáciu hodnôt, ktoré sa výrazne odchyľujú od očakávanej distribúcie, čo naznačuje, že patria medzi odľahlé hodnoty. Medzi bežné metódy detekcie odľahlých hodnôt patria metódy ako Z-skóre, Chauvenetovo kritérium, Grubbsov test a Dixonov Q-test. 
+\newline\indent Populárnou metódou pre filtrovanie mračien bodov je \acrshort{sor} (Statistical outlier removal). Metóda spočíva vo vypočítaní priemernej vzdialenosti medzi každým bodom a jeho \textit{K} najbližšími susedmi pomocou \acrshort{knn} algoritmu. Predpokladajúc, že tieto vzdialenosti nasledujú normálne rozdelenie, algoritmus aplikuje sigma pravidlo na základe zvoleného násobiteľa štandardnej odchýlky \textit{N}. A teda ak priemerná vzdialenosť bodu a jeho susedov presahuje \textit{N} štandardných odchýlok priemernej vzdialenosti celého súboru, potom je bod považovaný za odľahlú hodnotu. Úpravou parametrov, ako je počet susedov \textit{K} a násobiteľ štandardnej odchýlky \textit{N}, je možné jemne nastaviť citlivosť algoritmu na odľahlé hodnoty. \cite{statistical_filter} 
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=14cm]{img/sor_principal.png}
+  \caption{Princíp filtrovania odľahlých bodov pomocou \acrshort{sor} \cite{SOR_img}}
+  \label{vzhladobr}
+\end{figure}
+
+\subsubsection{Metódy založené na susednosti} \label{section::ror}
+\noindent Metódy filtrovania založené na susedstve určujú vhodnosť bodu na základe jeho podobnosti s okolitými bodmi, čo výrazne ovplyvňuje účinnosť a efektivitu filtračného prístupu. Podobnosť medzi susednými bodmi môže byť definovaná ich vzájomnou vzdialenosťou a polohou, podobnosťou intenzity, farby alebo inými užitočnými vlastnosťami. \cite{point_cloud_filtering}
+\newline\indent Jednou zo základných metód založených na susedstve je \acrshort{ror} (Radius outlier removal). Táto metóda je založená na určení minimálneho počtu susedov a polomeru v ktorom budú vyhľadávaní. Ak je počet nájdených susedov menší ako \textit{K} je bod vyhlásený za odľahlý. Na Obr. \ref{ror_principal} môžeme vidieť princíp tohto postupu.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=12cm]{img/ros_principal.png}
+  \caption{Princíp filtrovania odľahlých bodov pomocou \acrshort{ror} v 2D}
+  \label{ror_principal}
+\end{figure}
+
+\newpage\subsection{Podvzorkovanie mračna bodov}
+\noindent Metódy pre redukciu mračien bodov sú kľúčovým krokom pre zníženie pamäťových požiadaviek, zlepšenie efektívnosti výpočtov a redukciu nežiaduceho šumu. Tieto metódy vo výsledku zmenšujú veľkosť mračien bodov, čo ich robí jednoduchšie pre manipuláciu, vizualizáciu a spracovanie. Snažia  sa dosiahnuť rovnováhu medzi znižovaním zložitosti a uchovaním kľúčových informácií, čo je podstatná vlastnosť pre ich ďalšie spracovanie. Vieme ich rozdeliť do dvoch základných skupín, bežné metódy a adaptívne metódy pre pod vzorkovanie mračien bodov.
+
+\subsubsection{Bežné podvzorkovacie metódy}
+\noindent Bežné podvzorkovacie metódy obvykle vykonávajú rovnomerné alebo pravidelné zmenšenie počtu bodov. Tieto metódy nerozlišujú akú úlohu napĺňajú jednotlivé body, čo môže viesť k potenciálnemu strateniu dôležitých čŕt alebo informácií v oblastiach, ktoré by mohli vyžadovať presnejšie podvzrokovanie.
+\begin{enumerate}
+  \item\textbf{Podvzorkovanie pomocou voxelovej mriežky} - Táto metóda rozdeľuje vstupné mračno bodov do voxelovej mriežky preddefinovaných rozmerov. Následne prechádza cez všetky vytvorené voxely, pričom ak voxel obsahuje aspoň jeden bod, bod najbližší ku ťažisku alebo samotné ťažisko reprezentujú všetky body vo voxely. Vstupným parametrom tejto metódy je veľkosť strán voxelu, čo ovplyvňuje úroveň zmenšenia a zachovaných detailov. Táto metóda dosahuje rovnomerné rozdelenie bodov v mračne ale nezachováva potrebné detaily.
+  \item\textbf{Náhodné podvzorkovanie} - Metóda náhodného vzorkovania je založená na náhodnom výbere bodov z pôvodného mračna bodov až do dosiahnutia stanoveného počtu. Napriek tomu, že táto metóda je jednoduchá a rýchla, nedosahuje rovnomerné rozdelenie bodov a nezachováva detaily, čo je obzvlášť pravda, ak má vstupné mračno bodov nerovnomernú hustotu. 
+  \item\textbf{Rovnomerné podvzorkovanie} - Metóda spočíva v systematickom výbere bodov z pôvodného mračna bodov s definovaným intervalom. Teda z celého mračna bodov vyberáme každý k-ty bod, čo znamená, že táto metóda je závislá od uloženého poradia bodov a preto je vhodná, len pre určité mračná bodov. V prípade, že má vstupné mračno bodov nerovnomernú hustotu bodov, 
+  výstupné mračno bude mať nerovnomerné rozdelenie.
+  \item\textbf{Podvzorkovanie na základe najvzdialenejšieho bodu} - Táto metóda sa zameriava na dodržaní najväčšieho možného rozostupu bodov. Ako prvé sa vyberie náhodný bod, po čom sa následne iteratívne vyberá najvzdialenejší bod od aktuálneho vybraného, až dokým sa  nedosiahne požadovaný počet bodov. Táto metóda dosahuje rovnomerné rozdelenie bodov a z porovnaním s predošlými metódami najlepšie opisuje geometriu objektov, aj keď sa na ňu priamo nezameriava.
+\end{enumerate}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=14cm]{img/downsample.png}
+  \caption{Ukážka rôznych metód podvzorkovania \cite{downsample_img}}
+  \label{noname}
+\end{figure}
+
+\subsubsection{Adaptívne podvzorkovacie metódy}
+\noindent Adaptívne metódy podvzorkovania sa snažia udržať dôležité detaily a zároveň efektívne odstrániť tie menej dôležité. Robia tak inteligentným výberom bodov na základe charakteristík údajov v susedstvách bodov. Tieto metódy zohľadňujú faktory ako lokálna hustota bodov, zakrivenie alebo iné geometrické vlastnosti na rozhodnutie, ktoré body si ponechať a ktoré odstrániť.
+\begin{enumerate}
+  \item\textbf{Podvzorkovanie na základe krivosti} - Táto metóda využíva informácie o normálach alebo krivosti povrchu na určenie ich dôležitosti. Body vo rovnejších alebo menej zakrivených oblastiach môžu byť odstránené agresívnejšie ako tie v oblastiach s vyššou krivosťou. Posudzovaním týchto geometrických vlastností je možné selektívne uchovávať body, ktoré prispievajú viac k celkovému tvaru alebo štruktúre objektu a zachovať dôležité detaily.
+  \item\textbf{Podvzorkovanie na základe rovinnosti/susednosti} - Táto metóda využíva PCA (Principal Component Analysis) na charakterizáciu lokálnych susedstiev v mračnách bodov. PCA analyzuje vlastné čísla kovariančných matíc a zaraduje tieto susedstvá do troch hlavných kategórií: rovinné, lineárne/cylindrické alebo drsné. Po kategorizácii sa metóda zameriava na odhad hustoty bodov v každom type regiónu, pričom používa matematické vzorce prispôsobené individuálne pre každú kategóriu. Následne, na základe znalostí týchto susedstiev, môže selektívne preferovať odstránenie bodov v oblastiach, ktoré vykazujú rovinný charakter a majú hustotu bodov vyššiu ako stanovenú užívateľom, zatiaľ čo v ostatných oblastiach aplikujeme menej agresívne podvzorkovanie. Pre lepšie pochopenie fungovania tejto metódy sa odkazujte na priložený článok. \cite{adaptive_downsampling_neighborhood}
+\end{enumerate}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=14cm]{img/planar_example.png}
+  \caption{Ukážka klasifikácie dôležitých bodov pomocou metódy založenej na rovinnosti \cite{adaptive_downsampling_neighborhood}}
+  \label{noname}
+\end{figure}
+
+\subsection{Segmentácia}
+\noindent Segmentácia je proces rozdelenia väčšieho celku údajov na menšie, významné a odlišné časti alebo segmenty na základe určitých charakteristík alebo vlastností. V kontexte mračien bodov alebo počítačového videnia zahŕňa segmentácia rozdelenie údajov na oblasti, ktoré zdieľajú podobné vlastnosti, ako sú farba, textúra, geometria alebo iné vlastnosti. V prípade mračien bodov pomáha segmentácia rozlíšiť rôzne objekty alebo povrchy v scéne, čím pomáha pri úlohách ako klasifikácia objektov, rekonštrukcia povrchu, navigácia robotov alebo v oblastiach ako autonómne riadenie vozidlá. Celkovo segmentácia slúži ako základný krok pri extrahovaní významných informácií zo scény, čo umožňuje hlbšiu analýzu, porozumenie a využitie segmentovaných komponentov pre ďalšie rôzne účely. 
+\subsubsection{Segmentačné metódy}
+\noindent V tejto podkapitole preskúmame rôzne prístupy navrhnuté pre segmentáciu bodových mračien. Celkovo sme ich vieme rozdeliť do piatich kategórií: metódy založené na hranách, metódy založené na regiónoch, metódy založené na atribútoch, metódy založené na modeloch a metódy založené na grafoch.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=11cm,height=7.5cm]{img/segmentation_methods.png}
+  \caption{Rozdelenie segmentačných metód}
+  \label{segmentation_methods}
+\end{figure}
+\begin{enumerate} 
+ \item\textbf{Metódy založené na hranách} - Tieto metódy sa zameriava na detekciu hrán, pomocou rôznych prístupov, ako sú identifikácia výrazných zmien intenzity, zmien orientácie normálových vektorov alebo výpočtu gradientu. Tieto metódy zvyčajne pozostávajú z dvoch fáz: detekcie hrán, kde sa vytvárajú obrysy hraníc regiónov na základe lokálnych zmien vlastností povrchu, a následného zoskupenia bodov vnútri týchto hraníc na vytvorenie samostatných segmentov. Aj keď tieto metódy umožňuje rýchlu segmentáciu, často sa stretávajú s problémami presnosti kvôli citlivosti na šum a variáciám hustoty mračien bodov. V 3D priestore môžu detegovať nespojité hrany, čo komplikuje identifikáciu uzavretých segmentov bez ďalších dodatočných krokov. \cite{segmetation_survey} 
+ \item\textbf{Metódy založené na regiónoch} - Metódy založené na regiónoch využívajú informácie o okolitých bodoch s podobnými vlastnosťami na vytvorenie izolovaných oblastí a následne zistenie odlišnosti medzi týmito regiónmi. Metódy založené na regiónoch sú odolnejšie voči šumu ako metódy založené na hranách. Avšak majú problém s nadmerným alebo nedostatočným segmentovaním a presným určovaním hraníc regiónov. Tieto metódy delíme do dvoch kategórií:  \cite{segmetation_survey} 
+ \begin{itemize}
+    \item\textbf{Rastúce} (z ang. seeded-region) začínajú výberom určitého počtu začiatočných bodov, a z týchto bodov následne každý región rastie pridaním susedných bodov, ak spĺňajú určité kritériá kompatibility. Medzi tieto kritéria patrí vzdialenosť, intenzita alebo rovnosť susedných bodov. \cite{segmetation_survey}  
+    \item\textbf{Deliace} (z ang. unseeded-region) najprv zoskupia všetky body do jedného regiónu. Potom začína proces delenia na menšie regióny a pokračuje, až pokým zvolená miera vhodnosti presahuje stanovený prah. \cite{segmetation_survey}
+ \end{itemize}
+ \item\textbf{Metódy založené na atribútoch} - Tieto metódy využívajú vypočítané charakteristiky (atribúty) jednotlivých bodov, ako sú priestorové súradnice, hustota, povrchová textúra a ďalšie, na zoskupovanie podobných bodov. Tieto atribúty usmerňujú zhlukovacie algoritmy, ktoré vytvárajú odlišné segmenty na základe podobnosti atribútov s cieľom izolovať rôzne povrchy alebo objekty v mračne bodov. Aj keď sú tieto metódy flexibilné a presné, ich presnosť silno závisí od presnosti odvodených atribútov.
+ \item\textbf{Metódy založené na modeloch} - Tieto metódy sa snažia detegovať a kategorizovať body na základe ich reprezentácie pomocou základných tvarov. Využívajú základné geometrické tvary ako gule, kužele, roviny a valce na zoskupovanie bodov s podobnými matematickými vlastnosťami do segmentov. Sú rýchle a robustné voči šumu, ale môžu sa stretnúť s problémami pri práci s rôznorodými alebo komplexnými mračnami bodov. \cite{ransac}
+ \item\textbf{Metódy založené na grafoch} - Tieto metódy vnímajú dáta ako vzájomne prepojené vrcholy reprezentujúce body a hrany reprezentujúce vzťahy medzi susediacimi bodmi. Využívajú štruktúry grafov, kde zohľadňujú rôzne kritériá, ako sú farba, normály alebo pravdepodobnostné modely. Tieto metódy sú známe svojou presnosťou a efektívnosťou, najmä v robotických aplikáciách. Aj keď sú schopné pracovať s šumom alebo rôznorodými dátami, môžu čeliť problémom s spracovaním v reálnom čase a často vyžadujú predchádzajúce znalosti alebo špecializované nastavenia senzorov.  \cite{segmetation_survey}\cite{graph_based}
+\end{enumerate}
+
+\subsubsection{DBSCAN}
+\noindent \acrshort{dbscan} (Density-Based Spatial Clustering of Applications with Noise) je populárny zhlukovací algoritmus, používaný pre analýzu priestorových dát a segmentáciu mračien bodov. Tento algoritmus pracuje na princípe, že zhluky sú oblasti s vysokou hustotou, oddelené miestami s nižšou hustotou bodov. Dynamicky identifikuje zhluky na základe hustoty bodov namiesto predpokladania fixného počtu zhlukov alebo konkrétnych tvarov. \cite{DBSCAN_original} 
+\newline\indent \acrshort{dbscan} pracuje s dvomi vstupnými parametrami: \textit{Eps} a \textit{MinPts}. Eps definuje polomer prehľadávaného okolia, zatiaľ čo \textit{MinPts} určuje minimálny počet bodov v rámci \textit{Eps} potrebných na vytvorenie hustej oblasti. Nastavenie týchto parametrov je kľúčové pre spávane fungovanie algoritmu a preto existuje heuristika, ktorá určuje tieto parametre na základe "najtenšieho" zhluku ktorý nie je považovaný za šum. \cite{DBSCAN_original}
+\newline\indent Princíp fungovania algoritmu vieme rozdeliť do niekoľkých bodov:
+\begin{enumerate}
+    \item Pre každý bod zo súboru sa vypočíta počet bodov ležiacich v okolí určeným \textit{Eps} hodnotou. Na základe tejto hodnoty sú body zaradenené do troch kategorií.  
+    \item Body, ktoré majú tento počet väčší, ako hraničná hodnota \textit{MinPts} sú považované za jadrové, naopak tie ktoré ju majú menšiu, ale zároveň sú  v \textit{Eps} okolí iného jadrového bodu sú považované za hraničné. Zvyšné body sú zaradené medzi šumové.
+    \item Následne sa vytvárajú zhluky pomocou spájania jadrových bodov, ktoré ležia vo svojom \textit{Eps} okolí, pričom sú ohraničené hraničnými bodmi. Body šumu nie sú zaradené do žiadnych zhlukov.
+\end{enumerate}
+
+\subsubsection{K-means}
+\noindent K-means je populárny algoritmus pre zhlukovanie súborov dát, ktorý rozdeľuje dáta do \textit{K} odlišných a neprekrývajúcich sa zhlukov. Jeho cieľom je minimalizovať rozptyl vzdialeností vo vnútri zhlukov prostredníctvom iteratívneho priraďovania bodov k najbližšiemu centru a aktualizácie centier zhlukov až do dosiahnutia konvergencie. \cite{K-means}
+\newline\indent Princíp fungovania algoritmu vieme rozdeliť do niekoľkých bodov:
+\begin{enumerate}
+    \item Výber K náhodných bodov zo súboru a označenie ich za centrá. 
+    \item Následne sa všetky body priraďujú ku svojmu najbližšiemu centru.
+    \item Zo priemeru združených bodov sa vypočíta nové centrum.
+    \item Predošlé body sa opakujú až dokým jednotlivé centrá nezkonvergujú do svojej optimálnej  polohy (ich poloha sa už výrazne nemení).
+\end{enumerate}
+\indent Aj napriek tomu, že K-means algoritmus je považovaný za jednoduchý na implementáciu, náhodný výber počiatočných centier môže viesť k uväzneniu v lokálnom minimu a preto je potrebné, aby bol algoritmus spustený niekoľkokrát. Určenie správneho počtu zhlukov \textit{K} predstavuje ďalší problém. S rastúcim \textit{K} klesá rozptyl, ktorý sa snažíme minimalizovať. Aby sa zabránilo jeho nekonečnému nárastu existuje tzv. lakťová metóda (z ang. elbow method),  pri ktorej z grafu pre rôzne hodnoty \textit{K} vieme nájsť zlom, pri ktorom rozptyl začne klesať pomalšie. \cite{K-means}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=13cm]{img/DBSCAN_vs_Kmeans.png}
+  \caption{Porovnanie segmentácie pomocou DBSCAN a K-means algoritmu \cite{DBSCANvsKmeans}}
+  \label{segmentation_methods}
+\end{figure} 
+
+\subsubsection{RANSAC}
+\noindent \acrshort{ransac} (Random Sample Consensus) je metóda používaná na odhad parametrov matematického modelu z dátového súboru, ktorý môže obsahovať odľahlé hodnoty alebo chyby. Na rozdiel od tradičných metód, ktoré sa snažia zahrnúť väčšinu údajov a eliminovať odľahlé hodnoty, RANSAC funguje tým, že začína s minimálnym množstvom údajov a postupne ho rozširuje o konzistentné údaje na vytvorenie spoľahlivého modelu. \cite{RANSAC_original}
+\newline\indent Metóda začína výberom \textit{N} bodov zo celého súboru, pričom \textit{N} predstavuje najmenší potrebný počet parametrov pre vyjadrenie modelu. Následne sa pre vybrané body vypočítava zvolený model (napr. priamka, krivka, plocha). Pre daný model sa identifikujú body, ktoré súhlasia s modelom v rámci definovanej tolerancie a zaznamenáva sa ich počet. Tieto kroky sa opakujú, až do dosiahnutia definovaného počtu iterácií alebo až kým nie je splnená ukončovacia podmienka (napr. nájdenie modelu s dostatočným počtom bodov). Ak je identifikácia ukončená nájdením dostatočného počtu bodov, \acrshort{ransac} využíva vyhladzovaciu techniku, ako je napríklad metóda najmenších štvorcov, na výpočet vylepšeného odhadu parametrov modelu zo všetkých príslušných bodov. \cite{RANSAC_original}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm]{img/ransac_img.png}
+  \caption{Postup \acrshort{ransac} algoritmu pre odhad parametrov modelu priamky}
+  \label{ransac}
+\end{figure} 
+
+\section{Rekonštrukcia a spracovanie povrchu}
+\noindent Rekonštrukcia povrchu či už z fotiek alebo mračien bodov, sa stala v posledných rokoch populárnou témou, vďaka rýchlemu vývoju výpočtovej techniky, ale aj cenovému sprístupneniu skenerov, ktoré ponúkajú slušné výsledky. Tento proces nachádza vysoké využitie v oblastiach ako sú robotika, počítačová vízia, mapovanie ale aj kultúrne dedičstvo, pri ktorých sa stretávame so scénami, ktoré obsahujú objekty so rôznymi veľkosťami a mierkami. Zachovanie presnosti a detailov pri rôznorodých scénach je náročnou a dôležitou úlohou, a preto sa vyvinulo  mnoho rôznych metód, ktoré majú svoje výhody aj nevýhody.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=8cm]{img/mesh_example.png}
+  \caption{Ukážka rekonštrukcie povrchu - (a) mračno bodov (b) zrekonštruovaný povrch}
+  \label{recons}
+\end{figure} 
+\newline\indent Tieto metódy vieme rozdeliť do dvoch základných skupín na základne ich prístupu ku generovaniu povrchu.
+\begin{enumerate}
+    \item\textbf{Explicitné metódy} - Využívajú explicitnú reprezentáciu povrchu (primitívne útvary), čo znamená, že vytvorený povrch bude ležať priamo na bodoch mračna. Ich nevýhodou je vysoká citlivosť na šum ako aj časová náročnosť na výpočet.
+    \item\textbf{Implicitné metódy} - Využívajú Implicitnú reprezentáciu povrchu a teda povrch je charakterizovaný funkciami, ktorých iso-kontúry tesne aproximujú body mračna. Rekonštrukcia implicitných plôch spočíva vo vyhľadávaní funkcie, ktorá najlepšie vyhovuje vstupným bodom, pričom následne vyžaduje dodatočné spracovanie pre vizualizáciu. Algoritmus Marching Cubes patrí medzi najpoužívanejšie algoritmy pre generovanie trojuholníkových plôch z implicitnej reprezentácie. \cite{Reconstruction_general}
+\end{enumerate}
+
+\subsection{Metódy pre rekonštrukciu povrchu}
+\noindent V tejto podkapitole sa zameriame na principiálne fungovanie konkrétnych metód pre rekonštrukciu povrchu. Ako už bolo povedané, metódy delíme na explicitné a implicitné, pričom väčšina z uvedených metód bude implicitná, keďže sú odolnejšie voči šumu a výpočtovo menej náročné. 
+\subsubsection{Marching cubes} 
+\noindent Metóda marching cubes je jednou z najpoužívanejších metód pre rekonštrukciu povrchu. Táto metóda je založená rozdelení priestoru do voxelovej mriežky, pričom každý voxel tvorí osem vrcholov. Každému vrcholu je priradená hodnota podľa toho, či sa nachádza vnútri (hodnota 1) alebo mimo prehľadávaného povrchu (hodnota 0), podľa hraničnej úrovne nastavenej od užívateľa. Pre osem vrcholov existuje 256 rôznych konfigurácii, čo môže byť pomerne zložité na spracovanie. Preto sa tieto konfigurácie redukujú na 14 vzorov vďaka symetrickým vlastnostiam, čím sa zároveň minimalizuje pravdepodobnosť chýb. \cite{MarchingCubeas_origin}
+\newline\indent Výhodou tejto metódy je, že pre svoju funkciu nepotrebuje odhad normál, ale naopak, pôvodná verzia ponúka výpočet normál pomocou gradientu. Tieto normály je možno následne využiť pri vizualizácií a tieňovaní výsledného povrchu. Na druhú stranu jednou z hlavných nevýhod je využitie voxelovej mriežky, čo môže pri veľkých mračnách bodov viesť ku rýchlemu naplneniu pamäte a preto je nutná úprava pôvodnej metódy, ktorá rozdelí prehľadávaný priestor na viacero častí a na konci ich spojí.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/marching_cubes.png}
+  \caption{Rôzne možnosti konfigurácie voxelov \cite{MarchCubes_img}} 
+  \label{marchingCubes}
+\end{figure} 
+\subsubsection{Poisson}
+\noindent Táto metóda ukazuje, že rekonštrukciu povrchu z orientovaných bodov môže byť vyriešená ako priestorový Poissonov problém. Formulácia pomocou Poissonovej metódy zohľadňuje všetky body naraz, bez použitia heuristického priestorového delenia alebo prelínania, a je preto vysoko odolná voči šumu. \cite{poisson_origin}
+\newline\indent Táto metóda využíva implicitný prístup pre reprezentáciu povrchu, konkrétne sa zameriava na výpočet 3D indikačnej funkcie $\chi$ (definovanej ako 1 pre body vnútri modelu a 0 pre body mimo modelu viď Obr. \ref{fig:poisson}) a následne získanie zrekonštruovanej plochy extrahovaním vhodnej iso-kontúry. Dôležitým poznatkom je, že medzi orientovanými bodmi získanými  z povrchu modelu a indikačnou funkciou  modelu existuje integrálny vzťah. Konkrétne, gradient indikačnej funkcie je vektorové pole, ktoré je nulové takmer všade (keďže funkcia indikátora je konštantná takmer všade), okrem bodov blízkych povrchu, kde je rovné normálam smerujúcim do vnútra povrchu. A preto vzorky orientovaných bodov možno považovať za vzorky gradientu indikačnej funkcie modelu. \cite{poisson_origin}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=14cm]{img/poisson.png}
+  \caption{Ukážka poissonovej rekonštrukcie v 2D \cite{poisson_origin}} 
+  \label{fig:poisson}
+\end{figure} 
+\newline\indent Úloha výpočtu indikačnej funkcie sa zjednodušuje na hľadanie skalárnej funkcie $\chi$, ktorej gradient najlepšie aproximuje dané vektorové pole $\vec{V}$, definované množinou vzoriek. Keď sa použije operátor divergencie, táto úloha sa preformuluje do štandardného Poissonového problému, kde je cieľom vypočítať $\chi$ tak, aby jeho Laplacián (divergencia gradientu) bol rovný divergencii vektorového poľa $\vec{V}$. \cite{poisson_origin}
+\begin{equation}
+    \Delta \chi \equiv \nabla \cdot \nabla \chi = \nabla \cdot \vec{V}
+    \label{eq:poisson}
+\end{equation}
+\indent Ako už bolo uvedené skôr, táto metóda vytvára globálne riešenie, ktoré využíva všetky body naraz. To jej umožňuje vytvoriť vodotesný a hladký povrch, čo môže byť výhoda oproti iným metódam. Naopak metóda potrebuje na vstup orientované body a je teda nutné mať informáciu o normálach, čo môže byť problém, ak je rekonštruovaný objekt naskenovaný z viacerých snímkov.   
+
+\subsubsection{Ball pivoting}
+\noindent Hlavný princíp fungovania tejto metódy, je celkom jednoduchý. Uvažujme body v priestore, na ktoré položíme $\rho$-guľu (guľa s rádiusom $\rho$), pričom uvažujeme, že hustota bodov je dostatočne veľká na to, aby cez nich guľa nevedela prejesť bez dotyku. Metóda začína rekonštrukciu položením $\rho$-gule na povrch, tak aby sa dotýkala troch náhodných bodov. Následne sa guľa udržuje v kontakte s dvoma pôvodnými bodmi a obtáča sa (z ang. pivot), až dokým nenarazí na ďalší bod. Trojica bodov s ktorými je guľa v kontakte tvorí nový trojuholník a pridáva sa ku existujúcemu povrchu. Proces sa opakuje prechádzaním po okraji súčasnej hranice povrchu, až dokým neboli prejdené všetky hranice a nepribudol žiadny nový trojuholník. \cite{ball_pivot_origin}
+\newline\indent Aj napriek jednoduchosti a priamočiarosti, má táto metóda svoje nedostatky. Ako môžeme vidieť na Obr. \ref{fig:ball_pivot} metóda funguje dobre, ak pracuje v ideálnych podmienkach, v prípade ak sú ale dáta neuniformné (častí prípad pre mračná bodov) guľa nedokáže premostiť ku ďalšiemu bodu a v povrchu vznikajú diery. Rovnaký prípad nastáva aj keď je polomer gule príliš veľký a rekonštruovaný objekt obsahuje detaily s príliš veľkým zakrivením.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm]{img/ball_pivoting.png}
+  \caption{Ukážka ball-pivoting rekonštrukcie v 2D - (a) Ideálny prípad (b) mála a neuniformná hustota bodov (c) príliš veľké zakrivenie (väčšie ako 1/$\rho$) \cite{poisson_origin}} 
+  \label{fig:ball_pivot}
+\end{figure} 
+
+\subsubsection{MLS}
+\noindent \acrshort{mls} (Moving least squares) je trieda, ktorá zastrešuje viacero metód, ktoré pristupujú ku rekonštrukcií povrchu, tak že aproximuje jednotlivé body pomocou polynómu nízkeho rádu (kubický, kvadratický), čo zároveň ponúka možnosť pod-vzorkovania alebo nad-vzorkovania. \cite{MLS_survey}
+\newline\indent Za predpokladu, že skalárna hodnota $v_i$ je priradená ku každej vstupnej vzorke $p_i$ je potom zrekonštruovaná plocha v $x$ definovaná ako hodnota v $x$ viacrozmerného polynómu $g_x$, ktorý najlepšie aproximuje susedstvo bodu $x$ v zmysle váženej metódy najmenších štvorcov \cite{MLS_survey}:
+\begin{equation}
+    g_x = \arg\min_{g}\sum\omega(||x-p_i||)(g(p_i)-v_i)^2
+    \label{eq:mls}
+\end{equation}
+\indent kde $\omega$ je váhová funkcia, ktorá priraďuje väčší vplyv bodom, ktoré sú bližšie ku aktuálne hodnotenému bodu. Táto váhová funkcia taktiež pôsobí ako forma dolnopriepustného filtra, pomáhajúc zmierniť vplyv šumu na vstupných dátach. Okrem toho sa \acrshort{mls} metódy vedia prispôsobiť nerovnomerným hustotám vzorkovania tým, že podľa potreby využijú rozdielnu váhovú funkciu, ktorá sa vie adaptívne prispôsobiť vzorkovacej hustote. Táto prispôsobivosť je dôležitá pre zachovanie presnosti pri práci s neuniformnými dátami, čo je častý prípad mračien bodov. \cite{MLS_survey}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=13cm]{img/MLS.jpg}
+  \caption{Ukážka princípu pre viacero variantov MLS v 2D. Miestne aproximácie vypočítané pre hodnotiaci bod $x$ sú znázornené zelenou farbou. Oranžové krivky zodpovedajú rekonštruovaným iso-kontúram. \cite{MLS_survey}} 
+  \label{fig:MLS}
+\end{figure} 
+
+\subsubsection{MPU}
+\noindent \acrshort{mpu} (Multi-level partition of unity) je metóda, ktorá bola špecificky vytvorená na rýchlu a presnú rekonštrukciu povrchu s veľkého súboru orientovaných bodov (body ktoré obsahujú jednotkové normály). Názov metódy vyplýva zo podstaty fungovania \acrshort{mpu}, a to že sa skladá zo viacerých vážených funkcií, ktoré sa spočítavajú do jedna pre všetky body v doméne. Táto metóda ponúka adaptívny chybovo kontrolovaný odhad funkcie vzdialenosti od povrchu, čo znamená, že odhad je presný v blízkosti povrchu a hrubý ďaleko od povrchu. \cite{MPU_orig}
+\newline\indent Pre vytvorenie implicitnej reprezentácie povrchu sa najprv všetky body rozdelia pomocou oktálového stromu. V každej bunke stromu sa vytvorí  po častiach kvadratická funkcia (lokálna tvarová funkcia), ktorá sa snaží napasovať na body v bunke. Hodnota týchto funkcií nadobúda hodnotu 0 v blízkosti bodov, pozitívnu hodnotu vo vnútri a negatívnu (vonku) ďaleko od bodov, pričom na rozlíšenie sa využívajú skôr uvedené normály. V prípade, že dosiahnutá presnosť je stále malá, bunka v oktálovom strome sa znovu rozdelí a celý proces sa opakuje, až dokým nie je dosiahnutá požadovaná presnosť viď. Obr. \ref{fig:MPU}. Na záver v miestach, kde sa stretávajú hranice buniek, tvarovacie funkcie sú spojené dokopy na základe váh z funkcií rozdelenia jednoty (z ang. partition of unity functions). \cite{MPU_orig}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=8.5cm, height=10cm]{img/MPU_img.png}
+  \caption{Ukážka rekonštrukcie pomocou \acrshort{mpu} implicit. Ľavá časť modelu, je ofarbená podľa hĺbky rozdelenia s tým, že stúpa od modrej až po červenú. Modely v pozadí sú rekonštruované so stúpajúcou chybou v odhade. \cite{MPU_orig}} 
+  \label{fig:MPU}
+\end{figure} 
+
+\subsection{Metódy pre zjednodušenie povrchu}
+\noindent V mnohých prípadoch po rekonštrukcií povrchu z mračna bodov, alebo aj po obdržaní už existujúceho modelu sa stretávame s tým, že povrch daného modelu obsahuje veľa polygónov, ktoré by sa dali vyjadriť menším počtom, pričom zachovajú celkový tvar a ušetria tak pamäťovú náročnosť. Tento problém väčšinou vzniká pri samotnej rekonštrukcií z mračien bodov, ktoré majú príliš veľkú hustotu bodov a neberú ohľad na dôležitosť bodov. 
+\newline\indent V tejto podkapitole sa preto budeme zaoberať metódami, ktoré sa zameriavajú na zjednodušenie topológie povrchu, pričom ich delíme na lokálne a globálne metódy.  
+
+\subsubsection{Lokálne metódy}
+\noindent Lokálne metódy sú oproti globálnym bežnejšie a preto sa budeme zaoberať hlavne nimi. Tieto metódy pristupujú k zjednodušovaniu iteratívnou aplikáciou lokálneho operátora na malú sadu bodov a vytvoria tak povrch s menším počtom prvkov. Využívajú chybové alebo nákladové (z ang. cost)  funkcie, ktoré usmerňujú proces zjednodušovania a taktiež ponúkajú presnú kontrolu výsledných atribútov povrchu (počet polygónov, hranice chýb pre vrcholy). \cite{mesh_simplification}
+\begin{enumerate}
+    \item\textbf{Decimácia vrcholov (z ang. Vertex decimation)} - Tento prístup pracuje s jedným vrcholom, ktorý sa vymaže a následne sa snaží zaplátať vytvorenú dieru na základe klasifikačnej schémy o susedstve. Výber vrcholu ktorý bude vymazaný je spojený so  vzdialenosťou od roviny, ktorá je aproximovaná pomocou spriemerovania normál, ťažísk a plôch okolitých trojuholníkov. Vzdialenosť vrcholu od tejto roviny slúži ako miera chyby pre jeho odstránenie, pričom vrcholy ležiace na hladkých častiach sú uprednostňované pred tými, ktoré opisujú ostré zmeny (detaily). \cite{mesh_simplification}
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=10.5cm, height=7.2cm]{img/vertex_decim.png}
+      \caption{Ukážka decimácie vrcholu v 2D} 
+      \label{fig:vertex_decim}
+    \end{figure} 
+    \item\textbf{Kolaps strán (z ang. Edge collapse)} - V tejto metóde pracujeme s dvoma vrcholmi naraz, pričom ich výber môže byť vykonávaný ako v predošlej metóde. Táto metóda funguje na základe odstraňovania strán medzi vybranými vrcholmi, a teda zlučuje ich do jedného, pričom vždy ostarni dva trojuholníky. Ukázalo sa, že výber pozície nového vrcholu nie je až tak jasný, pretože uloženie do stredu medzi pôvodnými vrcholmi nie je optimálne. Vyvinulo sa preto niekoľko prístupov, ktoré rozhodujú o novom uložení a medzi najpopulárnejšie patrí  prístup na základe kvadratickej chyby, ktorý je založený na umocnenej vzdialenosti vrcholov od aproximovanej roviny okolitých trojuholníkov. Tento prístup nájde optimálnu polohu nového vrcholu, tak aby sa zachovali aj ostré zmeny v povrchu.
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=12 cm]{img/edge_collapse.png}
+      \caption{Ukážka kolapsu strany v 2D} 
+      \label{fig:vertex_decim}
+    \end{figure} 
+\end{enumerate}
+
+\subsubsection{Globálne metódy}
+\noindent Ako to už z mena vyplýva globálne metódy pristupujú ku spracovaniu povrchu ako celku a na rozdiel od lokálnych metód, ktoré využívajú iteratívne procesy, globálne metódy analyzujú celý povrch naraz, aby dosiahli jeho zjednodušenie.
+\begin{enumerate}
+    \item\textbf{Zhlukovanie vrcholov (z ang. Vertex clustering)} - Táto metóda je založená na priradení váh pre každý vrchol povrchu, na základe jeho dôležitosti. Vrcholy susedné ku veľkým trojuholníkom a tie ktoré sú v zakrivených oblastiach je priradená väčšia váha ako tým, ktoré sú v hladkých oblastiach a vedľa malých trojuholníkov. Celý priestor v ktorom sa povrch nachádza sa rozdelí pomocou voxelovej mriežky. Na záver sa všetky vrcholy v danej bunke mriežky zoskupia do vrcholu s najväčšou váhou, čím sa zníži celkový počet vrcholov. Táto metóda je výpočtovo veľmi efektívna, jej presnosť sa dá upravovať pomocou rozlíšenia voxelovej mriežky, ale taktiež vie zmeniť topológiu povrchu nepredvídateľným spôsobom. \cite{mesh_simplification}
+\end{enumerate}
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=10cm]{img/vertex_clustering.png}
+  \caption{Ukážka zhlukovania vrcholov v 2D. Originálne vrcholy (čierne), po úprave (modré) pre viditeľnosť posunuté od stredu mriežky} 
+  \label{fig:verte_cluster}
+\end{figure} 
+\vfill\clearpage
+
+\section{Špecifikácia cieľov}
+\noindent Po úspešnom zhrnutí rôznych prístupov pre spracovanie mračien bodov a rekonštrukciu  povrchu v predošlých kapitolách, môžeme prejsť na návrh nášho riešenia. Navrhovaný algoritmus využije skôr spomínané metódy na predspracovanie mračna bodov, aby potom následná rekonštrukcia povrchu dosahovala lepšie výsledky, zatiaľ čo sa pokúsime o zníženie celkovej pamäťovej náročností. Tento proces môžeme rozdeliť do následujúcich bodov:
+\begin{enumerate}
+    \item Odstránenie odľahlých bodov
+    \item Separácia bodov zeme a objektov
+    \item Zhlukovanie bodov objektov do supervoxelov
+    \item Segmentácia objektov
+    \item Adaptívne pod-vzorkovanie bodov objektov
+    \item Rekonštrukcia povrchu (výber najvhodnejšej metódy)
+    \item Textúrovanie povrchu
+\end{enumerate}
+
+\section{Použité súbory dát}
+\noindent Pred samotnou implementáciou navrhnutého riešenia si v krátkosti predstavíme mračná bodov, s ktorými budeme pracovať. Pre účely tejto práce nám bolo poskytnutých päť rozdielnych mračien bodov, pričom dve boli použité na vývoj a testovanie a zvyšné boli použité na validáciu a overenie riešenia.
+\newline\indent Pre získanie poskytnutých mračien bodov boli použité dva rozdielne \acrshort{lidar}-i. Mračno bodov mestskej časti s bytovkami (Obr. \ref{fig:SD1}) a mračno bodov mestskej časti s kruhovým odjazdom (Obr. \ref{fig:SD2}) boli namerané pomocou Optech CL-360 \acrshort{lidar}-u, zaťial čo, mračno bodov parkoviska pri obchodoch (Obr. \ref{fig:SD3}), mračno bodov ulice so trolejbusovou zastávkou (Obr. \ref{fig:SD4}) a mračno bodov dedinskej časti (Obr. \ref{fig:SD5}) boli namerané pomocou Hesai XT-32 \acrshort{lidar}-u. V prípade prvých štyroch súborov dát bol \acrshort{lidar} pripevnený na streche auta, zatiaľ čo v posledom bol pripevnený na dronovi a dáta boli získane zo vzduchu.
+\newline\indent  Kvôli jednoduchosti sa budú po zvyšok práce jednotlivé mračná bodov označovať ako $SDx$, kde x je číslo súboru dát.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/SD1_example.png}
+  \caption{Mračno bodov mestskej časti s bytovkami - $SD1$ (Optech CL-360)} 
+  \label{fig:SD1}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/SD2_example.png}
+  \caption{Mračno bodov mestskej časti s kruhovým odjazdom - $SD2$ (Optech CL-360)} 
+  \label{fig:SD2}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/SD3_example.png}
+  \caption{Mračno bodov parkoviska pri obchodoch - $SD3$ (Hesai XT-32)} 
+  \label{fig:SD3}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/SD4_example.png}
+  \caption{Mračno bodov ulice so trolejbusovou zastávkou - $SD4$ (Hesai XT-32)} 
+  \label{fig:SD4}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/SD5_example.png}
+  \caption{Mračno bodov dedinskej časti - $SD5$ (Hesai XT-32)} 
+  \label{fig:SD5}
+\end{figure} 
+
+\section{Realizácia riešenia}
+\noindent V tejto kapitole sa budeme zaoberať konkrétnou implementáciou vyššie špecifikovaných cieľov. Na implementáciu budeme používať programovací jazyk C++ v prostredí Visual Studio, pričom sa hlavne zameriame na využitie existujúcich implementácií algoritmov z \acrshort{pcl} knižnice.
+
+\subsection{Odstránenie odľahlých bodov}
+\noindent Ako už bolo uvedené v úvodnej kapitole, mračná bodov často obsahujú body, ktoré nereprezentujú reálny povrch objektov a nazývame ich odľahlé. Tieto body vznikajú z rôznych dôvodov ako sú šum v systéme snímača, prekrytie snímača, lesklé alebo priehľadné povrchy objektov a mnoho ďalších. Odfiltrovanie týchto bodov je dôležitým krokom pri spracovaní mračien bodov, nakoľko ich odstránením nie len znížime celkový počet bodov, ale aj zabezpečíme, že nasledovné kroky budú mať vyššiu úspešnosť, či už ide o segmentáciu alebo samotnú rekonštrukciu povrchu. 
+\newline\indent Pre samotné odstránenie odľahlých bodov nám \acrshort{pcl} knižnica ponúka dve rýchle a efektívne metódy, \acrshort{ror} (Radial outlier removal) a \acrshort{sor} (Statistical outlier removal). Prvá s týchto metód nám ponúka odstránenie bodov, ktoré nemajú minimálny počet susedov v definovanom rádiuse. Táto metóda je ale parametricky závislá od hustoty mračna bodov a pre rozdielne súbory dát nefunguje rovnako, a preto sme sa rozhodli, že budeme pokračovať so \acrshort{sor} metódou. Táto metóda počíta so priemernou vzdialenosťou každého bodu a jeho K najbližších susedov a na základe toho vyhodnocuje, ktoré body sú odľahlé (presnejšie vysvetlené v kapitole \ref{section::sor}). 
+\newline\indent Metóda nám ponúka nastavenie počtu najbližších susedov a násobiteľ prahu štandardnej odchýlky. Tieto dva parametre nám umožňujú nastavenie agresívnosti filtru a po vyskúšaní viacerých kombinácií, sme dospeli ku hodnotám:
+\begin{itemize}
+    \setlength\itemsep{0.2em}
+    \item Počet najbližších susedov (z ktorých sa počíta priemer) = 20
+    \item Násobiteľ prah štandardnej odchýlky = 2,0
+\end{itemize}
+pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov a zachovania podstatných bodov. Ukážku dosiahnutých výsledkov môžeme vidieť na Obr. \ref{fig:outlier}.
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/outlier_removal.png}
+  \caption{Výsledné mračná bodov (pôvodná farba) po odstránení odľahlých bodov (biele farba) pomocou \acrshort{sor} metódy ($SD1$ hore, $SD2$ dole)} 
+  \label{fig:outlier}
+\end{figure} 
+\vfill\clearpage
+
+\begin{table}
+    \begin{center}
+        \begin{tabular}{|c || c | c | c|} 
+         \hline
+          & \textbf{Pôvodný počet bodov} & \textbf{Nový počet bodov} & \textbf{Zmenšenie mračna bodov [\%]} \\ [0.5ex] 
+         \hline\hline
+         \textbf{SD1} & 15 667 351 & 15 477 814 & 1,21 \\ 
+         \hline
+         \textbf{SD2} & 5 297 511 & 5 144 894 & 2,89 \\
+         \hline
+         \textbf{SD3} &  9 924 233 & 9 797 094 & 1,29 \\
+         \hline
+         \textbf{SD4} & 5 462 647 & 5 344 810 & 2,16 \\
+         \hline
+         \textbf{SD5} & 7 544 836 & 7 297 335 & 3,28 \\
+         \hline
+        \end{tabular}
+    \caption{Porovnanie veľkosti pôvodných a filtrovaných mračien bodov, pre jednotlivé súbory dát}
+    \end{center}
+\end{table}
+
+\subsection{Separácia bodov zeme a objektov}
+\noindent Po odfiltrovaní odľahlých bodov je ďalším hlavným cieľom segmentovať mračno bodov na jednotlivé objekty. Pred samotnou segmentáciou je vhodné separovať body zeme a terénu od bodov jednotlivých objektov, nakoľko v drvivej väčšine prípadov sú tieto body navzájom spojené iba so samotnou zemou.
+\newline\indent Pre tento účel využijeme progresívny morfologický filter. Princíp tohto filtra spočíva vo využití matematickej operácie otvárania (kombinácia erózie a následnej dilatácie), ktorá sa aplikuje na body v okne. Ak je toto okno väčšie ako objekt reprezentovaný bodmi vo vnútri, objekt je odstránení, zatiaľ čo väčšie objekty sú zachované. Táto metóda začína vytvorením mriežky s počiatočnou veľkosťou okna, pričom odstraňuje menšie objekty. Postupným zväčšovaním tohto okna odstraňuje stále väčšie objekty, až kým nedosiahne maximálnu veľkosť okna, kedy by mali byť zachované len body zeme. \cite{morph_filter}
+\newline\indent V našej práci využijeme implementáciu z \acrshort{pcl} knižnice, konkrétne využijeme jeho aproximáciu, keďže jeho plná verzia je výpočtovo a časovo veľmi náročná. Metóda ponúka viacero nastaviteľných parametrov, pričom pre následujúcu konfiguráciu sme dosiahli najlepšie výsledky. 
+
+\begin{itemize}
+    \setlength\itemsep{0.2em}
+    \item Maximálna veľkosť okna = 18
+    \item Veľkosť bunky = 0,1
+    \item Sklon = 2,85
+    \item Počiatočná vzdialenosť (nad parametrizovaným povrchom) = 0,1
+    \item Maximálna vzdialenosť (nad parametrizovaným povrchom) = 2,5
+\end{itemize}
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/morph_filter.png}
+  \caption{Mračná bodov objektov (pôvodná farba) po separácií bodov zeme (biele farba) pomocou aproximácie morfologického filtra ($SD1$ hore, $SD2$ dole)} 
+  \label{fig:ground_sep}
+\end{figure} 
+\vfill\clearpage
+
+\begin{table}
+    \begin{center}
+        \begin{tabular}{|c || c | c | c|} 
+         \hline
+          & \textbf{Počet bodov zeme} & \textbf{Počet bodov objektov} & \textbf{Pomer bodov zeme a objektov[\%]} \\ [0.5ex] 
+         \hline\hline
+         \textbf{SD1} & 8 455 280 & 7 022 534 & 54,63 - 45,37 \\ 
+         \hline
+         \textbf{SD2} & 3 075 670 & 2 069 224 & 59,78 - 40,22 \\
+         \hline
+         \textbf{SD3} &  5 260 628 & 4 536 466 & 53,70 - 46,30 \\
+         \hline
+         \textbf{SD4} & 3 321 577 & 2 023 233 & 62,15 - 37,85 \\
+         \hline
+         \textbf{SD5} & 3 206 050 & 4 091 285 & 43,93 - 56,07 \\ 
+         \hline
+        \end{tabular}
+    \caption{Porovnanie pomeru bodov zeme a objektov, pre jednotlivé súbory dát}
+    \label{table::ground_separation}
+    \end{center}
+\end{table}
+
+\subsection{Zhlukovanie bodov objektov do supervoxelov}
+\noindent Pre účely použitia nasledujúcej segmentačnej metódy, je potrebne mračno bodov zoskupiť do takzvaných supervoxelov, ktoré predstavujú významovo väčšie celky, ktoré majú podobné vlastnosti, zatiaľ čo sa snažia nepresahovať hranice objektov. Tieto zhluky taktiež predstavujú vyššiu úroveň reprezentácie mračna bodov, čím redukujú výpočtovú náročnosť ďalších procesov, zatiaľ čo uchovávajú dôležité štrukturálne informácie. 
+\newline\indent Zoskupenie mračna bodov vykonáme pomocou \acrshort{pcl} knižnice, ktorá obsahuje triedu Supervoxel Clustering. Táto trieda vykonáva zhlukovanie využitím \acrshort{vccs} (Voxel Cloud Connectivity Segmentation), čo je nová metóda, ktorá využíva rastový variant k-means zhlukovania, pričom body označuje priamo do voxelov štruktúry oktálového stromu. Pomocou oktálového stromu efektívne uchováva graf súslednosti 26 susedov (spojený hranou, tvárou alebo vrcholom), pričom tento graf je vo veľkej miere použitý pre rast regiónov zhlukov, ako aj pre uchovanie súslednosti výsledných supervoxelov. Rast supervoxelov je riadený normalizovanými priestorovými, farebnými a normálovými vzdialenosťami, pričom prvá meria priestorový rozsah, druhá meria rozdiel farby v RGB priestore a posledná meria uhol medzi normálami povrchu. \cite{supervoxelClustering}
+\newline\indent Trieda Super-voxel Clustering ponúkala nastavenie piatich parametrov, pričom hodnota rozlíšenia voxelov, rozlíšenia počiatočných bodov a dôležitosť normál hrala najvýznamnejšiu úlohu, pre dosiahnutie požadovaných výsledkov. Výsledná konfigurácia je následovná:
+
+\begin{itemize}
+    \setlength\itemsep{0.2em}
+    \item Rozlíšenie voxelov = 0,1
+    \item Rozlíšenie počiatočných bodov (z ang. seed)  = 1,0
+    \item Dôležitosť normál = 1,0
+    \item Dôležitosť farby = 0,2
+    \item Priestorová dôležitosť = 0,2
+\end{itemize}
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/supervoxel.png}
+  \caption{Mračná bodov objektov zoskupené do supervoxelov rôznej farby ($SD1$ hore, $SD2$ dole)} 
+  \label{fig:supervoxel}
+\end{figure} 
+\vfill\clearpage
+
+\subsection{Segmentácia mračna bodov}
+\noindent Výsledkom predošlých krokov je samotná segmentácia mračna bodov patriaceho objektom. Táto segmentácia nám rozdelí body mračna na jednotlivé objekty, čo následne umožní individuálny prístup pri ďalších  krokoch ako sú pod-vzorkovanie alebo rekonštrukcia povrchu. Vďaka segmentácií budeme mať väčšiu kontrolu a dosiahneme lepšie výsledky.
+\newline\indent Pre segmentáciu mračna bodov využijeme \acrshort{pcl} implementáciu CPC (Constrained Planar Cuts) metódy. Táto metóda využíva graf súsledností vytvorený v predošlom kroku pomocou \acrshort{vccs} na to, aby získala informáciu o lokálnych konkávnostiach/konvexnostiach, pomocou čoho vytvára EEC (Euclidean Edge Cloud). Toto mračno hrán reprezentuje každý bod, ako hranu grafu súslednosti , pričom uchováva smer a veľkosť hrany (konvexný alebo konkávny). Na základe tejto reprezentácie je možné využiť geometricky obmedzený deliaci model, pre nájdenie možných rezov. Pre určenie roviny rezu je použitý vážený \acrshort{ransac}, ktorý sa snaží maximalizovať hodnotiacu funkciu, pričom body so konkávnym smerom hrany sú uprednostňované pred  tými so konvexnou. Mračno bodov je na základe tejto roviny rekurzívne rezané, až pokým nie sú dosiahnuté ukončovacie podmienky, čím získavame výsledné segmentované mračno bodov. \cite{CPCsegmentation}
+\newline\indent Samotná \acrshort{pcl} implementácia ponúka viacero nastaviteľných parametrov, pričom rôzne konfigurácie majú svoje výhody a nevýhody. Výsledná konfigurácia vyzerá následovne:
+
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+    \item Prah tolerancie konkávnosti (uhol v stupňoch) = 15,0
+    \item Maximálny počet rezov = 20
+    \item Minimálna veľkosť rezaného segmentu = 300
+    \item Minimálna veľkosť segmentu (menšie budu zlúčené) = 150
+    \item Počet \acrshort{ransac} iterácií = 3000
+    \item K-faktor (faktor pre rozšírenú kontrolu konvexnosti) = 0
+    \item Minimálne rezné skóre (skóre na vykonanie rezu) = 0,3
+    \item Prah hladkosti (kontrola hladkosti hrán) = 0,1
+    \item Použitie kritéria rozumnosti (odstránenie oblastí s jedným spojením) = nie
+    \item Použitie lokálnych obmedzení rezania = áno
+    \item Použitie usmerneného rezania (kolmé rezanie na hranu) = nie
+    \item Čisté rezanie (rezanie hrán so suprevoxelmi na opačných stranách roviny) = áno
+\end{itemize}
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/segmentation.png}
+  \caption{Mračná bodov segmentované na jednotlivé objekty, označené rôznou farbou ($SD1$ hore, $SD2$ dole)} 
+  \label{fig:cpc_seg}
+\end{figure} 
+\vfill\clearpage
+
+\subsection{Podvzorkovanie mračna bodov}
+\noindent Ďalším krokom pred samotnou rekonštrukciou povrchu je podvzorkovanie mračna bodov. Tento krok nám zníži celkový počet bodov, čo zabezpečí nie len zníženie pamäťovej náročnosti, ale aj zníženie výpočtového času pri rekonštrukcií povrchu. Pre tento účel budeme používať dve odlišné metódy, pričom budeme rozdielne pristupovať ku bodom zeme a ku bodom objektov.
+\subsubsection{Podvzorkovanie bodov zeme}
+\noindent 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=15cm, height=15cm]{img/downsample_ground.png}
+  \caption{} 
+  \label{fig:downsample_ground}
+\end{figure} 
+
+\newpage\vfill
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=15cm, height=21cm]{img/downsample_objects.png}
+  \caption{(1) Mračno rozdielov normál (2) Klasifikované mračno na základe dôležitosti bodov v vzostupnom poradí červené, zelené, modré a najdôležitejšie tyrkysové (3) Výsledné podvzorkované mračno bodov objektov ($SD1$)} 
+  \label{fig:downsampling_objects}
+\end{figure} 
+\vfill\clearpage
+
+\begin{table}
+    \begin{center} % Center the table
+        \begin{tabular}{|c || c | c | c | c | c|} 
+         \hline
+          & \thead{Nový \\ počet \\ bodov \\ zeme} &
+            \thead{Zmenšenie \\ mračna \\ bodov \\ zeme [\%]} &
+            \thead{Nový \\ počet \\ bodov \\ objektov} &
+            \thead{Zmenšenie \\ mračna \\ bodov \\ objektov [\%]} &
+            \thead{Celkové \\ zmenšenie \\ mračna \\ bodov [\%]} \\ [0.5ex]    
+         \hline\hline
+         \textbf{SD1} & 244 262 & 0 & 4 810 573 & 0 & 67,35 \\ 
+         \hline
+         \textbf{SD2} & 192 495 & 0 & 1 329 425 & 0 & 70,41 \\
+         \hline
+         \textbf{SD3} &  237 870 & 0 & 1 429 465 & 0 & 82,98 \\
+         \hline
+         \textbf{SD4} & 63 678 & 0 & 1 122 856 & 0 & 77,80 \\
+         \hline
+         \textbf{SD5} & 582 313 & 0 & 3 429 967 & 0 & 45,01 \\ 
+         \hline
+        \end{tabular}
+    \caption{Porovnanie zmenšenia počtu bodov pred (viď. Tab. \ref{table::ground_separation}) a po podvzorkovaní mračien bodov}
+    \end{center}
+\end{table}
+
+dsds
+
+\subsection{Rekonštrukcia povrchu}
+
+\section{Overenie riešenia}
+
+\section{Zhrnutie dosiahnutých výsledkov}

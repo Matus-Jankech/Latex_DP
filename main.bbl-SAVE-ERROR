@@ -1,0 +1,1173 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{voxel_grid}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=22a067b9ffc42e0cce864d44ad3e2704}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Yusheng},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=e1aef46c89a958cf11a48a65e3ce0e5a}{%
+           family={Tong},
+           familyi={T\bibinitperiod},
+           given={Xiaohua},
+           giveni={X\bibinitperiod}}}%
+        {{hash=6cc3148836af5c71eb2f91478b4de5cc}{%
+           family={Stilla},
+           familyi={S\bibinitperiod},
+           given={Uwe},
+           giveni={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{fullhash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{fullhashraw}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{bibnamehash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{authorbibnamehash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{authornamehash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{authorfullhash}{9f2c011aad26b031f95489cd4485fdd3}
+      \strng{authorfullhashraw}{9f2c011aad26b031f95489cd4485fdd3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science Direct}
+      \field{langid}{english}
+      \field{title}{Voxel-based representation of 3D point clouds: Methods, applications, and its potential use in the construction industry}
+      \field{urlday}{24}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/abs/pii/S0926580521001266
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/abs/pii/S0926580521001266
+      \endverb
+    \endentry
+    \entry{struktury}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=d624ed3af8cc2e216cf3d6d768be9426}{%
+           family={Nikolov},
+           familyi={N\bibinitperiod},
+           given={Ivan},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{fullhash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{fullhashraw}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{bibnamehash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{authorbibnamehash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{authornamehash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{authorfullhash}{d624ed3af8cc2e216cf3d6d768be9426}
+      \strng{authorfullhashraw}{d624ed3af8cc2e216cf3d6d768be9426}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Towards Data Science}
+      \field{langid}{english}
+      \field{title}{Neighborhood Analysis, KD-Trees, and Octrees for Meshes and Point Clouds in Python}
+      \field{urlday}{24}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://towardsdatascience.com/neighborhood-analysis-kd-trees-and-octrees-for-meshes-and-point-clouds-in-python-19fa96527b77
+      \endverb
+      \verb{url}
+      \verb https://towardsdatascience.com/neighborhood-analysis-kd-trees-and-octrees-for-meshes-and-point-clouds-in-python-19fa96527b77
+      \endverb
+    \endentry
+    \entry{kd_tree_new}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=eeb1997e90243832c59789c6e201732c}{%
+           family={Cai},
+           familyi={C\bibinitperiod},
+           given={Yixi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=b1dd1a9ff59cc6aeba590fc68bcc39cf}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Wei},
+           giveni={W\bibinitperiod}}}%
+        {{hash=1abd82245aa19c8fee8c008741153a2f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Fu},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{a348ca68268610a2defc068934c362bd}
+      \strng{fullhash}{a348ca68268610a2defc068934c362bd}
+      \strng{fullhashraw}{a348ca68268610a2defc068934c362bd}
+      \strng{bibnamehash}{a348ca68268610a2defc068934c362bd}
+      \strng{authorbibnamehash}{a348ca68268610a2defc068934c362bd}
+      \strng{authornamehash}{a348ca68268610a2defc068934c362bd}
+      \strng{authorfullhash}{a348ca68268610a2defc068934c362bd}
+      \strng{authorfullhashraw}{a348ca68268610a2defc068934c362bd}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{title}{ikd-Tree: An Incremental K-D Tree for Robotic Applications}
+      \field{urlday}{25}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/pdf/2102.10808.pdf
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/pdf/2102.10808.pdf
+      \endverb
+    \endentry
+    \entry{kd_tree_old}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=4b6fead9f42c5326a5949595d86dcd6a}{%
+           family={Bentley},
+           familyi={B\bibinitperiod},
+           given={Jon\bibnamedelima Louis},
+           giveni={J\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{fullhash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{fullhashraw}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{bibnamehash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{authorbibnamehash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{authornamehash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{authorfullhash}{4b6fead9f42c5326a5949595d86dcd6a}
+      \strng{authorfullhashraw}{4b6fead9f42c5326a5949595d86dcd6a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{title}{Multidimensional Binary Search Trees Used for Associative Searching}
+      \field{urlday}{25}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{year}{1975}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://dl.acm.org/doi/pdf/10.1145/361002.361007
+      \endverb
+      \verb{url}
+      \verb https://dl.acm.org/doi/pdf/10.1145/361002.361007
+      \endverb
+    \endentry
+    \entry{kd_tree}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=46371123dda4fbfce4c74cbfeb5ceed6}{%
+           family={Anzola},
+           familyi={A\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6cae76f06a8b8f6aff74a3077b833693}{%
+           family={Tarazona},
+           familyi={T\bibinitperiod},
+           given={Giovanny},
+           giveni={G\bibinitperiod}}}%
+        {{hash=a884f94417ccedcd02aefe2d9bd02f17}{%
+           family={Espada},
+           familyi={E\bibinitperiod},
+           given={Jordán},
+           giveni={J\bibinitperiod}}}%
+        {{hash=faa9f239b55235d344fa93c20f443e6a}{%
+           family={Gonzalez\bibnamedelima Crespo},
+           familyi={G\bibinitperiod\bibinitdelim C\bibinitperiod},
+           given={Ruben},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{fullhash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{fullhashraw}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{bibnamehash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{authorbibnamehash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{authornamehash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{authorfullhash}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \strng{authorfullhashraw}{50ab7a0dd76605f31f19874f1da0bcb7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Sensors}
+      \field{month}{09}
+      \field{title}{A Clustering WSN Routing Protocol Based on k-d Tree Algorithm}
+      \field{volume}{18}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 25}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.3390/s18092899
+      \endverb
+    \endentry
+    \entry{oct_tree}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=a242b1e83766d97039c1863c0d2d0cfe}{%
+           family={Elseberg},
+           familyi={E\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e71170bab88b2a00f70df4096b9b6b67}{%
+           family={Borrmann},
+           familyi={B\bibinitperiod},
+           given={Dorit},
+           giveni={D\bibinitperiod}}}%
+        {{hash=490c7a8d6199fbc87b6ea4dff87f8c54}{%
+           family={Nüchter},
+           familyi={N\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{7cdc9409bc598115884cd05613de711b}
+      \strng{fullhash}{7cdc9409bc598115884cd05613de711b}
+      \strng{fullhashraw}{7cdc9409bc598115884cd05613de711b}
+      \strng{bibnamehash}{7cdc9409bc598115884cd05613de711b}
+      \strng{authorbibnamehash}{7cdc9409bc598115884cd05613de711b}
+      \strng{authornamehash}{7cdc9409bc598115884cd05613de711b}
+      \strng{authorfullhash}{7cdc9409bc598115884cd05613de711b}
+      \strng{authorfullhashraw}{7cdc9409bc598115884cd05613de711b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0924-2716}
+      \field{journaltitle}{ISPRS Journal of Photogrammetry and Remote Sensing}
+      \field{note}{Terrestrial 3D modelling}
+      \field{title}{One billion points in the cloud – an octree for efficient processing of 3D laser scans}
+      \field{volume}{76}
+      \field{year}{2013}
+      \field{pages}{76\bibrangedash 88}
+      \range{pages}{13}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.isprsjprs.2012.10.004
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0924271612001888
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0924271612001888
+      \endverb
+    \endentry
+    \entry{oct_tree_img}{online}{}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{title}{PCL/OpenNI tutorial 2: Cloud processing (basic)}
+      \field{urlday}{26}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://robotica.unileon.es/index.php?title=File:Octree.png
+      \endverb
+      \verb{url}
+      \verb https://robotica.unileon.es/index.php?title=File:Octree.png
+      \endverb
+    \endentry
+    \entry{point_cloud_filtering}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=b55ba14ab4c48b8ae41245bc1caa298c}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Xian-Feng},
+           giveni={X\bibinithyphendelim F\bibinitperiod}}}%
+        {{hash=77670cc686bb522805bcfbd19ad415f5}{%
+           family={Jin},
+           familyi={J\bibinitperiod},
+           given={Jesse\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=7e617f52f01a4c554609b8b6f04baabd}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Ming-Jie},
+           giveni={M\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=e3dafe978a62db8ea9fec63a537b07dc}{%
+           family={Jiang},
+           familyi={J\bibinitperiod},
+           given={Wei},
+           giveni={W\bibinitperiod}}}%
+        {{hash=2f63fd46498e61c59f72623f36d6712f}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={Lei},
+           giveni={L\bibinitperiod}}}%
+        {{hash=4de7670915e0b308ccba84fe6d997fb9}{%
+           family={Xiao},
+           familyi={X\bibinitperiod},
+           given={Liping},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{fullhash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{fullhashraw}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{bibnamehash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{authorbibnamehash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{authornamehash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{authorfullhash}{e25216a5988d7590162d9d0e804ad1e6}
+      \strng{authorfullhashraw}{e25216a5988d7590162d9d0e804ad1e6}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0923-5965}
+      \field{journaltitle}{Signal Processing: Image Communication}
+      \field{title}{A review of algorithms for filtering the 3D point cloud}
+      \field{volume}{57}
+      \field{year}{2017}
+      \field{pages}{103\bibrangedash 112}
+      \range{pages}{10}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.image.2017.05.009
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0923596517300930
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0923596517300930
+      \endverb
+    \endentry
+    \entry{statistical_filter}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=b676f7ac9994ad0a56ab105f61eefb55}{%
+           family={Carrilho},
+           familyi={C\bibinitperiod},
+           given={A.\bibnamedelimi C.},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=4747affd600f8347296bff225f337524}{%
+           family={Galo},
+           familyi={G\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ea1667ce838e90b71d17a4510d99801d}{%
+           family={Santos},
+           familyi={S\bibinitperiod},
+           given={R.\bibnamedelimi C.},
+           giveni={R\bibinitperiod\bibinitdelim C\bibinitperiod},
+           prefix={dos},
+           prefixi={d\bibinitperiod}}}%
+      }
+      \strng{namehash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{fullhash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{fullhashraw}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{bibnamehash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{authorbibnamehash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{authornamehash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{authorfullhash}{bf3890301090ef5489e5831f2f3a85c9}
+      \strng{authorfullhashraw}{bf3890301090ef5489e5831f2f3a85c9}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{STATISTICAL OUTLIER DETECTION METHOD FOR AIRBORNE LIDAR DATA}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://d-nb.info/1167928644/34
+      \endverb
+      \verb{url}
+      \verb https://d-nb.info/1167928644/34
+      \endverb
+    \endentry
+    \entry{SOR_img}{online}{}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{title}{Removing outliers using a StatisticalOutlierRemoval filter}
+      \field{urlday}{27}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/statistical_outlier.html
+      \endverb
+      \verb{url}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/statistical_outlier.html
+      \endverb
+    \endentry
+    \entry{downsample_img}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=20e167521d2b7ed283c76ba3ce37dc9a}{%
+           family={Polťák},
+           familyi={P\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{fullhash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{fullhashraw}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{bibnamehash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{authorbibnamehash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{authornamehash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{authorfullhash}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \strng{authorfullhashraw}{20e167521d2b7ed283c76ba3ce37dc9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Detekcia známych objektov v mračne bodov a ich filtrácia : diplomová práca. Bratislava : STU}
+      \field{year}{2023}
+    \endentry
+    \entry{adaptive_downsampling_neighborhood}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=06a7df4718140ed56c3a1417c49a89cc}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Yun-Jou},
+           giveni={Y\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=2eee0e90a197e641669094c0c9d2f9ad}{%
+           family={Benziger},
+           familyi={B\bibinitperiod},
+           given={Ronald\bibnamedelima R},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8e73c57ae0c9c4371cfe944d764131cd}{%
+           family={Habib},
+           familyi={H\bibinitperiod},
+           given={Ayman},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{fullhash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{fullhashraw}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{bibnamehash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{authorbibnamehash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{authornamehash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{authorfullhash}{2203d137070188360e1e77f1f3ff1bcc}
+      \strng{authorfullhashraw}{2203d137070188360e1e77f1f3ff1bcc}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Society for Photogrammetry and Remote Sensing}
+      \field{title}{Planar-Based Adaptive Down-Sampling of Point Clouds}
+      \field{year}{2016}
+      \verb{doi}
+      \verb https://doi.org/10.14358/PERS.82.12.955
+      \endverb
+    \endentry
+    \entry{segmetation_survey}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{hash=f480ed206a30d0a24ab31eb69169599c}{%
+           family={Nguyen},
+           familyi={N\bibinitperiod},
+           given={Anh},
+           giveni={A\bibinitperiod}}}%
+        {{hash=20c4bb2b666eb5d7486ae79359e11378}{%
+           family={Le},
+           familyi={L\bibinitperiod},
+           given={Bac},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{fullhash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{fullhashraw}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{bibnamehash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{authorbibnamehash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{authornamehash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{authorfullhash}{ad3ef9de35e6e473fbee0d684c088e67}
+      \strng{authorfullhashraw}{ad3ef9de35e6e473fbee0d684c088e67}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2013 6th IEEE Conference on Robotics, Automation and Mechatronics (RAM)}
+      \field{title}{3D point cloud segmentation: A survey}
+      \field{year}{2013}
+      \field{pages}{225\bibrangedash 230}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/RAM.2013.6758588
+      \endverb
+    \endentry
+    \entry{ransac}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=d5cab4343eda08048b90a9afbdb9ee56}{%
+           family={Schnabel},
+           familyi={S\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=031278f7aa13d627196b3550a6c2f9b2}{%
+           family={Wahl},
+           familyi={W\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=eb0e270758d0f400a56014d6cfd62118}{%
+           family={Klein},
+           familyi={K\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{fullhash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{fullhashraw}{79523ff601b33bd31922d37a2173d89b}
+      \strng{bibnamehash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{authorbibnamehash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{authornamehash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{authorfullhash}{79523ff601b33bd31922d37a2173d89b}
+      \strng{authorfullhashraw}{79523ff601b33bd31922d37a2173d89b}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computer Graphics Forum}
+      \field{number}{2}
+      \field{title}{Efficient RANSAC for Point-Cloud Shape Detection}
+      \field{volume}{26}
+      \field{year}{2007}
+      \field{pages}{214\bibrangedash 226}
+      \range{pages}{13}
+      \verb{doi}
+      \verb https://doi.org/10.1111/j.1467-8659.2007.01016.x
+      \endverb
+    \endentry
+    \entry{graph_based}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=79dbb7ec42fc62ab8fd6652449f3fff1}{%
+           family={Strom},
+           familyi={S\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod}}}%
+        {{hash=403d86137b43942fea20f8133afa2a8a}{%
+           family={Richardson},
+           familyi={R\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=8f743eebb2f64f75592e54ba06f94320}{%
+           family={Olson},
+           familyi={O\bibinitperiod},
+           given={Edwin},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{fullhash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{fullhashraw}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{bibnamehash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{authorbibnamehash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{authornamehash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{authorfullhash}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \strng{authorfullhashraw}{9c3fc53a1e821d2abc1878f7d7c93fa3}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2010 IEEE/RSJ international conference on intelligent robots and systems}
+      \field{title}{Graph-based segmentation for colored 3D laser point clouds}
+      \field{year}{2010}
+      \field{pages}{2131\bibrangedash 2136}
+      \range{pages}{6}
+    \endentry
+    \entry{DBSCAN_original}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{4}{}{%
+        {{hash=2c062e64ed26aacc08a62155e7944f04}{%
+           family={Ester},
+           familyi={E\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=9559fe65ed2c0877cf14a66fe1f8e9b3}{%
+           family={Kriegel},
+           familyi={K\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+        {{hash=802157026f850823b2027c2100cb359a}{%
+           family={Sander},
+           familyi={S\bibinitperiod},
+           given={Jörg},
+           giveni={J\bibinitperiod}}}%
+        {{hash=2dda16c0a5d50fc830d0d4a3787937fa}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Xiaowei},
+           giveni={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{77089c60a08eb43e856376e88849121a}
+      \strng{fullhash}{77089c60a08eb43e856376e88849121a}
+      \strng{fullhashraw}{77089c60a08eb43e856376e88849121a}
+      \strng{bibnamehash}{77089c60a08eb43e856376e88849121a}
+      \strng{authorbibnamehash}{77089c60a08eb43e856376e88849121a}
+      \strng{authornamehash}{77089c60a08eb43e856376e88849121a}
+      \strng{authorfullhash}{77089c60a08eb43e856376e88849121a}
+      \strng{authorfullhashraw}{77089c60a08eb43e856376e88849121a}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{kdd}
+      \field{number}{34}
+      \field{title}{A density-based algorithm for discovering clusters in large spatial databases with noise}
+      \field{volume}{96}
+      \field{year}{1996}
+      \field{pages}{226\bibrangedash 231}
+      \range{pages}{6}
+    \endentry
+    \entry{K-means}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=247d707b99e9b0c2ddc1bce20c7519f0}{%
+           family={Ikotun},
+           familyi={I\bibinitperiod},
+           given={Abiodun\bibnamedelima M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=7d0212acf93bc31f5ada23a3e50b1841}{%
+           family={Ezugwu},
+           familyi={E\bibinitperiod},
+           given={Absalom\bibnamedelima E.},
+           giveni={A\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=61b325a50c18a490fd21f80291e071af}{%
+           family={Abualigah},
+           familyi={A\bibinitperiod},
+           given={Laith},
+           giveni={L\bibinitperiod}}}%
+        {{hash=6a27e6a7427f242a04d48d3d6fde0b21}{%
+           family={Abuhaija},
+           familyi={A\bibinitperiod},
+           given={Belal},
+           giveni={B\bibinitperiod}}}%
+        {{hash=16445b00d8f656d7632971f7aaa1f798}{%
+           family={Heming},
+           familyi={H\bibinitperiod},
+           given={Jia},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{fullhash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{fullhashraw}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{bibnamehash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{authorbibnamehash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{authornamehash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{authorfullhash}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \strng{authorfullhashraw}{6a9322fd5119572ff1c68cdbba7e97ca}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0020-0255}
+      \field{journaltitle}{Information Sciences}
+      \field{title}{K-means clustering algorithms: A comprehensive review, variants analysis, and advances in the era of big data}
+      \field{volume}{622}
+      \field{year}{2023}
+      \field{pages}{178\bibrangedash 210}
+      \range{pages}{33}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.ins.2022.11.139
+      \endverb
+    \endentry
+    \entry{DBSCANvsKmeans}{online}{}{}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Towards Data Science}
+      \field{title}{Understanding DBSCAN Algorithm and Implementation from Scratch}
+      \field{urlday}{31}
+      \field{urlmonth}{12}
+      \field{urlyear}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://towardsdatascience.com/understanding-dbscan-algorithm-and-implementation-from-scratch-c256289479c5
+      \endverb
+      \verb{url}
+      \verb https://towardsdatascience.com/understanding-dbscan-algorithm-and-implementation-from-scratch-c256289479c5
+      \endverb
+    \endentry
+    \entry{RANSAC_original}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=53af7a5ea8715d6c3922933be034062f}{%
+           family={Fischler},
+           familyi={F\bibinitperiod},
+           given={Martin\bibnamedelima A},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=40bae40d0cc01a890e3631288dd8ffa2}{%
+           family={Bolles},
+           familyi={B\bibinitperiod},
+           given={Robert\bibnamedelima C},
+           giveni={R\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM New York, NY, USA}%
+      }
+      \strng{namehash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{fullhash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{fullhashraw}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{bibnamehash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{authorbibnamehash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{authornamehash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{authorfullhash}{fd6cd035a6e3f6ec978ad866925826c7}
+      \strng{authorfullhashraw}{fd6cd035a6e3f6ec978ad866925826c7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{6}
+      \field{title}{Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography}
+      \field{volume}{24}
+      \field{year}{1981}
+      \field{pages}{381\bibrangedash 395}
+      \range{pages}{15}
+    \endentry
+    \entry{Reconstruction_general}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=154b6928aa377bfdd7ca9326dd0cc9d6}{%
+           family={Khatamian},
+           familyi={K\bibinitperiod},
+           given={Alireza},
+           giveni={A\bibinitperiod}}}%
+        {{hash=aacc7acfb15c09923827d5b292b0e8aa}{%
+           family={Arabnia},
+           familyi={A\bibinitperiod},
+           given={Hamid\bibnamedelima R},
+           giveni={H\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Korea Information Processing Society}%
+      }
+      \strng{namehash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{fullhash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{fullhashraw}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{bibnamehash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{authorbibnamehash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{authornamehash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{authorfullhash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \strng{authorfullhashraw}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Information Processing Systems}
+      \field{number}{3}
+      \field{title}{Survey on 3D surface reconstruction}
+      \field{volume}{12}
+      \field{year}{2016}
+      \field{pages}{338\bibrangedash 357}
+      \range{pages}{20}
+    \endentry
+    \entry{MarchingCubeas_origin}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=966edb0a4087f42b3518503987e61399}{%
+           family={Lorensen},
+           familyi={L\bibinitperiod},
+           given={William\bibnamedelima E.},
+           giveni={W\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=74f056f6ffac9cb2f26904eca44820de}{%
+           family={Cline},
+           familyi={C\bibinitperiod},
+           given={Harvey\bibnamedelima E.},
+           giveni={H\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{fullhash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{fullhashraw}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{bibnamehash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{authorbibnamehash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{authornamehash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{authorfullhash}{c04f319f1cd4852327f00c52da26c78e}
+      \strng{authorfullhashraw}{c04f319f1cd4852327f00c52da26c78e}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0097-8930}
+      \field{journaltitle}{SIGGRAPH Comput. Graph.}
+      \field{month}{8}
+      \field{number}{4}
+      \field{title}{Marching cubes: A high resolution 3D surface construction algorithm}
+      \field{volume}{21}
+      \field{year}{1987}
+      \field{pages}{163\bibrangedash 169}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1145/37402.37422
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/37402.37422
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/37402.37422
+      \endverb
+    \endentry
+    \entry{MarchCubes_img}{online}{}{}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labeltitlesource}{title}
+      \field{title}{Marching Cubes, Explained Using Marching Squares}
+      \verb{urlraw}
+      \verb https://blog.42yeah.is/algorithm/2023/07/15/marching-cubes.html
+      \endverb
+      \verb{url}
+      \verb https://blog.42yeah.is/algorithm/2023/07/15/marching-cubes.html
+      \endverb
+      \warn{\item online entry 'MarchCubes_img' (includes/bibliography.bib): Invalid format '2024-2-20' of date field 'urldate' - ignoring}
+    \endentry
+    \entry{poisson_origin}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=1e55a60641e7efb6f7e89e66a7cb6e60}{%
+           family={Kazhdan},
+           familyi={K\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=b42478a56531a806d761625a4893b4e4}{%
+           family={Bolitho},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=90fd9beea1c9006d7768540fc1fe8e40}{%
+           family={Hoppe},
+           familyi={H\bibinitperiod},
+           given={Hugues},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{fullhash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{fullhashraw}{81014c479db472ce8e77b4ec1607da47}
+      \strng{bibnamehash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{authorbibnamehash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{authornamehash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{authorfullhash}{81014c479db472ce8e77b4ec1607da47}
+      \strng{authorfullhashraw}{81014c479db472ce8e77b4ec1607da47}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the fourth Eurographics symposium on Geometry processing}
+      \field{number}{4}
+      \field{title}{Poisson surface reconstruction}
+      \field{volume}{7}
+      \field{year}{2006}
+    \endentry
+    \entry{ball_pivot_origin}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=ba4cab0a69f3f4b9d8051774011e0204}{%
+           family={Bernardini},
+           familyi={B\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=3d5c87d57f9133623bf185bfcff61f5c}{%
+           family={Mittleman},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=45b7f2fcee3d53814392db453b519437}{%
+           family={Rushmeier},
+           familyi={R\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=726ce3f3b9613bc186bd0fa5d461a12d}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=efe6997436b6be9630a9b4220c2716d7}{%
+           family={Taubin},
+           familyi={T\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{fullhash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{fullhashraw}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{bibnamehash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{authorbibnamehash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{authornamehash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{authorfullhash}{3342c1b983cb502e96ffd1eeda65d380}
+      \strng{authorfullhashraw}{3342c1b983cb502e96ffd1eeda65d380}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Visualization and Computer Graphics}
+      \field{number}{4}
+      \field{title}{The ball-pivoting algorithm for surface reconstruction}
+      \field{volume}{5}
+      \field{year}{1999}
+      \field{pages}{349\bibrangedash 359}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/2945.817351
+      \endverb
+    \endentry
+    \entry{MLS_survey}{article}{}{}
+      \name{author}{8}{}{%
+        {{hash=a4017bf9bc0a6de8471a7ae244496ddb}{%
+           family={Berger},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=35f61b9b6f1205b7024a5dad3ed76ac6}{%
+           family={Tagliasacchi},
+           familyi={T\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+        {{hash=19a295e9b04b96c4735e49cd7e1c2230}{%
+           family={Seversky},
+           familyi={S\bibinitperiod},
+           given={Lee\bibnamedelima M.},
+           giveni={L\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=5a41513f72cfe8224163441d30854e41}{%
+           family={Alliez},
+           familyi={A\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod}}}%
+        {{hash=32670d1e660cd3381144af1ebb08d86e}{%
+           family={Guennebaud},
+           familyi={G\bibinitperiod},
+           given={Gaël},
+           giveni={G\bibinitperiod}}}%
+        {{hash=c13cfd4e93987cc89a6a7b9c47e949e2}{%
+           family={Levine},
+           familyi={L\bibinitperiod},
+           given={Joshua\bibnamedelima A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=cf4c539b6ef75a95af3a0f2a00b6e598}{%
+           family={Sharf},
+           familyi={S\bibinitperiod},
+           given={Andrei},
+           giveni={A\bibinitperiod}}}%
+        {{hash=1f3dd7d2c512c0895e37c1e21804dceb}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={Claudio\bibnamedelima T.},
+           giveni={C\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{fullhash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{fullhashraw}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{bibnamehash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{authorbibnamehash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{authornamehash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{authorfullhash}{dc738e4e2a1d758b71c294b6e756182d}
+      \strng{authorfullhashraw}{dc738e4e2a1d758b71c294b6e756182d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computer Graphics Forum}
+      \field{number}{1}
+      \field{title}{A Survey of Surface Reconstruction from Point Clouds}
+      \field{volume}{36}
+      \field{year}{2017}
+      \field{pages}{301\bibrangedash 329}
+      \range{pages}{29}
+      \verb{doi}
+      \verb https://doi.org/10.1111/cgf.12802
+      \endverb
+    \endentry
+    \entry{MPU_orig}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{hash=66cec04e1a75e24d3509c7c85a166064}{%
+           family={Ohtake},
+           familyi={O\bibinitperiod},
+           given={Yutaka},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=192cfbcda9c68b22ce75fa29bca8ef1e}{%
+           family={Belyaev},
+           familyi={B\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+        {{hash=822945ae6b3cfe371f329d6158d9d375}{%
+           family={Alexa},
+           familyi={A\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c651f32f7f9707025c958764a1842afd}{%
+           family={Turk},
+           familyi={T\bibinitperiod},
+           given={Greg},
+           giveni={G\bibinitperiod}}}%
+        {{hash=6b938df454dbec178f38949254e4a9b0}{%
+           family={Seidel},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Los Angeles, California}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{fullhash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{fullhashraw}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{bibnamehash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{authorbibnamehash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{authornamehash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{authorfullhash}{1ce131a90e92c5d93368c7ea64367223}
+      \strng{authorfullhashraw}{1ce131a90e92c5d93368c7ea64367223}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ACM SIGGRAPH 2005 Courses}
+      \field{isbn}{9781450378338}
+      \field{series}{SIGGRAPH '05}
+      \field{title}{Multi-level partition of unity implicits}
+      \field{year}{2005}
+      \field{pages}{173\bibrangedash es}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1145/1198555.1198649
+      \endverb
+    \endentry
+    \entry{mesh_simplification}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=950af1358afba32cc47363b3bea31c74}{%
+           family={Talton},
+           familyi={T\bibinitperiod},
+           given={Jerry},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{950af1358afba32cc47363b3bea31c74}
+      \strng{fullhash}{950af1358afba32cc47363b3bea31c74}
+      \strng{fullhashraw}{950af1358afba32cc47363b3bea31c74}
+      \strng{bibnamehash}{950af1358afba32cc47363b3bea31c74}
+      \strng{authorbibnamehash}{950af1358afba32cc47363b3bea31c74}
+      \strng{authornamehash}{950af1358afba32cc47363b3bea31c74}
+      \strng{authorfullhash}{950af1358afba32cc47363b3bea31c74}
+      \strng{authorfullhashraw}{950af1358afba32cc47363b3bea31c74}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{01}
+      \field{title}{A short survey of mesh simplification algorithms}
+      \field{year}{2004}
+    \endentry
+    \entry{morph_filter}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=36d2f709d6b54d78347119d55e7b608c}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Keqi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=2f0b1868f0f0d6e5519a3463cab77275}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Shu-Ching},
+           giveni={S\bibinithyphendelim C\bibinitperiod}}}%
+        {{hash=d5d875fa6aa1bde2752a159850625fe4}{%
+           family={Whitman},
+           familyi={W\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=573224c2db4111a548c22a6366e13184}{%
+           family={Shyu},
+           familyi={S\bibinitperiod},
+           given={Mei-Ling},
+           giveni={M\bibinithyphendelim L\bibinitperiod}}}%
+        {{hash=dc1bfb367f4f2409434a031fe3b31bfe}{%
+           family={Yan},
+           familyi={Y\bibinitperiod},
+           given={Jianhua},
+           giveni={J\bibinitperiod}}}%
+        {{hash=29dd93cb2fb06841c6204a04a07b9558}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Chengcui},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{fullhash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{fullhashraw}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{bibnamehash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{authorbibnamehash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{authornamehash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{authorfullhash}{30841052d30c77fec6e6d00e8ebc0229}
+      \strng{authorfullhashraw}{30841052d30c77fec6e6d00e8ebc0229}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Geoscience and Remote Sensing}
+      \field{number}{4}
+      \field{title}{A progressive morphological filter for removing nonground measurements from airborne LIDAR data}
+      \field{volume}{41}
+      \field{year}{2003}
+      \field{pages}{872\bibrangedash 882}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/TGRS.2003.810682
+      \endverb
+    \endentry
+    \entry{supervoxelClustering}{online}{}{}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labeltitlesource}{title}
+      \field{title}{Clustering of Pointclouds into Supervoxels}
+      \verb{urlraw}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/supervoxel_clustering.html
+      \endverb
+      \verb{url}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/supervoxel_clustering.html
+      \endverb
+      \warn{\item online entry 'supervoxelClustering' (includes/bibliography.bib): Invalid format '2024-4-7' of date field 'urldate' - ignoring}
+    \endentry
+    \entry{CPCsegmentation}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=b9f6f558f5d0f0c7abe90d8c191ae367}{%
+           family={Schoeler},
+           familyi={S\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=921d2bbe778ac9ba8d28bf67e36b25a5}{%
+           family={Papon},
+           familyi={P\bibinitperiod},
+           given={Jeremie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=58776ae0faf9dbff73f48039a69e2a18}{%
+           family={Worgotter},
+           familyi={W\bibinitperiod},
+           given={Florentin},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{fullhash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{fullhashraw}{d952e15a240823a65a029f2c50ad2735}
+      \strng{bibnamehash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{authorbibnamehash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{authornamehash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{authorfullhash}{d952e15a240823a65a029f2c50ad2735}
+      \strng{authorfullhashraw}{d952e15a240823a65a029f2c50ad2735}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition}
+      \field{title}{Constrained planar cuts-object partitioning for point clouds}
+      \field{year}{2015}
+      \field{pages}{5207\bibrangedash 5215}
+      \range{pages}{9}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
