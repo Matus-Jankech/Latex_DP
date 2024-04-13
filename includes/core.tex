@@ -260,7 +260,7 @@
       \centering
       \includegraphics[width=12 cm]{img/edge_collapse.png}
       \caption{Ukážka kolapsu strany v 2D} 
-      \label{fig:vertex_decim}
+      \label{fig:Edge_collapse}
     \end{figure} 
 \end{enumerate}
 
@@ -475,51 +475,75 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \subsection{Podvzorkovanie mračna bodov}
 \noindent Ďalším krokom pred samotnou rekonštrukciou povrchu je podvzorkovanie mračna bodov. Tento krok nám zníži celkový počet bodov, čo zabezpečí nie len zníženie pamäťovej náročnosti, ale aj zníženie výpočtového času pri rekonštrukcií povrchu. Pre tento účel budeme používať dve odlišné metódy, pričom budeme rozdielne pristupovať ku bodom zeme a ku bodom objektov.
-\subsubsection{Podvzorkovanie bodov zeme}
-\noindent 
+\subsubsection{Podvzorkovanie bodov objektov}
+\noindent Ako prvými sa budeme zaoberať bodmi objektov, ktoré obsahujú pomerne veľa detailov, ktoré chceme zachovať, a preto zvolíme adaptívny prístup podvzorkovania.
+\newline\indent Pre tento účel využijeme \acrshort{don} (Difference of Normals), pomocou ktorého klasifikujeme jednotlivé body objektu podľa ich dôležitosti. Táto metóda je založená na odhade normál pomocou dvoch rôznych rádiusov, v ktorých vyhodnocuje body. Myšlienka je tá, že ak je odhad normál robený na rovnom povrchu, pre obidve rádiusy bude smer normály podobný, a tým pádom ich diferencia bude taktiež minimálna. Naopak ak je tento odhad robený na zakrivenom povrchu ich smer bude rozdielny, a tým pádom aj ich diferencia bude veľká (vid. Obr. \ref{fig:Don_principle}). Na základe veľkosti novej normály (0 - 1), ktorá vznikla diferenciou, vieme určiť úroveň zakrivenia povrchu v danom bode, a teda môžeme dané body klasifikovať podľa ich úrovne dôležitosti, pričom viac zakrivený povrch je dôležitejší.
+\newline\indent Pre samotné podvzorkovanie využijeme voxelovú mriežku, ktorá rozdelí priestor bodov na rovnomerné voxely, pričom vždy zachová iba bod najbližší ku ťažisku voxelu. Pre rôzne triedy dôležitosti využijeme rôzne rozlíšenie voxelovej mriežky, ktoré prislúcha dôležitosti danej triedy. Objekty sme rozdelili do štyroch tried a podvzorkovali sme ich pri nasledovnej konfigurácií parametrov:
+
+\begin{itemize}
+  \setlength\itemsep{0.2em}
+  \item Rádiusy pre odhad normál (malý, veľký) = 0,08 / 0,40
+  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) , (0.06-0,12) , (0,12-0,18) , (0,18-1,0)
+  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 / 0,06 / 0,03 / 0,0 (bez podvzorkovania)
+\end{itemize}
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=15cm, height=15cm]{img/downsample_ground.png}
-  \caption{} 
-  \label{fig:downsample_ground}
+  \includegraphics[width=15cm, height=3.3cm]{img/Don_principle.png}
+  \caption{Ukážka princípu fungovania \acrshort{don} na zakrivenom povrchu \cite{DoN_segmentation}} 
+  \label{fig:Don_principle}
 \end{figure} 
 
 \newpage\vfill
 \begin{figure}[ht]
   \centering
   \includegraphics[width=15cm, height=21cm]{img/downsample_objects.png}
-  \caption{(1) Mračno rozdielov normál (2) Klasifikované mračno na základe dôležitosti bodov v vzostupnom poradí červené, zelené, modré a najdôležitejšie tyrkysové (3) Výsledné podvzorkované mračno bodov objektov ($SD1$)} 
+  \caption{(1) Mračno diferencií normál (2) Klasifikované mračno na základe dôležitosti bodov v vzostupnom poradí červené, zelené, modré a najdôležitejšie tyrkysové (3) Výsledné podvzorkované mračno bodov objektov ($SD1$)} 
   \label{fig:downsampling_objects}
 \end{figure} 
 \vfill\clearpage
+
+\subsubsection{Podvzorkovanie bodov zeme}
+\noindent Po podvzorkovaní bodom objektov ostávajú iba body zeme. Tieto body v drvivej väčšine neobsahujú toľko detailov, ako body objektov, a preto na ich podvzorkovanie využijeme iba druhú časť predošlého postupu, a teda podvzorkujeme ich pomocou voxelovej mriežky s fixným rozlíšením, čo zabezpečí vysokú úroveň podvzorkovania.
+\newline\indent Toto rozhodnutie sme urobili hlavne z dôvodu, že body zeme obsahujú hlavne rovinné plochy, ktoré majú medzi sebou pomerne hladký priebeh. Ak by sme chceli využiť predošlí postup aj na body zeme, zbytočne by sme zvýšili ponechaný počet bodov, nakoľko oblasti s nízkou vegetáciou, ako je tráva, obsahujú pomerne nerovný povrch, pričom aj pri ponechaní viacerých bodov, sú zložité na dôveryhodnú rekonštrukciu povrchu. 
+\newline\indent Konfigurácia pre podvzorkovanie bodov zeme je nasledovná:
+
+\begin{itemize}
+  \setlength\itemsep{0.2em}
+  \item Rozlíšenie voxelovej mriežky = 0,20
+\end{itemize}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=15cm, height=13cm]{img/downsample_ground.png}
+  \caption{Mračno bodov zeme pred (hore) a po (dole) podvzorkovaní. ($SD1$)} 
+  \label{fig:downsample_ground}
+\end{figure} 
 
 \begin{table}
     \begin{center} % Center the table
         \begin{tabular}{|c || c | c | c | c | c|} 
          \hline
           & \thead{Nový \\ počet \\ bodov \\ zeme} &
-            \thead{Zmenšenie \\ mračna \\ bodov \\ zeme [\%]} &
             \thead{Nový \\ počet \\ bodov \\ objektov} &
+            \thead{Zmenšenie \\ mračna \\ bodov \\ zeme [\%]} &
             \thead{Zmenšenie \\ mračna \\ bodov \\ objektov [\%]} &
             \thead{Celkové \\ zmenšenie \\ mračna \\ bodov [\%]} \\ [0.5ex]    
          \hline\hline
-         \textbf{SD1} & 244 262 & 0 & 4 810 573 & 0 & 67,35 \\ 
+         \textbf{SD1} & 244 262  & 4 810 573 & 97,11 & 31,49 & 67,35 \\ 
          \hline
-         \textbf{SD2} & 192 495 & 0 & 1 329 425 & 0 & 70,41 \\
+         \textbf{SD2} & 192 495  & 1 329 425 & 93,74 & 35,75 & 70,41 \\
          \hline
-         \textbf{SD3} &  237 870 & 0 & 1 429 465 & 0 & 82,98 \\
+         \textbf{SD3} &  237 870  & 1 429 465 & 95,47 & 68,48 & 82,98 \\
          \hline
-         \textbf{SD4} & 63 678 & 0 & 1 122 856 & 0 & 77,80 \\
+         \textbf{SD4} & 63 678  & 1 122 856 & 98,08 & 44,50 & 77,80 \\
          \hline
-         \textbf{SD5} & 582 313 & 0 & 3 429 967 & 0 & 45,01 \\ 
+         \textbf{SD5} & 582 313  & 3 429 967 & 81,83 & 16,16 & 45,01 \\ 
          \hline
         \end{tabular}
     \caption{Porovnanie zmenšenia počtu bodov pred (viď. Tab. \ref{table::ground_separation}) a po podvzorkovaní mračien bodov}
     \end{center}
 \end{table}
-
-dsds
 
 \subsection{Rekonštrukcia povrchu}
 
