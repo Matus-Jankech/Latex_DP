@@ -181,7 +181,7 @@
 
 \subsection{Metódy pre rekonštrukciu povrchu}
 \noindent V tejto podkapitole sa zameriame na principiálne fungovanie konkrétnych metód pre rekonštrukciu povrchu. Ako už bolo povedané, metódy delíme na explicitné a implicitné, pričom väčšina z uvedených metód bude implicitná, keďže sú odolnejšie voči šumu a výpočtovo menej náročné. 
-\subsubsection{Marching cubes} 
+\subsubsection{Marching cubes} \label{sec:marching_cubes}
 \noindent Metóda marching cubes je jednou z najpoužívanejších metód pre rekonštrukciu povrchu. Táto metóda je založená rozdelení priestoru do voxelovej mriežky, pričom každý voxel tvorí osem vrcholov. Každému vrcholu je priradená hodnota podľa toho, či sa nachádza vnútri (hodnota 1) alebo mimo prehľadávaného povrchu (hodnota 0), podľa hraničnej úrovne nastavenej od užívateľa. Pre osem vrcholov existuje 256 rôznych konfigurácii, čo môže byť pomerne zložité na spracovanie. Preto sa tieto konfigurácie redukujú na 14 vzorov vďaka symetrickým vlastnostiam, čím sa zároveň minimalizuje pravdepodobnosť chýb. \cite{MarchingCubeas_origin}
 \newline\indent Výhodou tejto metódy je, že pre svoju funkciu nepotrebuje odhad normál, ale naopak, pôvodná verzia ponúka výpočet normál pomocou gradientu. Tieto normály je možno následne využiť pri vizualizácií a tieňovaní výsledného povrchu. Na druhú stranu jednou z hlavných nevýhod je využitie voxelovej mriežky, čo môže pri veľkých mračnách bodov viesť ku rýchlemu naplneniu pamäte a preto je nutná úprava pôvodnej metódy, ktorá rozdelí prehľadávaný priestor na viacero častí a na konci ich spojí.
 \begin{figure}[!htbp]
@@ -190,7 +190,7 @@
   \caption{Rôzne možnosti konfigurácie voxelov \cite{MarchCubes_img}} 
   \label{marchingCubes}
 \end{figure} 
-\subsubsection{Poisson}
+\subsubsection{Poisson} \label{sec:poisson}
 \noindent Táto metóda ukazuje, že rekonštrukciu povrchu z orientovaných bodov môže byť vyriešená ako priestorový Poissonov problém. Formulácia pomocou Poissonovej metódy zohľadňuje všetky body naraz, bez použitia heuristického priestorového delenia alebo prelínania, a je preto vysoko odolná voči šumu. \cite{poisson_origin}
 \newline\indent Táto metóda využíva implicitný prístup pre reprezentáciu povrchu, konkrétne sa zameriava na výpočet 3D indikačnej funkcie $\chi$ (definovanej ako 1 pre body vnútri modelu a 0 pre body mimo modelu viď Obr. \ref{fig:poisson}) a následne získanie zrekonštruovanej plochy extrahovaním vhodnej iso-kontúry. Dôležitým poznatkom je, že medzi orientovanými bodmi získanými  z povrchu modelu a indikačnou funkciou  modelu existuje integrálny vzťah. Konkrétne, gradient indikačnej funkcie je vektorové pole, ktoré je nulové takmer všade (keďže funkcia indikátora je konštantná takmer všade), okrem bodov blízkych povrchu, kde je rovné normálam smerujúcim do vnútra povrchu. A preto vzorky orientovaných bodov možno považovať za vzorky gradientu indikačnej funkcie modelu. \cite{poisson_origin}
 \begin{figure}[!htbp]
@@ -341,7 +341,7 @@
 \begin{itemize}
     \setlength\itemsep{0.2em}
     \item Počet najbližších susedov (z ktorých sa počíta priemer) = 20
-    \item Násobiteľ prah štandardnej odchýlky = 2,0
+    \item Násobiteľ prahu štandardnej odchýlky = 2,0
 \end{itemize}
 pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov a zachovania podstatných bodov. Ukážku dosiahnutých výsledkov môžeme vidieť na Obr. \ref{fig:outlier}.
 
@@ -482,9 +482,9 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
-  \item Rádiusy pre odhad normál (malý, veľký) = 0,08 / 0,40
-  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) , (0.06-0,12) , (0,12-0,18) , (0,18-1,0)
-  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 / 0,06 / 0,03 / 0,0 (bez podvzorkovania)
+  \item Rádiusy pre odhad normál (malý, veľký) = 0,08 ; 0,40
+  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) ; (0.06-0,12) ; (0,12-0,18) ; (0,18-1,0)
+  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,06 ; 0,03 ; 0,0 (bez podvzorkovania)
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -546,15 +546,30 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Rekonštrukcia povrchu}
+\noindent Predošlým predspracovaním dostávame podvzorkované mračno bodov očistené od odľahlých bodov, ktoré je zároveň segmentované na jednotlivé objekty, vďaka čomu môžeme prejsť na samotnú rekonštrukciu povrchu. Prvým krokom pri rekonštrukcií povrchu bude výber použitej metódy, ktorá dosahuje najlepšie výsledky.  
 
-\newpage\vfill
-\begin{figure}[ht]
+\subsubsection{Výber metódy}
+\noindent Pri výbere metódy na rekonštrukciu sa zameriame na metódy, ktoré ponúka \acrshort{pcl} knižnica, a to sú Poissonová rekonštrukcia, Marching cubes (Hoppe) a \acrshort{gpt} (Greedy projection trinagulation). Principiálne fungovanie prvých dvoch bolo bližšie vysvetlené v kapitolách \ref{sec:poisson}, \ref{sec:marching_cubes} a metódu \acrshort{gpt} si v krátkosti vysvetlíme teraz. 
+\newline\indent Fungovanie tejto metódy je pomerne jednoduché a vieme ju rozdeliť do štyroch základných krokov. Prvým krokom je nájdenie lokálnych susedstiev pre každý bod, ktoré je zložené z $K$ najbližších susedov. Následne je vykonaný odhad normál každého referenčného bodu, pomocou čoho je vytvorená rovina, ktorá je kolmá na smer normály a všetky body zo susedstva sú projektované na túto rovinu.  Na tejto rovine je použitý priestorovo rastúci algoritmus, ktorý sa z počiatočného trojuholníku rozrastá, až kým nie je skompletizovaný celý povrch, pričom dodržuje obmedzenia. Na záver sa projektovaná reprezentácia vráti do pôvodného 3D priestoru, čím dostávame výsledný povrch. \cite{GreedyTriangulation}
+\newline\indent Pri výbere používanej metódy sa zameriame na hodnotiace faktory, ako sú dôveryhodnosť rekonštruovaného povrchu, časová náročnosť a výpočtová náročnosť (obmedzenia hardvéru). Na obrázku \ref{fig:mesh_compararison} môžeme vidieť dosiahnuté výsledky jednotlivých metód, ktoré boli upravené pre potreby porovnávania. Čo sa týka dôveryhodnosti najlepšie výsledky dosahuje Poissonová metóda, ktorá vytvára hladký vodotesný povrch, ktorý dobre zachytáva aj menšie detaily. Porovnateľne dobrá je aj \acrshort{gpt} metóda, ktorá je ale parametricky závislá od veľkosti a hustoty objektu, čo vedie ku nežiadaným dieram v povrchu. Posledná je Marching cubes metóda, ktorá vytvára kockovaný povrch, ktorý nie je prirodzený a vedie ku skresľovaniu výzoru objektu.
+\newline\indent V prípade časovej a výpočtovej náročnosti bola najlepšia \acrshort{gpt} metóda, ktorá povrch ukážkového objektu zrekonštruovala najrýchlejšie (1,35s), pričom porovnateľne rýchla bola ja Poissonová rekonštrukcia (1,74s), ktorá ale následne potrebovala, ďalšie úpravy. Najpomalšia bola Marching cubes (16,26s), ktorá ako jediná mála hardvérový problém a nebolo ju možné skúsiť na objektoch s väčším množstvom bodov. 
+\newline\indent S predošlých výsledkov bolo rozhodnuté, že sa budeme pokračovať s Poissonovou metódou rekonštrukcie povrchu, nakoľko vizuálne dosahovala najlepšie výsledky a nie je parametricky závislá od hustoty a veľkosti mračna bodov. Metóda má ale svoje nedostatky, ktoré budú prebrané v ďalšej podkapitole. 
+
+\begin{figure}[!htbp]
   \centering
-  \includegraphics[width=10cm, height=21cm]{img/mesh_methods_compararison.png}
+  \includegraphics[width=16cm, height=11cm]{img/mesh_methods_compararison.png}
   \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (1) Podvzorkované mračno bodov (2) \acrshort{gpt} (3) Marching cubes (4) Poissonová rekonštrukcia ($SD1$)} 
   \label{fig:mesh_compararison}
 \end{figure} 
-\vfill\clearpage
+
+\subsubsection{Odstránenie nedostatkov}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=21cm]{img/mesh_bad_polygons.png}
+  \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (1) Podvzorkované mračno bodov (2) \acrshort{gpt} (3) Marching cubes (4) Poissonová rekonštrukcia ($SD1$)} 
+  \label{fig:mesh_compararison}
+\end{figure} 
 
 \section{Overenie riešenia}
 
