@@ -356,19 +356,22 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{table}
     \begin{center}
-        \begin{tabular}{|c || c | c | c|} 
+        \begin{tabular}{|c || c | c | c| c|} 
          \hline
-          & \textbf{Pôvodný počet bodov} & \textbf{Nový počet bodov} & \textbf{Zmenšenie mračna bodov [\%]} \\ [0.5ex] 
+         &  \thead{Pôvodný počet \\ bodov} &
+            \thead{Nový počet \\ bodov} &
+            \thead{Zmenšenie mračna \\ bodov [\%]} &
+            \thead{Potrebná \\ pamäť [MB]} \\ [0.5ex] 
          \hline\hline
-         \textbf{SD1} & 15 667 351 & 15 477 814 & 1,21 \\ 
+         \textbf{SD1} & 15 667 351 & 15 477 814 & 1,21 & 221 \\ 
          \hline
-         \textbf{SD2} & 5 297 511 & 5 144 894 & 2,89 \\
+         \textbf{SD2} & 5 297 511 & 5 144 894 & 2,89 & 176 \\
          \hline
-         \textbf{SD3} &  9 924 233 & 9 797 094 & 1,29 \\
+         \textbf{SD3} &  9 924 233 & 9 797 094 & 1,29 & 140 \\
          \hline
-         \textbf{SD4} & 5 462 647 & 5 344 810 & 2,16 \\
+         \textbf{SD4} & 5 462 647 & 5 344 810 & 2,16 & 76\\
          \hline
-         \textbf{SD5} & 7 544 836 & 7 297 335 & 3,28 \\
+         \textbf{SD5} & 7 544 836 & 7 297 335 & 3,28 & 104 \\
          \hline
         \end{tabular}
     \caption{Porovnanie veľkosti pôvodných a filtrovaných mračien bodov, pre jednotlivé súbory dát}
@@ -522,23 +525,24 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{table}
     \begin{center} % Center the table
-        \begin{tabular}{|c || c | c | c | c | c|} 
+        \begin{tabular}{|c || c | c | c | c | c| c|} 
          \hline
           & \thead{Nový \\ počet \\ bodov \\ zeme} &
             \thead{Nový \\ počet \\ bodov \\ objektov} &
             \thead{Zmenšenie \\ mračna \\ bodov \\ zeme [\%]} &
             \thead{Zmenšenie \\ mračna \\ bodov \\ objektov [\%]} &
-            \thead{Celkové \\ zmenšenie \\ mračna \\ bodov [\%]} \\ [0.5ex]    
+            \thead{Celkové \\ zmenšenie \\ mračna \\ bodov [\%]} & 
+            \thead{Celková \\ potrebná \\ pamäť [MB]} \\ [0.5ex]    
          \hline\hline
-         \textbf{SD1} & 244 262  & 4 810 573 & 97,11 & 31,49 & 67,35 \\ 
+         \textbf{SD1} & 244 262  & 4 810 573 & 97,11 & 31,49 & 67,35 & 69,50  \\ 
          \hline
-         \textbf{SD2} & 192 495  & 1 329 425 & 93,74 & 35,75 & 70,41 \\
+         \textbf{SD2} & 192 495  & 1 329 425 & 93,74 & 35,75 & 70,41 & 19,20 \\
          \hline
-         \textbf{SD3} &  237 870  & 1 429 465 & 95,47 & 68,48 & 82,98 \\
+         \textbf{SD3} &  237 870  & 1 429 465 & 95,47 & 68,48 & 82,98 & 20,70 \\
          \hline
-         \textbf{SD4} & 63 678  & 1 122 856 & 98,08 & 44,50 & 77,80 \\
+         \textbf{SD4} & 63 678  & 1 122 856 & 98,08 & 44,50 & 77,80 & 20,70 \\
          \hline
-         \textbf{SD5} & 582 313  & 3 429 967 & 81,83 & 16,16 & 45,01 \\ 
+         \textbf{SD5} & 582 313  & 3 429 967 & 81,83 & 16,16 & 45,01 & 49,40 \\ 
          \hline
         \end{tabular}
     \caption{Porovnanie zmenšenia počtu bodov pred (viď. Tab. \ref{table::ground_separation}) a po podvzorkovaní mračien bodov}
@@ -557,19 +561,66 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=11cm]{img/mesh_methods_compararison.png}
-  \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (1) Podvzorkované mračno bodov (2) \acrshort{gpt} (3) Marching cubes (4) Poissonová rekonštrukcia ($SD1$)} 
+  \includegraphics[width=15cm, height=11cm]{img/mesh_methods_compararison.png}
+  \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (a) Podvzorkované mračno bodov (b) \acrshort{gpt} (c) Marching cubes (d) Poissonová rekonštrukcia ($SD1$)} 
   \label{fig:mesh_compararison}
 \end{figure} 
 
 \subsubsection{Odstránenie nedostatkov}
+\noindent V predošlej podkapitole bolo rozhodnuté, že rekonštrukcia povrchu bude vykonávaná pomocou Poissonovej rekonštrukčnej metódy, nakoľko dosahovala najlepšie výsledky. Tieto výsledky boli ale dosiahnuté, až po odstránení niekoľkých nedostatkov. 
+\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}b), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov, pomocou ktorého získame vzdialenosť najbližšieho bodu, pre vrcholy každého polygónu a na základe určeného prahu vzdialenosti vyhodnotíme, či je polygón falošný.
+\newline\indent Po odstránení falošných polygónov, získavame očistený povrch (Obr. \ref{fig:mesh_bad_polygons}c). Táto plocha bola vytvorená použitím Poissonovej metódy na celé mračno bodov naraz, čo malo za následok pomerne malé rozlíšenie povrchu. Tento problém bol vyriešený pomocou využitia predošlej segmentácie, čo nám umožnilo použiť rekonštrukciu na jednotlivé objekty a zabezpečilo značný nárast presnosti (Obr. \ref{fig:mesh_bad_polygons}d).
+\newline\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku poslednému problému (Obr. \ref{fig:mesh_bad_normals}). Odhad normál je robený na základe susedných bodov, pričom dochádza ku nejasnosti akým smerom majú normály smerovať. Tento smer je rozhodnutý na základe umiestnenia tzv. hľadiska, ktoré rozhoduje či sa majú normály otočiť o 180 stupňov alebo nie. Mračna bodov boli získane s pohybujúceho sa auta, čo znamená, že každý objekt má viacero hľadísk, čo môže spôsobiť vznik trhlín na zrekonštruovanom povrchu. Tento problém vieme z veľkej časti vyriešiť pomocou využitia segmentácie, a teda vieme premiestniť hľadisko do ťažiska menších objektov, zatiaľ čo najďalej v prípade veľkých objektov. Tento prístup zabezpečuje, aby sa smer normál  náhodne nemenil.
+\newline\indent Celá rekonštrukcia bola vykonávaná pre následujúcu konfiguráciu parametrov:
+
+\begin{itemize}
+  \setlength\itemsep{0.2em}
+  \item Hĺbka oktálového stromu (objekty, zem) = 9 ; 13
+  \item Hĺbka riešenia Laplcovej rovnice = 50
+  \item Hĺbka extrahovaného iso povrchu = 50
+  \item Prah vzdialenosti falošného polygónu = 0,013
+  \item Prah počtu bodov veľký, malý objekt = 40 000
+\end{itemize}
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=21cm]{img/mesh_bad_polygons.png}
-  \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (1) Podvzorkované mračno bodov (2) \acrshort{gpt} (3) Marching cubes (4) Poissonová rekonštrukcia ($SD1$)} 
-  \label{fig:mesh_compararison}
+  \includegraphics[width=14.5cm, height=21cm]{img/mesh_bad_polygons.png}
+  \caption{Ukážka nedostatkov - (a) Podvzorkované mračno bodov (b) Nadbytočné polygóny po rekonštrukcii (c) Rekonštrukcia celého povrchu naraz (d) Rekonštrukcia individuálnych objektov ($SD1$)} 
+  \label{fig:mesh_bad_polygons}
 \end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=15cm, height=11cm]{img/mesh_bad_normals.png}
+  \caption{Ukážka nedostatkov - (a) Nesprávny odhad normál (b) Rekonštrukcia zo nesprávneho odhadu normál (c) Správny odhad normál (d) Rekonštrukcia zo správneho odhadu normál ($SD1$)} 
+  \label{fig:mesh_bad_normals}
+\end{figure} 
+
+\begin{table}
+  \begin{center} % Center the table
+      \begin{tabular}{|c || c | c | c | c | c|} 
+       \hline
+        & \thead{Počet vrcholov} &
+          \thead{Počet polygónov} &
+          \thead{Potrebná pamäť [MB]} \\ [0.5ex]    
+       \hline\hline
+       \textbf{SD1} & 15 229 382  & 29 460 541 & 1 040 \\ 
+       \hline
+       \textbf{SD2} & 3 575 880  & 6 665 800 & 244 \\
+       \hline
+       \textbf{SD3} &  4 885 952  & 9 358 608 & 341 \\
+       \hline
+       \textbf{SD4} & 2 413 446  & 4 598 799 & 167 \\
+       \hline
+       \textbf{SD5} & 12 104 912  & 22 715 060 & 831 \\ 
+       \hline
+      \end{tabular}
+  \caption{Výsledné hodnoty rekonštruovaných povrchov pre jednotlive súbory dát}
+  \end{center}
+\end{table}
+
+\subsection{Textúrovanie povrchu}
+\noindent dsdsds sds d
 
 \section{Overenie riešenia}
 
