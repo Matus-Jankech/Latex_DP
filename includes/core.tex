@@ -363,15 +363,15 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
             \thead{Zmenšenie mračna \\ bodov [\%]} &
             \thead{Potrebná \\ pamäť [MB]} \\ [0.5ex] 
          \hline\hline
-         \textbf{SD1} & 15 667 351 & 15 477 814 & 1,21 & 221 \\ 
+         \textbf{SD1} & 15 667 351 & 15 477 814 & 1,21 & 221,70 \\ 
          \hline
-         \textbf{SD2} & 5 297 511 & 5 144 894 & 2,89 & 176 \\
+         \textbf{SD2} & 5 297 511 & 5 144 894 & 2,89 & 176,20 \\
          \hline
-         \textbf{SD3} &  9 924 233 & 9 797 094 & 1,29 & 140 \\
+         \textbf{SD3} &  9 924 233 & 9 797 094 & 1,29 & 140,20 \\
          \hline
-         \textbf{SD4} & 5 462 647 & 5 344 810 & 2,16 & 76\\
+         \textbf{SD4} & 5 462 647 & 5 344 810 & 2,16 & 76,40 \\
          \hline
-         \textbf{SD5} & 7 544 836 & 7 297 335 & 3,28 & 104 \\
+         \textbf{SD5} & 7 544 836 & 7 297 335 & 3,28 & 104,70 \\
          \hline
         \end{tabular}
     \caption{Porovnanie veľkosti pôvodných a filtrovaných mračien bodov, pre jednotlivé súbory dát}
@@ -501,7 +501,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \begin{figure}[ht]
   \centering
   \includegraphics[width=15cm, height=21cm]{img/downsample_objects.png}
-  \caption{(1) Mračno diferencií normál (2) Klasifikované mračno na základe dôležitosti bodov v vzostupnom poradí červené, zelené, modré a najdôležitejšie tyrkysové (3) Výsledné podvzorkované mračno bodov objektov ($SD1$)} 
+  \caption{(a) Mračno diferencií normál (b) Klasifikované mračno na základe dôležitosti bodov v vzostupnom poradí červené, zelené, modré a najdôležitejšie tyrkysové (c) Výsledné podvzorkované mračno bodov objektov ($SD1$)} 
   \label{fig:downsampling_objects}
 \end{figure} 
 \vfill\clearpage
@@ -604,15 +604,15 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
           \thead{Počet polygónov} &
           \thead{Potrebná pamäť [MB]} \\ [0.5ex]    
        \hline\hline
-       \textbf{SD1} & 15 229 382  & 29 460 541 & 1 040 \\ 
+       \textbf{SD1} & 15 229 382  & 29 460 541 & 1 040,30 \\ 
        \hline
-       \textbf{SD2} & 3 575 880  & 6 665 800 & 244 \\
+       \textbf{SD2} & 3 575 880  & 6 665 800 & 244,40 \\
        \hline
-       \textbf{SD3} &  4 885 952  & 9 358 608 & 341 \\
+       \textbf{SD3} &  4 885 952  & 9 358 608 & 341,10 \\
        \hline
-       \textbf{SD4} & 2 413 446  & 4 598 799 & 167 \\
+       \textbf{SD4} & 2 413 446  & 4 598 799 & 167,40 \\
        \hline
-       \textbf{SD5} & 12 104 912  & 22 715 060 & 831 \\ 
+       \textbf{SD5} & 12 104 912  & 22 715 060 & 831,60 \\ 
        \hline
       \end{tabular}
   \caption{Výsledné hodnoty rekonštruovaných povrchov pre jednotlive súbory dát}
@@ -620,7 +620,44 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Textúrovanie povrchu}
-\noindent dsdsds sds d
+\noindent V poslednej časti sa zameriame na textúrovanie povrchu pomocou dát z kamery. Vytvorený povrch obohatíme o vizuálny realizmus, tak že mu pridáme informácie o farbe, drsnosti a ďalších rôznych detailov, pomocou čoho nadobudne hĺbku a zvýši tak predstavu o priestore.
+\newline\indent Ako prvým krokom textúrovania je namapovanie jednotlivých vrcholov polygónov na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
+
+\begin{equation}
+  U = \frac{atan2\left(\frac{pt_y}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}} , \frac{pt_x}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
+  \label{eq:texturing2}
+\end{equation}
+\begin{equation}
+  V = \frac{asin\left(\frac{pt_z}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
+  \label{eq:texturing3}
+\end{equation} 
+\\
+\noindent kde $pt$ je vrchol polygónu a UV súradnice sú normalizované v rozsahu (0-1).
+\newline\indent Keď už vieme mapovať súradnice fotky na súradnice polygónov, musíme vyriešiť, ako textúrovať povrch z viacerých fotiek. Vo väčšine prípadov objekty bližšie ku kamere bývajú ostrejšie, zatiaľ čo vzdialenejšie objekty, začínajú byť skreslené a rozmazané. Z tohto dôvodu si pre každý polygón ukladáme informáciu o najbližšej kamere, z ktorej ho následne otextujeme, čím zabezpečíme požadovaný výsledok (Obr. \ref{fig:texture_process}a).
+\newline\indent Predošlým krokom sme zabezpečili pomerne dobrý výsledok, ale takýmto spôsobom dochádza ku textúrovaniu povrchov, ktoré v skutočnosti kamera nevidí. Využijeme preto \acrshort{pcl} implementáciu sledovania lúčov (z ang. ray tracing), ktorá je založená na reprezentácií pomocou oktálového stromu. Metóda vysiela lúč z bodu kamery do jednotlivých vrcholov polygónov a zisťuje, či dochádza ku kolízií s iným polygónom (voxelom), ktorý leží medzi nimi. Takto vieme zabezpečiť, aby bol texturovaný polygón skutočne viditeľný z danej kamery a predídeme sa tým falošnej projekcií textúry na nevidené povrchy (Obr. \ref{fig:texture_process}b).
+\newline\indent Posledný problém, ktorý sme riešili, bolo odstránenie statickej prekážky. Mohli sme si všimnúť, že na použitých fotkách sa nachádza samotné auto, z ktorého boli zbierané dáta a nakoľko sa toto auto vždy nachádza najbližšie ku kamere, zanechávalo po sebe falošnú textúru na ceste. Tento problém sme vyriešili manuálnym zadefinovaním polygónu, ktorý obkresľuje okraje auta (Obr. \ref{fig:texture_camera_image}) a následnou detekciou, či daná UV koordinácia leží vo vnútri tohto polygónu, sme príslušné polygóny povrchu automaticky označili za nevidené, pričom neskôr boli otexturované z rozdielnej fotky (Obr. \ref{fig:texture_process}c).
+\newline\indent Pre celý predošlý postup sme využívali \acrshort{pcl} knižnicu, ktorá do istej miery ponúkala rozhranie pre mapovanie a textúrovanie povrchu, pričom výsledky boli dosiahnuté pri následujúcej konfigurácií parametrov:
+
+\begin{itemize}
+  \setlength\itemsep{0.2em}
+  \item Hĺbka oktálového stromu = 3
+  \item Rozlíšenie oktálového stromu = 0,05
+  \item Počet použitých fotiek = 50 (20\%)
+\end{itemize}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/texture_camera_image.png}
+  \caption{Ukážka kamerovej fotky s označeným autom, pomocou zeleného polygónu ($SD2$)} 
+  \label{fig:texture_camera_image}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/texturing_process.png}
+  \caption{(a) Textúrovanie povrchu z najbližšej kamery (b) Textúrovanie z najbližšej kamery, iba ak kamera skutočne vidí povrch (červené polygóny nevidené žiadnou kamerou) (c) Odstránenie statickej prekážky auta na ceste ($SD2$)} 
+  \label{fig:texture_process}
+\end{figure} 
 
 \section{Overenie riešenia}
 
