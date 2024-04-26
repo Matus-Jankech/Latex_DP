@@ -286,14 +286,14 @@
     \item Separácia bodov zeme a objektov
     \item Zhlukovanie bodov objektov do supervoxelov
     \item Segmentácia objektov
-    \item Adaptívne pod-vzorkovanie bodov objektov
+    \item Adaptívne podvzorkovanie bodov objektov
     \item Rekonštrukcia povrchu (výber najvhodnejšej metódy)
     \item Textúrovanie povrchu
 \end{enumerate}
 
 \section{Použité súbory dát}
 \noindent Pred samotnou implementáciou navrhnutého riešenia si v krátkosti predstavíme mračná bodov, s ktorými budeme pracovať. Pre účely tejto práce nám bolo poskytnutých päť rozdielnych mračien bodov, pričom dve boli použité na vývoj a testovanie a zvyšné boli použité na validáciu a overenie riešenia.
-\newline\indent Pre získanie poskytnutých mračien bodov boli použité dva rozdielne \acrshort{lidar}-i. Mračno bodov mestskej časti s bytovkami (Obr. \ref{fig:SD1}) a mračno bodov mestskej časti s kruhovým odjazdom (Obr. \ref{fig:SD2}) boli namerané pomocou Optech CL-360 \acrshort{lidar}-u, zaťial čo, mračno bodov parkoviska pri obchodoch (Obr. \ref{fig:SD3}), mračno bodov ulice so trolejbusovou zastávkou (Obr. \ref{fig:SD4}) a mračno bodov dedinskej časti (Obr. \ref{fig:SD5}) boli namerané pomocou Hesai XT-32 \acrshort{lidar}-u. V prípade prvých štyroch súborov dát bol \acrshort{lidar} pripevnený na streche auta, zatiaľ čo v posledom bol pripevnený na dronovi a dáta boli získane zo vzduchu.
+\newline\indent Pre získanie poskytnutých mračien bodov boli použité dva rozdielne \acrshort{lidar}-i. Mračno bodov mestskej časti s bytovkami (Obr. \ref{fig:SD1}) a mračno bodov mestskej časti s kruhovým odjazdom (Obr. \ref{fig:SD2}) boli namerané pomocou Optech CL-360 \acrshort{lidar}-u, zatial čo, mračno bodov parkoviska pri obchodoch (Obr. \ref{fig:SD3}), mračno bodov ulice so trolejbusovou zastávkou (Obr. \ref{fig:SD4}) a mračno bodov dedinskej časti (Obr. \ref{fig:SD5}) boli namerané pomocou Hesai XT-32 \acrshort{lidar}-u. V prípade prvých štyroch súborov dát bol \acrshort{lidar} pripevnený na streche auta, zatiaľ čo v posledom bol pripevnený na dronovi a dáta boli získane zo vzduchu.
 \newline\indent  Kvôli jednoduchosti sa budú po zvyšok práce jednotlivé mračná bodov označovať ako $SDx$, kde x je číslo súboru dát.
 
 \begin{figure}[!htbp]
@@ -624,11 +624,11 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \newline\indent Ako prvým krokom textúrovania je namapovanie jednotlivých vrcholov polygónov na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
 
 \begin{equation}
-  U = \frac{atan2\left(\frac{pt_y}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}} , \frac{pt_x}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
+  U = \frac{atan2\left(\dfrac{pt_y}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}} , \dfrac{pt_x}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
   \label{eq:texturing2}
 \end{equation}
 \begin{equation}
-  V = \frac{asin\left(\frac{pt_z}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
+  V = \frac{asin\left(\dfrac{pt_z}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
   \label{eq:texturing3}
 \end{equation} 
 \\
@@ -660,5 +660,83 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{figure} 
 
 \section{Overenie riešenia}
+\noindent V poslednej časti tejto práce overíme predošlé riešenie pomocou niekoľkých experimentov, pričom väčšina z nich bude vykonaná pomocou vizuálnej kontroly, nakoľko vo väčšine prípadov nemáme inú možnosť porovnania. Zameriame sa na jednotlivé kroky postupu, pričom ukážeme ich správnosť fungovania, vytkneme niektoré nedostatky a na záver ukážeme ich dôsledok na vytvorený povrch.
+
+\subsection{Odolnosť voči šumu a separácia bodov zeme}
+\noindent V tejto podkapitole sa zameriame na overenie voči šumu, pričom v našom postupe mal šum najväčší dopad na separáciu bodov zeme, a preto sa zameriame hlavne na ňu. Pre tento účel sme využili sady dát $SD3$ a $SD5$, nakoľko slúžia ako validačné súbory dát a navyše boli získané pomocou rozdielneho \acrshort{lidar}-u, ktorý obsahuje vyššiu úroveň šumu.
+\newline\indent Nedostatky progresívneho morfologického filtra môžeme vidieť v prípade, kedy auto nasnímalo falošné body na trase ktorou prešlo (Obr. \ref{fig:Parking_ground}). Môžme si všimnúť, že body boli husto zoskupené, a tým pádom neboli odstránené pomocou filtrovania odľahlých bodov, čo zapríčinilo nesprávnosť fungovania filtra v tejto oblasti. S princípu fungovania progresívneho morfologického filtra vychádza, že v danom ``okne''  vyhodnotí najnižšie body, ako body zeme, čo v tomto prípade spôsobilo, že falošné body boli vyhodnotené ako body zeme, namiesto skutočných nad nimi.
+\newline\indent Následok šumu bolo ešte lepšie vidieť v prípade, kedy boli dáta získané z letiaceho dronu (Obr. \ref{fig:UAV_ground}), miera šumu bola omnoho väčšia a postihovala takmer celé mračno bodov. V tomto prípade dochádzalo ku nesprávnej filtrácií nie len pri bodoch zeme, ale navyše aj pri bodoch striech, ktoré boli nesprávne označené za body zeme. Tento výsledok bol zapríčinení šumom, nedostatočným výškovým rozdielom bodov striech, a taktiež nízkym nastavením maximálnej veľkosti okna pre tento súbor dát.
+\newline\indent Medzi posledné nedostatky filtrovania zeme patrí to, že progresívny morfologický filter berie za body zeme aj body tesne nad jeho povrchom (Obr. \ref{fig:seprartion_wheels}) a taktiež má problém s málo hustými bodmi, ktoré sú v blízkej tesnosti zeme (Obr. \ref{fig:seprartion_density}).
+
+\newpage\vfill
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=19cm]{img/Parking_ground.png}
+  \caption{Odolnosť morfologickej separácie bodov zeme na šum. Mračno bodov objektov (pôvodná farba), body zeme (biela farba) a detail falošných bodov vo forme šumu (dole) ($SD3$)} 
+  \label{fig:Parking_ground}
+\end{figure}
+\vfill\clearpage 
+
+\newpage\vfill
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=21cm]{img/UAV_ground.png}
+  \caption{Odolnosť morfologickej separácie bodov zeme na šum - (a) Mračno bodov objektov (pôvodná farba), body zeme (biela farba) (b) Body objektov obsahujú aj body zeme (c) Body zeme obsahujú strechy budov ($SD5$)} 
+  \label{fig:UAV_ground}
+\end{figure}
+\vfill\clearpage 
+
+\newpage\vfill
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/seprartion_wheels.png}
+  \caption{Body kolies auta vyhodnotená ako body zeme ($SD1$)} 
+  \label{fig:seprartion_wheels}
+\end{figure}
+\vfill
+\vfill
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/seprartion_density.png}
+  \caption{Málo hustne body áut vyhodnotené ako body zeme ($SD1$)} 
+  \label{fig:seprartion_density}
+\end{figure}
+\vfill 
+
+\subsection{Zhlukovanie bodov do supervoxelov a segmentácia}
+\noindent V tejto podkapitole sa zameriame na overenie zhlukovania bodov do supervoxelov a spojíme to so segmentáciou, nakoľko tieto kroky spolu blízko súvisia. Vizuálne overíme jednotlivé kroky, pričom si ukážeme ich nedostatky.
+\newline\indent Zhlukovanie bodov do supervoxelov bolo zo veľkej časti úspešné, ale vznikol problém v prípade, že sa pri sebe v malej vzdialenosti nachádzalo viacero objektov. V takomto prípade niekedy supervoxely prechádzali cez hranice objektov, čo bolo obzvlášť pravdou v prípade ak sa jednalo o vegetáciu (Obr. \ref{fig:supervoxel_connecting}).
+\newline\indent V prípade samotnej segmentácie sme sa stretli s podobným problémom, a teda ak bolo viacero objektov v malej vzdialenosti od seba, tak došlo ku ich spojeniu (Obr. \ref{fig:segmentation_connecting}). Navyše v prípade veľkých, ale aj menších horšie nasnímaných objektov dochádzalo ku rozdeleniu objektu na viacero menších objektov (Obr. \ref{fig:segmentation_big} a \ref{fig:segmentation_devide}), čo v niektorých prípadoch, ale nemuselo byť nevyhnutnou chybou. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/supervoxel_connecting.png}
+  \caption{Prechod supervoxelov medzi bodmi stĺpu a bodmi stromu ($SD4$)} 
+  \label{fig:supervoxel_connecting}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/segmentation_connecting.png}
+  \caption{Body viacerých objektov segmentované ako jeden objekt ($SD4$)} 
+  \label{fig:segmentation_connecting}
+\end{figure} 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/segmentation_big.png}
+  \caption{Segmentovanie bodov veľkej budovy na viacero objektov ($SD3$)} 
+  \label{fig:segmentation_big}
+\end{figure} 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/segmentation_devide.png}
+  \caption{Segmentovanie bodov stromu a auta na viacero objektov ($SD3$)} 
+  \label{fig:segmentation_devide}
+\end{figure} 
+
+\subsection{Adaptívne podvzorkovanie a rekonštrukcia povrchu}
+\noindent
 
 \section{Zhrnutie dosiahnutých výsledkov}
