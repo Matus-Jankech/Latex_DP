@@ -621,7 +621,7 @@
 
 \newcommand\FEIglossaries[1]{
     \setglossarystyle{FEIlong}
-    \makeglossaries
+    \makenoidxglossaries
     \loadglsentries{#1}
     \setlength\LTleft{8pt}
     \setlength\LTright{0pt}
@@ -636,7 +636,7 @@
     }[]
     %\addtocontents{lof}{\protect\thispagestyle{plain}}
     %\addtocontents{lot}{\protect\thispagestyle{plain}}
-    \printglossary[type=\acronymtype,title={\@zoznamZn}]
+    \printnoidxglossary[type=\acronymtype,title={\@zoznamZn}]
     \newpage
     \pagestyle{plain}
 }
