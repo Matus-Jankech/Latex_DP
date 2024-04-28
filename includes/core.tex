@@ -2,7 +2,7 @@
 \noindent Mračno bodov je kolekcia bodov v 3D priestore, kde každý bod reprezentuje polohu v priestore pomocou XYZ súradníc a okrem týchto základných priestorových údajov môže každý bod obsahovať informácie o ich farbe, intenzite a v prípade potreby aj ďalšie špecifické parametre. Spájaním veľkého množstva týchto bodov do jedného súboru zo spoločnom súradnicovým systémom je možné úplne zachytiť geometriu akéhokoľvek 3D objektu. Vďaka schopnosti poskytovať priestorové súradnice povrchov objektov sa mračná bodov stali preferovaným typom dát pre 3D vizualizáciu rôznorodých prostredí. Mračna bodov sa osvedčili ako jedny z najvhodnejších zdrojov údajov, najmä pri mapovaní rozsiahlych mestských prostredí, pretože získané 3D body obsahujú priame priestorové súradnice geometrických povrchov, čo výrazne zjednodušuje procesy modelovania povrchov a geometrickej rekonštrukcie. \cite{voxel_grid} 
 \newline\begin{figure}[!htbp]
   \centering
-  \includegraphics[width=15cm]{img/ukazka_pc.png}
+  \includegraphics[width=16cm]{img/ukazka_pc.png}
   \caption{Ukážka mračna bodov}
   \label{vzhladobr}
 \end{figure}	
@@ -265,7 +265,7 @@
 \end{enumerate}
 
 \subsubsection{Globálne metódy}
-\noindent Ako to už z mena vyplýva globálne metódy pristupujú ku spracovaniu povrchu ako celku a na rozdiel od lokálnych metód, ktoré využívajú iteratívne procesy, globálne metódy analyzujú celý povrch naraz, aby dosiahli jeho zjednodušenie.
+\noindent Ako to už z mena vyplýva globálne metódy pristupujú ku spracovaniu povrchu ako celku a na rozdiel od lokálnych metód, ktoré využívajú iteratíve procesy, globálne metódy analyzujú celý povrch naraz, aby dosiahli jeho zjednodušenie.
 \begin{enumerate}
     \item\textbf{Zhlukovanie vrcholov (z ang. Vertex clustering)} - Táto metóda je založená na priradení váh pre každý vrchol povrchu, na základe jeho dôležitosti. Vrcholy susedné ku veľkým trojuholníkom a tie ktoré sú v zakrivených oblastiach je priradená väčšia váha ako tým, ktoré sú v hladkých oblastiach a vedľa malých trojuholníkov. Celý priestor v ktorom sa povrch nachádza sa rozdelí pomocou voxelovej mriežky. Na záver sa všetky vrcholy v danej bunke mriežky zoskupia do vrcholu s najväčšou váhou, čím sa zníži celkový počet vrcholov. Táto metóda je výpočtovo veľmi efektívna, jej presnosť sa dá upravovať pomocou rozlíšenia voxelovej mriežky, ale taktiež vie zmeniť topológiu povrchu nepredvídateľným spôsobom. \cite{mesh_simplification}
 \end{enumerate}
@@ -286,8 +286,8 @@
     \item Separácia bodov zeme a objektov
     \item Zhlukovanie bodov objektov do supervoxelov
     \item Segmentácia objektov
-    \item Adaptívne podvzorkovanie bodov objektov
-    \item Rekonštrukcia povrchu (výber najvhodnejšej metódy)
+    \item Podvzorkovanie mračna bodov
+    \item Rekonštrukcia povrchu
     \item Textúrovanie povrchu
 \end{enumerate}
 
@@ -765,7 +765,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \noindent Pri samotnej rekonštrukcií povrchu vizuálne overíme celkovú dôveryhodnosť vytvoreného povrchu a taktiež sa zameriame na nedostatky, pričom niektoré súvisia s predošlými krokmi.
 \newline\indent Ako prvé sme overili rekonštrukciu povrchu v prítomnosti falošných bodov v podobe šumu (Obr. \ref{fig:noise_mesh} a \ref{fig:ground_separation_mesh}). V prvom prípade bola úroveň šumu príliš vysoká, na základe čoho zlyhala predošlá separácia bodov, adaptívne podvzorkovanie vyhodnotilo šum za dôležité body a vznikol drsný povrch, ktorý tento šum opisoval. V ďalšom prípade taktiež čiastočne zlyhala separácia bodov zeme, ale vďaka nižšej úrovni šumu, bol tento nedostatok zakrytý zemou (v podobe objektu), ktorá sa pomerne plynulo spojila so skutočnou zemou. Nevýhodou zlyhania predošlých krokov je nižšia úroveň podvzorkovania, vytvorenie väčšieho počtu polygónov, ktoré navyše opisujú falošné dáta.
 \newline\indent Ďalším nedostatkom pri rekonštrukcií boli prípady, kedy zlyhala segmentácia, čo zapríčinilo spojenie povrchu viacerých objektov (Obr. \ref{fig:connecting_mesh}) a odstránenie skutočnej medzery medzi nimi. Taktiež sa našli prípady, kedy aj napriek úpravám zlyhal odhad normál, čo zapríčinilo vytvorenie trhlín v povrchu (Obr. \ref{fig:normal_mesh}).
-\newline\indent V poslednom rade sme sa zamerali na dôveryhodnosť povrchu, kde sme si všimli, že rekonštrukcia má problém s úzkymi objektami vegetáciou (Obr. \ref{fig:cable_mesh} a \ref{fig:tree_mesh}), pričom tento efekt bol posilnený neuplným odstránením polygónov na hranách objektu.
+\newline\indent V poslednom rade sme sa zamerali na dôveryhodnosť povrchu, kde sme si všimli, že rekonštrukcia má problém s úzkymi objektami vegetáciou (Obr. \ref{fig:cable_mesh} a \ref{fig:tree_mesh}), pričom tento efekt bol posilnený neuplným odstránením nadbytočných polygónov na hranách objektu.
 
 \begin{figure}[!htbp]
   \centering
@@ -774,6 +774,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \label{fig:noise_mesh}
 \end{figure} 
 
+\newpage\vfill
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=9cm]{img/ground_separation_mesh.png}
@@ -786,8 +787,10 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \includegraphics[width=16cm, height=9cm]{img/connecting_mesh.png}
   \caption{Prepojenie viacerých objektov spolu, na základe zlej segmentácie (Obr. \ref{fig:segmentation_connecting}) ($SD4$)} 
   \label{fig:connecting_mesh}
-\end{figure} 
+\end{figure}
+\vfill\clearpage   
 
+\newpage\vfill
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=9cm]{img/normal_mesh.png}
@@ -800,7 +803,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \includegraphics[width=16cm, height=9cm]{img/cable_mesh.png}
   \caption{Problém Poissonovej rekonštrukčnej metódy s rekonštrukciou úzkych objektov (trolejbusové vedenie) ($SD4$)} 
   \label{fig:cable_mesh}
-\end{figure} 
+\end{figure}
+\vfill\clearpage  
 
 \begin{figure}[!htbp]
   \centering
@@ -809,4 +813,16 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \label{fig:tree_mesh}
 \end{figure} 
 
-\section{Zhrnutie dosiahnutých výsledkov}
+\subsection{Overenie textúrovania povrchu}
+\noindent Textúrovanie povrchu dosiahlo pomerne dobré výsledky a obohatilo to povrch o dávku realizmu, avšak nachádzali sa tam nedostatky, ku ktorým sa teraz vyjadríme. 
+\newline\indent Ako prvý problém sa prejavilo využitie sledovania lúčov, ktoré bolo založené na využití oktálového stromu. Vo veľkej miere to síce odstránilo falošné textúrovanie, ale kvôli neúplnému zachyteniu polygónov pomocou voxelov, dochádzalo ku mozaikovému textúrovaniu (Obr. \ref{fig:texturing_problems}a) a taktiež niektoré polygóny neboli otextúrované vôbec, aj napreik tomu, že boli v skutočnosti videné.
+\newline\indent Ďalší nedostatok vznikol pri textúrovaní s viacerých fotiek. Na hranách medzi jednotlivými snímkami dochádzalo ku ostrému prechodu farby (Obr. \ref{fig:texturing_problems}b), čo vytváralo neprirodzený vzhľad. Tento problém by sa dal adresovať, pomocou využitia Gaussového filtra na jednotlivých hranách, pre zjemnenie ich prechodu.
+\newline\indent Posledný nedostatok sa týkal dynamických objektov, ktoré boli pri získavaní mračna bodov odstránené, ale ostali na fotkách z kamery. Tieto objekty spôsobujú falošné textúrovanie iných objektov (Obr. \ref{fig:texturing_problems}c) a pre ich odstránenie by bolo potrebné implementovať detekciu dynamických objektov na fotkách. 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=20cm]{img/texturing_problems.png}
+  \caption{(a) Mozaikové textúrovanie kvôli zlej reprezentácií polygónov pomocou oktálového stromu (sledovanie lúčov) (b) Ostrý prechod farby medzi viacerými snímkami (c) Neodstránenie dynamických objektov (auto na ceste) ($SD2$)} 
+  \label{fig:texturing_problems}
+\end{figure}
+\vfill\clearpage  
