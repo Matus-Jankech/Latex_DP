@@ -245,7 +245,7 @@
 \noindent V mnohých prípadoch po rekonštrukcií povrchu z mračna bodov, alebo aj po obdržaní už existujúceho modelu sa stretávame s tým, že povrch daného modelu obsahuje veľa polygónov, ktoré by sa dali vyjadriť menším počtom, pričom zachovajú celkový tvar a ušetria tak pamäťovú náročnosť. Tento problém väčšinou vzniká pri samotnej rekonštrukcií z mračien bodov, ktoré majú príliš veľkú hustotu bodov a neberú ohľad na dôležitosť bodov. 
 \newline\indent V tejto podkapitole sa preto budeme zaoberať metódami, ktoré sa zameriavajú na zjednodušenie topológie povrchu, pričom ich delíme na lokálne a globálne metódy.  
 
-\subsubsection{Lokálne metódy}
+\subsubsection{Lokálne metódy} \label{sec:decimation}
 \noindent Lokálne metódy sú oproti globálnym bežnejšie a preto sa budeme zaoberať hlavne nimi. Tieto metódy pristupujú k zjednodušovaniu iteratívnou aplikáciou lokálneho operátora na malú sadu bodov a vytvoria tak povrch s menším počtom prvkov. Využívajú chybové alebo nákladové (z ang. cost)  funkcie, ktoré usmerňujú proces zjednodušovania a taktiež ponúkajú presnú kontrolu výsledných atribútov povrchu (počet polygónov, hranice chýb pre vrcholy). \cite{mesh_simplification}
 \begin{enumerate}
     \item\textbf{Decimácia vrcholov (z ang. Vertex decimation)} - Tento prístup pracuje s jedným vrcholom, ktorý sa vymaže a následne sa snaží zaplátať vytvorenú dieru na základe klasifikačnej schémy o susedstve. Výber vrcholu ktorý bude vymazaný je spojený so  vzdialenosťou od roviny, ktorá je aproximovaná pomocou spriemerovania normál, ťažísk a plôch okolitých trojuholníkov. Vzdialenosť vrcholu od tejto roviny slúži ako miera chyby pre jeho odstránenie, pričom vrcholy ležiace na hladkých častiach sú uprednostňované pred tými, ktoré opisujú ostré zmeny (detaily). \cite{mesh_simplification}
@@ -487,7 +487,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \setlength\itemsep{0.2em}
   \item Rádiusy pre odhad normál (malý, veľký) = 0,08 ; 0,40
   \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) ; (0.06-0,12) ; (0,12-0,18) ; (0,18-1,0)
-  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,06 ; 0,03 ; 0,0 (bez podvzorkovania)
+  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,09 ; 0,04 ; 0,01 
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -558,20 +558,21 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \newline\indent Fungovanie tejto metódy je pomerne jednoduché a vieme ju rozdeliť do štyroch základných krokov. Prvým krokom je nájdenie lokálnych susedstiev pre každý bod, ktoré je zložené z $K$ najbližších susedov. Následne je vykonaný odhad normál každého referenčného bodu, pomocou čoho je vytvorená rovina, ktorá je kolmá na smer normály a všetky body zo susedstva sú projektované na túto rovinu.  Na tejto rovine je použitý priestorovo rastúci algoritmus, ktorý sa z počiatočného trojuholníku rozrastá, až kým nie je skompletizovaný celý povrch, pričom dodržuje obmedzenia. Na záver sa projektovaná reprezentácia vráti do pôvodného 3D priestoru, čím dostávame výsledný povrch. \cite{GreedyTriangulation}
 \newline\indent Pri výbere používanej metódy sa zameriame na hodnotiace faktory, ako sú dôveryhodnosť rekonštruovaného povrchu, časová náročnosť a výpočtová náročnosť (obmedzenia hardvéru). Na obrázku \ref{fig:mesh_compararison} môžeme vidieť dosiahnuté výsledky jednotlivých metód, ktoré boli upravené pre potreby porovnávania. Čo sa týka dôveryhodnosti najlepšie výsledky dosahuje Poissonová metóda, ktorá vytvára hladký vodotesný povrch, ktorý dobre zachytáva aj menšie detaily. Porovnateľne dobrá je aj \acrshort{gpt} metóda, ktorá je ale parametricky závislá od veľkosti a hustoty objektu, čo vedie ku nežiadaným dieram v povrchu. Posledná je Marching cubes metóda, ktorá vytvára kockovaný povrch, ktorý nie je prirodzený a vedie ku skresľovaniu výzoru objektu.
 \newline\indent V prípade časovej a výpočtovej náročnosti bola najlepšia \acrshort{gpt} metóda, ktorá povrch ukážkového objektu zrekonštruovala najrýchlejšie (1,35s), pričom porovnateľne rýchla bola ja Poissonová rekonštrukcia (1,74s), ktorá ale následne potrebovala, ďalšie úpravy. Najpomalšia bola Marching cubes (16,26s), ktorá ako jediná mála hardvérový problém a nebolo ju možné skúsiť na objektoch s väčším množstvom bodov. 
-\newline\indent S predošlých výsledkov bolo rozhodnuté, že sa budeme pokračovať s Poissonovou metódou rekonštrukcie povrchu, nakoľko vizuálne dosahovala najlepšie výsledky a nie je parametricky závislá od hustoty a veľkosti mračna bodov. Metóda má ale svoje nedostatky, ktoré budú prebrané v ďalšej podkapitole. 
+\newline\indent S predošlých výsledkov bolo rozhodnuté, že sa budeme pokračovať s Poissonovou metódou rekonštrukcie povrchu, nakoľko vizuálne dosahovala najlepšie výsledky a nie je parametricky závislá od hustoty mračna bodov. Metóda má ale svoje nedostatky, ktoré budú prebrané v ďalšej podkapitole. 
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=15cm, height=11cm]{img/mesh_methods_compararison.png}
+  \includegraphics[width=16cm, height=11cm]{img/mesh_methods_compararison.png}
   \caption{Porovnanie rôznych metód rekonštrukcie povrchu na objekte auta - (a) Podvzorkované mračno bodov (b) \acrshort{gpt} (c) Marching cubes (d) Poissonová rekonštrukcia ($SD1$)} 
   \label{fig:mesh_compararison}
 \end{figure} 
 
 \subsubsection{Odstránenie nedostatkov}
 \noindent V predošlej podkapitole bolo rozhodnuté, že rekonštrukcia povrchu bude vykonávaná pomocou Poissonovej rekonštrukčnej metódy, nakoľko dosahovala najlepšie výsledky. Tieto výsledky boli ale dosiahnuté, až po odstránení niekoľkých nedostatkov. 
-\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}b), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov, pomocou ktorého získame vzdialenosť najbližšieho bodu, pre vrcholy každého polygónu a na základe určeného prahu vzdialenosti vyhodnotíme, či je polygón falošný a následne odstránime.
-\newline\indent Po odstránení falošných polygónov, získavame očistený povrch (Obr. \ref{fig:mesh_bad_polygons}c). Táto plocha bola vytvorená použitím Poissonovej metódy na celé mračno bodov naraz, čo malo za následok pomerne malé rozlíšenie povrchu. Tento problém bol vyriešený pomocou využitia predošlej segmentácie, čo nám umožnilo použiť rekonštrukciu na jednotlivé objekty a zabezpečilo značný nárast presnosti (Obr. \ref{fig:mesh_bad_polygons}d).
-\newline\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku poslednému problému (Obr. \ref{fig:mesh_bad_normals}). Odhad normál je robený na základe susedných bodov, pričom dochádza ku nejasnosti akým smerom majú normály smerovať. Tento smer je rozhodnutý na základe umiestnenia tzv. hľadiska, ktoré rozhoduje či sa majú normály otočiť o 180 stupňov alebo nie. Mračna bodov boli získane s pohybujúceho sa auta, čo znamená, že každý objekt má viacero hľadísk, čo môže spôsobiť vznik trhlín na zrekonštruovanom povrchu. Tento problém vieme z veľkej časti vyriešiť pomocou využitia segmentácie, a teda vieme premiestniť hľadisko do ťažiska menších objektov, zatiaľ čo najďalej v prípade veľkých objektov. Tento prístup zabezpečuje, aby sa smer normál  náhodne nemenil.
+\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}b), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov, pomocou ktorého získame vzdialenosť najbližšieho bodu, pre vrcholy každého polygónu a na základe určeného prahu vzdialenosti vyhodnotíme, či je polygón falošný a následne ho odstránime.
+\newline\indent Po odstránení falošných polygónov, získavame očistený povrch (Obr. \ref{fig:mesh_bad_polygons}c). Táto plocha bola vytvorená použitím Poissonovej metódy na celé mračno bodov naraz, čo malo za následok pomerne malé rozlíšenie povrchu. Tento problém bol vyriešený pomocou využitia predošlej segmentácie, čo nám umožnilo použiť rekonštrukciu na jednotlivé objekty osobitne a zabezpečilo značný nárast presnosti (Obr. \ref{fig:mesh_bad_polygons}d).
+\newline\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku ďalšiemu problému (Obr. \ref{fig:mesh_bad_normals}). Pri odhade normál nastáva nejasnosť, či sa majú normály otočiť o 180 stupňov alebo nie, pričom o tom rozhoduje umiestnenie tzv. hľadiska. Nesprávne umiestnenie hľadiska má za následok vznik trhlín, a preto sme tento problém vo veľkej miere vyriešili pomocou umiestnenia hľadiska do ťažiska objektu alebo ďaleko od objektu, na základe jeho veľkosti.
+\newline\indent Posledný problém Poissonovej metódy bolo vytvorenie príliš veľkého počtu polygónov aj napriek predošlému podvzorkovaniu. Tento problém sme vyriešili pridaním kvadratickej decimácie vrcholov polygónov (viď. kapitola \ref{sec:decimation}), ktorá zabezpečila zníženie pamäťovej náročnosti povrchu, pričom predošlé podvzorkovanie zlepšilo efektivintu zachovanie detailov.
 \newline\indent Celá rekonštrukcia bola vykonávaná pre následujúcu konfiguráciu parametrov:
 
 \begin{itemize}
@@ -581,6 +582,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \item Hĺbka extrahovaného iso povrchu = 50
   \item Prah vzdialenosti falošného polygónu = 0,013
   \item Prah počtu bodov veľký, malý objekt = 40 000
+  \item Redukčný faktor decimácie = 0,8
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -592,7 +594,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=15cm, height=11cm]{img/mesh_bad_normals.png}
+  \includegraphics[width=16cm, height=11cm]{img/mesh_bad_normals.png}
   \caption{Ukážka nedostatkov - (a) Nesprávny odhad normál (b) Rekonštrukcia zo nesprávneho odhadu normál (c) Správny odhad normál (d) Rekonštrukcia zo správneho odhadu normál ($SD1$)} 
   \label{fig:mesh_bad_normals}
 \end{figure} 
@@ -740,8 +742,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \newpage\vfill
 \subsection{Overenie adaptívneho podvzorkovania}
 \noindent Pri adaptívnom podvzorkovaní sa zameriame už iba na vizuálne porovnanie vytvorených povrchov pre nepodvzorkované, adaptívne podvzorkované a rovnomerne podvzorkované mračná bodov pomocou voxelovej mriežky, keďže dosiahnuté úrovne podvzorkovania boli už ukázané skôr (Tab. \ref{table:subsampling}).
-\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe začali splývať a neboli dobre rozoznateľné.
-\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát (Obr. \ref{fig:adaptive_comparison2}). V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť žiadny výrazný rozdiel z vizuálneho hľadiska. Toto bolo na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo) a kvôli nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
+\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe začali splývať a neboli dobre rozoznateľné. Adaptívne podvzorkovanie znížilo pamäťové nároky a zároveň s nepodvzorkovaným mračnom bodov, zachovalo pomernú presnosť rekonštrukcie.
+\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát (Obr. \ref{fig:adaptive_comparison2}). V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť žiadny výrazný rozdiel z vizuálneho hľadiska. Toto bolo na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo), ale aj nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
 
 \newpage\vfill
 \begin{figure}[!htbp]
