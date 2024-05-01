@@ -485,8 +485,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
-  \item Rádiusy pre odhad normál (malý, veľký) = 0,08 ; 0,40
-  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) ; (0.06-0,12) ; (0,12-0,18) ; (0,18-1,0)
+  \item Rádiusy pre odhad normál (malý, veľký) = 0.03-0,07 ; 0,40
+  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,07) ; (0.07-0,14) ; (0,14-0,20) ; (0,20-1,0)
   \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,09 ; 0,04 ; 0,01 
 \end{itemize}
 
@@ -620,6 +620,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
        \hline
       \end{tabular}
   \caption{Výsledné hodnoty rekonštruovaných povrchov pre jednotlive súbory dát}
+  \label{table:mesh_results}
   \end{center}
 \end{table}
 
@@ -668,18 +669,23 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \subsection{Overenie separácia bodov zeme}
 \noindent V tejto podkapitole sa zameriame na separácia bodov zeme, pričom pri tomto kroku hral dôležitú úlohu šum, a preto sa zameriame hlavne na neho. Pre tento účel sme využili sady dát $SD3$ a $SD5$, nakoľko slúžia ako validačné súbory dát a navyše boli získané pomocou rozdielneho \acrshort{lidar}-u, ktorý obsahuje vyššiu úroveň zle nasnímaných bodov, v podobe šumu.
-\newline\indent Nedostatky progresívneho morfologického filtra môžeme vidieť v prípade, kedy auto nasnímalo falošné body na trase ktorou prešlo (Obr. \ref{fig:Parking_ground}). Môžme si všimnúť, že body boli husto zoskupené, a tým pádom neboli odstránené pomocou filtrovania odľahlých bodov, čo zapríčinilo nesprávnosť fungovania filtra v tejto oblasti. S princípu fungovania progresívneho morfologického filtra vychádza, že v danom ``okne''  vyhodnotí najnižšie body, ako body zeme, čo v tomto prípade spôsobilo, že falošné body boli vyhodnotené ako body zeme, namiesto skutočných nad nimi.
-\newline\indent Následok šumu bolo ešte lepšie vidieť v prípade, kedy boli dáta získané z letiaceho dronu (Obr. \ref{fig:UAV_ground}), miera šumu bola omnoho väčšia a postihovala takmer celé mračno bodov. V tomto prípade dochádzalo ku nesprávnej filtrácií nie len pri bodoch zeme, ale navyše aj pri bodoch striech, ktoré boli nesprávne označené za body zeme. Tento výsledok bol zapríčinení šumom, nedostatočným výškovým rozdielom bodov striech, a taktiež nízkym nastavením maximálnej veľkosti okna pre tento súbor dát.
-\newline\indent Medzi posledné nedostatky filtrovania zeme patrí to, že progresívny morfologický filter berie za body zeme aj body tesne nad jeho povrchom (Obr. \ref{fig:seprartion_wheels}) a taktiež má problém s málo hustými bodmi, ktoré sú v blízkej tesnosti zeme (Obr. \ref{fig:seprartion_density}).
+\newline\indent Nedostatky progresívneho morfologického filtra môžeme vidieť v prípade, kedy auto nasnímalo falošné body na trase ktorou prešlo (Obr. \ref{fig:Parking_ground} a  \ref{fig:Parking_ground_detail}). Môžme si všimnúť, že body boli husto zoskupené, a tým pádom neboli odstránené pomocou filtrovania odľahlých bodov, čo zapríčinilo nesprávnosť fungovania filtra v tejto oblasti. S princípu fungovania progresívneho morfologického filtra vychádza, že v danom ``okne''  vyhodnotí najnižšie body, ako body zeme, čo v tomto prípade spôsobilo, že falošné body boli vyhodnotené ako body zeme, namiesto skutočných nad nimi.
 
-\newpage\vfill
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=19cm]{img/Parking_ground.png}
-  \caption{Odolnosť morfologickej separácie bodov zeme na šum. Mračno bodov objektov (pôvodná farba), body zeme (biela farba) a detail falošných bodov vo forme šumu (dole) ($SD3$)} 
+  \includegraphics[width=16cm, height=8.5cm]{img/Parking_ground.png}
+  \caption{Body cesty klasifikované ako body objektov ($SD3$)} 
   \label{fig:Parking_ground}
 \end{figure}
-\vfill\clearpage 
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=9cm]{img/Parking_ground_detail.png}
+  \caption{Body cesty klasifikované ako body objektov (detail šumu) ($SD3$)} 
+  \label{fig:Parking_ground_detail}
+\end{figure}
+
+\indent Následok šumu bolo ešte lepšie vidieť v prípade, kedy boli dáta získané z letiaceho dronu (Obr. \ref{fig:UAV_ground}), miera šumu bola omnoho väčšia a postihovala takmer celé mračno bodov. V tomto prípade dochádzalo ku nesprávnej filtrácií nie len pri bodoch zeme, ale navyše aj pri bodoch striech, ktoré boli nesprávne označené za body zeme. Tento výsledok bol zapríčinení šumom a taktiež nízkym nastavením maximálnej veľkosti okna pre tento súbor dát. Môžme teda vidieť, že v prípade vysokej úrovne šumu filter zlyháva, čo bude mať za následok nižšiu úroveň podvzorkovania. 
 
 \newpage\vfill
 \begin{figure}[!htbp]
@@ -690,34 +696,35 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{figure}
 \vfill\clearpage 
 
-\newpage\vfill
+\indent Medzi posledné nedostatky filtrovania zeme patrilo to, že progresívny morfologický filter berie za body zeme aj body tesne nad jeho skutočným povrchom (Obr. \ref{fig:seprartion_wheels}) a taktiež má problém s málo hustými bodmi, ktoré sú v blízkej tesnosti zeme (Obr. \ref{fig:seprartion_density}).
+
+\vfill
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=9cm]{img/seprartion_wheels.png}
+  \includegraphics[width=16cm, height=8.5cm]{img/seprartion_wheels.png}
   \caption{Body kolies auta vyhodnotená ako body zeme ($SD1$)} 
   \label{fig:seprartion_wheels}
 \end{figure}
-\vfill
-\vfill
+
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=9cm]{img/seprartion_density.png}
+  \includegraphics[width=16cm, height=8.5cm]{img/seprartion_density.png}
   \caption{Málo hustne body áut vyhodnotené ako body zeme ($SD1$)} 
   \label{fig:seprartion_density}
 \end{figure}
-\vfill 
 
 \subsection{Overenie generovania supervoxelov a segmentácie}
 \noindent V tejto podkapitole sa zameriame na overenie zhlukovania bodov do supervoxelov a spojíme to so segmentáciou, nakoľko tieto kroky spolu blízko súvisia. Vizuálne overíme jednotlivé kroky, pričom si ukážeme ich nedostatky.
 \newline\indent Zhlukovanie bodov do supervoxelov bolo zo veľkej časti úspešné, ale vznikol problém v prípade, že sa pri sebe v malej vzdialenosti nachádzalo viacero objektov. V takomto prípade niekedy supervoxely prechádzali cez hranice objektov, čo bolo obzvlášť pravdou v prípade ak sa jednalo o vegetáciu (Obr. \ref{fig:supervoxel_connecting}).
-\newline\indent V prípade samotnej segmentácie sme sa stretli s podobným problémom, a teda ak bolo viacero objektov v malej vzdialenosti od seba, tak v niektorých prípadoch nastalo ich spojenie (Obr. \ref{fig:segmentation_connecting}), čo súviselo s predošlou chybou pri vytváraní supervoxelov. Navyše v prípade veľkých, ale aj menších horšie nasnímaných objektov dochádzalo ku rozdeleniu objektu na viacero menších objektov (Obr. \ref{fig:segmentation_big} a \ref{fig:segmentation_devide}), čo ale v niektorých prípadoch nemuselo byť nevyhnutnou chybou. 
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=9cm]{img/supervoxel_connecting.png}
   \caption{Prechod supervoxelov medzi bodmi stĺpu a bodmi stromu ($SD4$)} 
   \label{fig:supervoxel_connecting}
 \end{figure} 
+
+\indent V prípade samotnej segmentácie sme sa stretli s podobným problémom, a teda ak bolo viacero objektov v malej vzdialenosti od seba, tak v niektorých prípadoch nastalo ich spojenie (Obr. \ref{fig:segmentation_connecting}), čo súviselo s predošlou chybou pri vytváraní supervoxelov. Navyše v prípade veľkých, ale aj menších horšie nasnímaných objektov dochádzalo ku rozdeleniu objektu na viacero menších objektov (Obr. \ref{fig:segmentation_big} a \ref{fig:segmentation_devide}), čo ale v niektorých prípadoch nemuselo byť nevyhnutnou chybou. 
 
 \begin{figure}[!htbp]
   \centering
@@ -742,9 +749,9 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \newpage\vfill
 \subsection{Overenie adaptívneho podvzorkovania}
-\noindent Pri adaptívnom podvzorkovaní sa zameriame už iba na vizuálne porovnanie vytvorených povrchov pre nepodvzorkované, adaptívne podvzorkované a rovnomerne podvzorkované mračná bodov pomocou voxelovej mriežky, keďže dosiahnuté úrovne podvzorkovania boli už ukázané skôr (Tab. \ref{table:subsampling}).
-\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe začali splývať a neboli dobre rozoznateľné. Adaptívne podvzorkovanie znížilo pamäťové nároky a zároveň s nepodvzorkovaným mračnom bodov, zachovalo pomernú presnosť rekonštrukcie.
-\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát (Obr. \ref{fig:adaptive_comparison2}). V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť žiadny výrazný rozdiel z vizuálneho hľadiska. Toto bolo na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo), ale aj nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
+\noindent Pri adaptívnom podvzorkovaní sa zameriame hlavne na vizuálne porovnanie vytvorených povrchov pre nepodvzorkované, adaptívne podvzorkované a rovnomerne podvzorkované mračná bodov, keďže dosiahnuté úrovne podvzorkovania boli ukázané skôr (Tab. \ref{table:subsampling}). Týmto spôsobom si ukážeme jeho výhody oproti bežnej metóde a zároveň aj niektoré nedostatky.
+\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe, začali miznúť. Adaptívne podvzorkovanie znížilo pamäťové nároky výsledného povrchu a zároveň pri porovnaní s nepodvzorkovaným mračnom bodov, zachovalo potrebné črty objektu.
+\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát. V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť žiadny výrazný rozdiel z vizuálneho hľadiska (Obr. \ref{fig:adaptive_comparison2}). Toto bolo na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo), ale aj nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
 
 \newpage\vfill
 \begin{figure}[!htbp]
@@ -765,10 +772,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \vfill\clearpage 
 
 \subsection{Overenie rekonštrukcie povrchu}
-\noindent Pri samotnej rekonštrukcií povrchu vizuálne overíme celkovú dôveryhodnosť vytvoreného povrchu a taktiež sa zameriame na nedostatky, pričom niektoré súvisia s predošlými krokmi.
+\noindent Pri samotnej rekonštrukcií povrchu sme dosiahli pomerne vysoké zníženie pamäťovej náročnosti oproti nepodvzorkovanému mračnu bodov (Tab. \ref{table:mesh_results}). V tejto podkapitole sa preto budeme zaoberať vizuálnou kontrolou dosiahnutých výsledkov, pričom sa zameriame aj na nedostatky spôsobené predošlými krokmi.
 \newline\indent Ako prvé sme overili rekonštrukciu povrchu v prítomnosti falošných bodov v podobe šumu (Obr. \ref{fig:noise_mesh} a \ref{fig:ground_separation_mesh}). V prvom prípade bola úroveň šumu príliš vysoká, na základe čoho zlyhala predošlá separácia bodov, adaptívne podvzorkovanie vyhodnotilo šum za dôležité body a vznikol drsný povrch, ktorý tento šum opisoval. V ďalšom prípade taktiež čiastočne zlyhala separácia bodov zeme, ale vďaka nižšej úrovni šumu, bol tento nedostatok zakrytý zemou (v podobe objektu), ktorá sa pomerne plynulo spojila so skutočnou zemou. Nevýhodou zlyhania predošlých krokov je nižšia úroveň podvzorkovania, vytvorenie väčšieho počtu polygónov, ktoré navyše opisujú falošné dáta.
-\newline\indent Ďalším nedostatkom pri rekonštrukcií boli prípady, kedy zlyhala segmentácia, čo zapríčinilo spojenie povrchu viacerých objektov (Obr. \ref{fig:connecting_mesh}) a odstránenie skutočnej medzery medzi nimi. Taktiež sa našli prípady, kedy aj napriek úpravám zlyhal odhad normál, čo zapríčinilo vytvorenie trhlín v povrchu (Obr. \ref{fig:normal_mesh}).
-\newline\indent V poslednom rade sme sa zamerali na dôveryhodnosť povrchu, kde sme si všimli, že rekonštrukcia má problém s úzkymi objektami vegetáciou (Obr. \ref{fig:cable_mesh} a \ref{fig:tree_mesh}), pričom tento efekt bol posilnený neuplným odstránením nadbytočných polygónov na hranách objektu.
 
 \begin{figure}[!htbp]
   \centering
@@ -780,34 +785,37 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \newpage\vfill
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=9cm]{img/ground_separation_mesh.png}
+  \includegraphics[width=16cm, height=8.5cm]{img/ground_separation_mesh.png}
   \caption{Hladký prechod medzi viacerými povrchmi zeme, aj napriek nesprávnej separácií zeme (Obr. \ref{fig:Parking_ground}) ($SD3$)} 
   \label{fig:ground_separation_mesh}
 \end{figure} 
 
+\indent Ďalším nedostatkom pri rekonštrukcií boli prípady, kedy zlyhala segmentácia, čo zapríčinilo spojenie povrchu viacerých objektov (Obr. \ref{fig:connecting_mesh}) a odstránenie skutočnej medzery medzi nimi. Taktiež sa našli prípady, kedy aj napriek úpravám zlyhal odhad normál, čo zapríčinilo vytvorenie trhlín v povrchu (Obr. \ref{fig:normal_mesh}).
+
+\vfill
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=9cm]{img/connecting_mesh.png}
+  \includegraphics[width=16cm, height=8.5cm]{img/connecting_mesh.png}
   \caption{Prepojenie viacerých objektov spolu, na základe zlej segmentácie (Obr. \ref{fig:segmentation_connecting}) ($SD4$)} 
   \label{fig:connecting_mesh}
-\end{figure}
-\vfill\clearpage   
-
-\newpage\vfill
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=16cm, height=9cm]{img/normal_mesh.png}
-  \caption{Výskyt trhlín na základe zlého odhadu normál ($SD3$)} 
-  \label{fig:normal_mesh}
 \end{figure} 
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=9cm]{img/cable_mesh.png}
+  \includegraphics[width=16cm, height=8.5cm]{img/normal_mesh.png}
+  \caption{Výskyt trhlín na základe zlého odhadu normál ($SD3$)} 
+  \label{fig:normal_mesh}
+\end{figure} 
+
+\indent V poslednom rade sme sa zamerali na dôveryhodnosť povrchu, kde sme si všimli, že rekonštrukcia má problém s úzkymi objektami a vegetáciou (Obr. \ref{fig:cable_mesh} a \ref{fig:tree_mesh}), pričom tento efekt bol posilnený neuplným odstránením nadbytočných polygónov na hranách objektu.
+
+\vfill
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=8.5cm]{img/cable_mesh.png}
   \caption{Problém Poissonovej rekonštrukčnej metódy s rekonštrukciou úzkych objektov (trolejbusové vedenie) ($SD4$)} 
   \label{fig:cable_mesh}
-\end{figure}
-\vfill\clearpage  
+\end{figure} 
 
 \begin{figure}[!htbp]
   \centering
