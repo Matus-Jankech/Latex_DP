@@ -591,7 +591,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=16cm, height=10cm]{img/mesh_bad_normals.png}
+  \includegraphics[width=16cm, height=10.25cm]{img/mesh_bad_normals.png}
   \caption{(a) Nesprávny odhad normál (b) Rekonštrukcia zo nesprávneho odhadu normál (c) Správny odhad normál (d) Rekonštrukcia zo správneho odhadu normál ($SD1$)} 
   \label{fig:mesh_bad_normals}
 \end{figure} 
@@ -600,7 +600,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=16cm, height=5.5cm]{img/decimation_results.png}
+  \includegraphics[width=16cm, height=5.25cm]{img/decimation_results.png}
   \caption{Porovnanie originálneho objektu (vľavo) so zdecimovaným (vpravo) pri znížení pamäťovej náročnosti o 80\%} 
   \label{fig:decimation_results}
 \end{figure} 
@@ -642,7 +642,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \end{center}
 \end{table}
 
-\newpage\subsection{Textúrovanie povrchu}
+\subsection{Textúrovanie povrchu}
 \noindent V poslednej časti sa zameriame na textúrovanie povrchu pomocou dát z kamery. Vytvorený povrch obohatíme o vizuálny realizmus, tak že mu pridáme informácie o farbe, drsnosti a ďalších rôznych detailov, pomocou čoho nadobudne hĺbku a zvýši tak predstavu o priestore.
 \newline\indent Ako prvým krokom textúrovania je namapovanie jednotlivých vrcholov polygónov na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
 
@@ -668,19 +668,23 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \item Počet použitých fotiek = 50 (20\%)
 \end{itemize}
 
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=16cm, height=10cm]{img/texture_camera_image.png}
-  \caption{Ukážka kamerovej fotky s označeným autom, pomocou zeleného polygónu ($SD2$)} 
-  \label{fig:texture_camera_image}
-\end{figure} 
-
+\vfill
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=20cm]{img/texturing_process.png}
   \caption{(a) Textúrovanie povrchu z najbližšej kamery (b) Textúrovanie z najbližšej kamery, iba ak kamera skutočne vidí povrch (červené polygóny nevidené žiadnou kamerou) (c) Odstránenie statickej prekážky auta na ceste ($SD2$)} 
   \label{fig:texture_process}
+\end{figure}
+\vfill\clearpage 
+
+\vfill
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/texture_camera_image.png}
+  \caption{Ukážka kamerovej fotky s označeným autom, pomocou zeleného polygónu ($SD2$)} 
+  \label{fig:texture_camera_image}
 \end{figure} 
+\vfill\clearpage
 
 \section{Overenie riešenia}
 \noindent V poslednej časti tejto práce overíme predošlé riešenie pomocou niekoľkých experimentov, pričom väčšina z nich bude vykonaná pomocou vizuálnej kontroly, nakoľko vo väčšine prípadov nemáme inú možnosť porovnania. Zameriame sa na jednotlivé kroky postupu, pričom ukážeme ich správnosť fungovania, vytkneme niektoré nedostatky a na záver ukážeme ich dôsledok na vytvorený povrch.

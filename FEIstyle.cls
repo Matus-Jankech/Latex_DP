@@ -101,6 +101,7 @@
 \usepackage{algorithmic}
 \usepackage[acronym,nopostdot,nogroupskip,nonumberlist]{glossaries}
 
+\usepackage{float}
 \usepackage{makecell}
 \renewcommand\theadalign{bc}
 \renewcommand\theadfont{\bfseries}
