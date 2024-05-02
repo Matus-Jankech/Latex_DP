@@ -569,11 +569,43 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \subsubsection{Odstránenie nedostatkov}
 \noindent V predošlej podkapitole bolo rozhodnuté, že rekonštrukcia povrchu bude vykonávaná pomocou Poissonovej rekonštrukčnej metódy, nakoľko dosahovala najlepšie výsledky. Tieto výsledky boli ale dosiahnuté, až po odstránení niekoľkých nedostatkov. 
-\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}b), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov, pomocou ktorého získame vzdialenosť najbližšieho bodu, pre vrcholy každého polygónu a na základe určeného prahu vzdialenosti vyhodnotíme, či je polygón falošný a následne ho odstránime.
-\newline\indent Po odstránení falošných polygónov, získavame očistený povrch (Obr. \ref{fig:mesh_bad_polygons}c). Táto plocha bola vytvorená použitím Poissonovej metódy na celé mračno bodov naraz, čo malo za následok pomerne malé rozlíšenie povrchu. Tento problém bol vyriešený pomocou využitia predošlej segmentácie, čo nám umožnilo použiť rekonštrukciu na jednotlivé objekty osobitne a zabezpečilo značný nárast presnosti (Obr. \ref{fig:mesh_bad_polygons}d).
-\newline\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku ďalšiemu problému (Obr. \ref{fig:mesh_bad_normals}). Pri odhade normál nastáva nejasnosť, či sa majú normály otočiť o 180 stupňov alebo nie, pričom o tom rozhoduje umiestnenie tzv. hľadiska. Nesprávne umiestnenie hľadiska má za následok vznik trhlín, a preto sme tento problém vo veľkej miere vyriešili pomocou umiestnenia hľadiska do ťažiska objektu alebo ďaleko od objektu, na základe jeho veľkosti.
-\newline\indent Posledný problém Poissonovej metódy bolo vytvorenie príliš veľkého počtu polygónov aj napriek predošlému podvzorkovaniu. Tento problém sme vyriešili pridaním kvadratickej decimácie vrcholov polygónov (viď. kapitola \ref{sec:decimation}), ktorá zabezpečila zníženie pamäťovej náročnosti povrchu, pričom predošlé podvzorkovanie zlepšilo efektivintu zachovanie detailov.
-\newline\indent Celá rekonštrukcia bola vykonávaná pre následujúcu konfiguráciu parametrov:
+\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe princípu fungovania Poissonovej metódy, pričom ukončenie jej vytvárania, je riadené pomocou hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov a vyhľadávanie najbližšieho suseda pomocou kd-stromu. Pre každý vrchol polygónu nájdeme najbližšieho suseda v pôvodnom mračne bodov a na základe určeného prahu vzdialenosti vyhodnotíme, či sa jedná o falošný polygón, ktorý následne odstránime.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=13cm]{img/mesh_bad_polygons.png}
+  \caption{Podvzorkované mračno bodov (hore) Plocha s nadbytočnými polygónmi (dole) ($SD1$)} 
+  \label{fig:mesh_bad_polygons}
+\end{figure} 
+
+\indent Po odstránení falošných polygónov, získavame očistený povrch (viď. Obr. \ref{fig:mesh_no_segmentation}). Plocha v hornej časti bola vytvorená použitím Poissonovej metódy na celé mračno bodov naraz, čo malo za následok pomerne malé rozlíšenie povrchu a stratu potrebných detailov. Tento problém bol vyriešený pomocou využitia predošlej segmentácie, čo nám umožnilo použiť rekonštrukciu na jednotlivé objekty osobitne a zabezpečilo zvýšenie zachovanej presnosti.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=13cm]{img/mesh_no_segmentation.png}
+  \caption{(hore) Rekonštrukcia celého povrchu naraz (dole) Rekonštrukcia individuálnych objektov ($SD1$)} 
+  \label{fig:mesh_no_segmentation}
+\end{figure} 
+
+\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku ďalšiemu problému (Obr. \ref{fig:mesh_bad_normals}). Pri odhade normál nastáva nejasnosť, či sa majú normály otočiť o 180 stupňov alebo nie, pričom o tom rozhoduje umiestnenie tzv. hľadiska. Použité sady dát boli získané s pohyblivého vozidla, pričom objekty nasnímali z viacerých uhlov, čo znamená, že každý objekt má niekoľko hľadísk. Nesprávne umiestnenie hľadiska má za následok vznik trhlín, čo sa ale dá vo veľkej miere vyriešiť pomocou umiestnenia hľadiska do ťažiska menších objektov alebo naopak ďaleko od väčších objektov.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=16cm, height=10cm]{img/mesh_bad_normals.png}
+  \caption{(a) Nesprávny odhad normál (b) Rekonštrukcia zo nesprávneho odhadu normál (c) Správny odhad normál (d) Rekonštrukcia zo správneho odhadu normál ($SD1$)} 
+  \label{fig:mesh_bad_normals}
+\end{figure} 
+
+\indent Posledný problém Poissonovej metódy bolo vytvorenie príliš veľkého počtu polygónov aj napriek predošlému podvzorkovaniu. Tento problém sme vyriešili pridaním kvadratickej decimácie vrcholov polygónov (viď. kapitola \ref{sec:decimation}), ktorá zabezpečila zníženie pamäťovej náročnosti povrchu a zachovanie detailov (viď. Obr. \ref{fig:decimation_results}), pričom predošlé podvzorkovanie zlepšilo efektivitu zachovania detailov.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=16cm, height=5.5cm]{img/decimation_results.png}
+  \caption{Porovnanie originálneho objektu (vľavo) so zdecimovaným (vpravo) pri znížení pamäťovej náročnosti o 80\%} 
+  \label{fig:decimation_results}
+\end{figure} 
+
+\indent Po odstránení predošlých problémov dosiahla rekonštrukcia vysokú úroveň zníženia pamäťovej náročnosti (viď. Tab. \ref{table:mesh_results}) a súčastného zachovania detailov. Celý postup rekonštrukcie bol vykonaný pre následujúcu konfiguráciu parametrov:
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
@@ -582,24 +614,10 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \item Hĺbka extrahovaného iso povrchu = 50
   \item Prah vzdialenosti falošného polygónu = 0,013
   \item Prah počtu bodov veľký, malý objekt = 40 000
-  \item Redukčný faktor decimácie = 0,8
+  \item Redukčný faktor decimácie = 0,8-0,95
 \end{itemize}
 
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=14.5cm, height=21cm]{img/mesh_bad_polygons.png}
-  \caption{Ukážka nedostatkov - (a) Podvzorkované mračno bodov (b) Nadbytočné polygóny po rekonštrukcii (c) Rekonštrukcia celého povrchu naraz (d) Rekonštrukcia individuálnych objektov ($SD1$)} 
-  \label{fig:mesh_bad_polygons}
-\end{figure} 
-
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=16cm, height=11cm]{img/mesh_bad_normals.png}
-  \caption{Ukážka nedostatkov - (a) Nesprávny odhad normál (b) Rekonštrukcia zo nesprávneho odhadu normál (c) Správny odhad normál (d) Rekonštrukcia zo správneho odhadu normál ($SD1$)} 
-  \label{fig:mesh_bad_normals}
-\end{figure} 
-
-\begin{table}
+\begin{table} [!h]
   \begin{center} % Center the table
       \begin{tabular}{|c || c | c | c | c | c| c|} 
        \hline
@@ -624,7 +642,7 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \end{center}
 \end{table}
 
-\subsection{Textúrovanie povrchu}
+\newpage\subsection{Textúrovanie povrchu}
 \noindent V poslednej časti sa zameriame na textúrovanie povrchu pomocou dát z kamery. Vytvorený povrch obohatíme o vizuálny realizmus, tak že mu pridáme informácie o farbe, drsnosti a ďalších rôznych detailov, pomocou čoho nadobudne hĺbku a zvýši tak predstavu o priestore.
 \newline\indent Ako prvým krokom textúrovania je namapovanie jednotlivých vrcholov polygónov na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
 
