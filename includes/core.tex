@@ -485,9 +485,9 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
-  \item Rádiusy pre odhad normál (malý, veľký) = 0.03-0,07 ; 0,40
-  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,07) ; (0.07-0,14) ; (0,14-0,20) ; (0,20-1,0)
-  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,09 ; 0,04 ; 0,01 
+  \item Rádiusy pre odhad normál (malý, veľký) = 0,03-0,07 ; 0,40
+  \item Veľkosť diferencie normál (trieda 1-4) = (0-0,06) ; (0.06-0,10) ; (0,10-0,13) ; (0,13-1,0)
+  \item Rozlíšenie voxelovej mriežky (trieda 1-4) = 0,13 ; 0,05 ; 0,02 ; 0,00 (bez podvzorkovania)
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -534,15 +534,15 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
             \thead{Celkové \\ zmenšenie \\ počtu \\ bodov [\%]} & 
             \thead{Celková \\ potrebná \\ pamäť [MB]} \\ [0.5ex]    
          \hline\hline
-         \textbf{SD1} & 244 262  & 3 958 687 & 97,11 & 43,62 & 72,84 & 60,80  \\ 
+         \textbf{SD1} & 244 262  & 4 229 627 & 97,11 & 39,77 & 71,09 & 64,60  \\ 
          \hline
-         \textbf{SD2} & 192 495  & 1 297 412 & 93,74 & 37,29 & 71,04 & 21,50 \\
+         \textbf{SD2} & 192 495  & 1 297 412 & 93,74 & 32,01 & 68,91 & 23,10 \\
          \hline
-         \textbf{SD3} &  237 870  & 1 468 073 & 95,47 & 67,63 & 82,58 & 24,60 \\
+         \textbf{SD3} &  237 870  & 1 468 073 & 95,47 & 60,89 & 79,46 & 29,00 \\
          \hline
-         \textbf{SD4} & 63 678  & 1 204 318 & 98,08 & 40,47 & 76,27 & 18,20 \\
+         \textbf{SD4} & 63 678  & 1 204 318 & 98,08 & 37,67 & 75,21 & 19,00 \\
          \hline
-         \textbf{SD5} & 582 313  & 3 197 181 & 81,83 & 21,85 & 48,20 & 54,40 \\ 
+         \textbf{SD5} & 582 313  & 3 197 181 & 81,83 & 21,31 & 47,90 & 54,70 \\ 
          \hline
         \end{tabular}
     \caption{Porovnanie zmenšenia počtu bodov pred (viď. Tab. \ref{table::ground_separation}) a po podvzorkovaní mračien bodov}
@@ -626,15 +626,15 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
           \thead{Potrebná \\ pamäť [MB]} &
           \thead{Zmenšenie potrebnej pamäti \\ oproti mračnu bodov [\%]} \\ [0.5ex]    
        \hline\hline
-       \textbf{SD1} & 2 738 025  & 4 7547 761 & 90,20 & 59,31 \\ 
+       \textbf{SD1} & 2 382 215  & 4 099 270 & 78,00 & 64,81 \\ 
        \hline
-       \textbf{SD2} & 1 095 371  & 1 855 063 & 35,50 & 79,85 \\
+       \textbf{SD2} & 998 040  & 1 683 075 & 32,20 & 81,72 \\
        \hline
-       \textbf{SD3} &  1 510 798  & 2 733 261 & 51,10 & 63,55 \\
+       \textbf{SD3} &  1 454 153  & 2 639 484 & 49,30 & 64,83 \\
        \hline
-       \textbf{SD4} & 593 828  & 1 032 561 & 19,50 & 74,47 \\
+       \textbf{SD4} & 741 312  & 1 327 302 & 24,90 & 67,41 \\
        \hline
-       \textbf{SD5} & 2 105 528  & 3 786 323 & 71,10 & 32,09 \\ 
+       \textbf{SD5} & 2 261 276  & 4 095 192 & 76,60 & 26,83 \\ 
        \hline
       \end{tabular}
   \caption{Výsledné hodnoty rekonštruovaných povrchov pre jednotlive súbory dát}
@@ -772,8 +772,10 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \newpage\vfill
 \subsection{Overenie adaptívneho podvzorkovania}
 \noindent Pri adaptívnom podvzorkovaní sa zameriame hlavne na vizuálne porovnanie vytvorených povrchov pre nepodvzorkované, adaptívne podvzorkované a rovnomerne podvzorkované mračná bodov, keďže dosiahnuté úrovne podvzorkovania boli ukázané skôr (Tab. \ref{table:subsampling}). Týmto spôsobom si ukážeme jeho výhody oproti bežnej metóde a zároveň aj niektoré nedostatky.
-\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe, začali miznúť. Adaptívne podvzorkovanie znížilo pamäťové nároky výsledného povrchu a zároveň pri porovnaní s nepodvzorkovaným mračnom bodov, zachovalo potrebné črty objektu.
-\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát. V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť žiadny výrazný rozdiel z vizuálneho hľadiska (Obr. \ref{fig:adaptive_comparison2}). Toto bolo na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo), ale aj nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
+\newline\indent Dosiahnuté výsledky adaptívneho podvzorkovania môžeme dobre vidieť na obrázku \ref{fig:adaptive_comparison}, kde pre porovnanie bolo pridané rovnomerné podvzorkovanie pomocou voxelovej mriežky (neadaptívne), ktoré bolo nastavené, tak aby dosahovalo takmer rovnakú úroveň podvzorkovania (počtu bodov). Z vizuálneho hľadiska si môžeme všimnúť, že boli zachované ostrejšie detaily najmä v oblasti značky auta, pričom pri neadaptívnom prístupe, začali miznúť. Adaptívne podvzorkovanie znížilo výpočtovú náročnosť pri rekonštrukcií povrchu a zároveň pri porovnaní s nepodvzorkovaným mračnom bodov, zachovalo potrebné črty objektu.
+\newline\indent Pre ďalšie porovnanie sme využili menej husté mračno bodov z rozdielneho súboru dát (Obr. \ref{fig:adaptive_comparison2}). V tomto prípade pre rovnakú úroveň podvzorkovania nie je vidieť, až taký výrazný rozdiel z vizuálneho hľadiska, čo bolo hlavne zapríčinené menšou hustotou bodov (nižšou prítomnosťou detailov). Môžeme všimnúť, že pri nízkej hustote, pomáha adaptívne podvzorkovanie vyhladeniu rovnejších povrchov (kapota auta), ale na druhú stranu zlyháva pri efektívnom znížení počtu bodov na zašumenom povrchu (čelné sklo).
+
+% na jednu stranu spôsobené nižšou prítomnosťou detailov a na druhú stranu zlým priradením vysokej dôležitosti pre body v zašumených oblastiach (čelné sklo), ale aj nepravidelným zmenám v hustote bodov. Pri tomto porovnaní sa taktiež ukázalo, že tento prístup je parametricky závislí a má rozdielne optimálne nastavenia pre rôzne súbory dát.
 
 \newpage\vfill
 \begin{figure}[!htbp]
