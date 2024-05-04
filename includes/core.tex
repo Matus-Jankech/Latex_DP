@@ -273,13 +273,14 @@
 \begin{figure}[ht]
   \centering
   \includegraphics[width=10cm]{img/vertex_clustering.png}
-  \caption{Ukážka zhlukovania vrcholov v 2D. Originálne vrcholy (čierne), po úprave (modré) pre viditeľnosť posunuté od stredu mriežky} 
+  \caption{Ukážka zhlukovania vrcholov v 2D. Originálne vrcholy (čierne), po úprave (modré), pre viditeľnosť posunuté od stredu mriežky} 
   \label{fig:verte_cluster}
 \end{figure} 
 \vfill\clearpage
 
 \section{Špecifikácia cieľov}
-\noindent Po úspešnom zhrnutí rôznych prístupov pre spracovanie mračien bodov a rekonštrukciu  povrchu v predošlých kapitolách, môžeme prejsť na návrh nášho riešenia. Navrhovaný algoritmus využije skôr spomínané metódy na predspracovanie mračna bodov, aby potom následná rekonštrukcia povrchu dosahovala lepšie výsledky, zatiaľ čo sa pokúsime o zníženie celkovej pamäťovej náročností. Tento proces môžeme rozdeliť do následujúcich bodov:
+\noindent Po úspešnom zhrnutí rôznych prístupov pre spracovanie mračien bodov a rekonštrukciu povrchu v predošlých kapitolách, môžeme prejsť na návrh nášho riešenia. Navrhovaný algoritmus využije skôr spomínané metódy na predspracovanie mračna bodov, aby potom následná rekonštrukcia povrchu dosahovala lepšie výsledky, zatiaľ čo sa pokúsime o zníženie celkovej pamäťovej náročností na uloženie modelov. 
+\newline\indent Tento proces môžeme rozdeliť do následujúcich bodov:
 \begin{enumerate}
     \item Odstránenie odľahlých bodov
     \item Separácia bodov zeme a objektov
@@ -291,9 +292,9 @@
 \end{enumerate}
 
 \section{Použité súbory dát}
-\noindent Pred samotnou implementáciou navrhnutého riešenia si v krátkosti predstavíme mračná bodov, s ktorými budeme pracovať. Pre účely tejto práce nám bolo poskytnutých päť rozdielnych mračien bodov, pričom dve boli použité na vývoj a testovanie a zvyšné boli použité na validáciu a overenie riešenia.
-\newline\indent Pre získanie poskytnutých mračien bodov boli použité dva rozdielne \acrshort{lidar}-i. Mračno bodov mestskej časti s bytovkami (Obr. \ref{fig:SD1}) a mračno bodov mestskej časti s kruhovým odjazdom (Obr. \ref{fig:SD2}) boli namerané pomocou Optech CL-360 \acrshort{lidar}-u, zatial čo, mračno bodov parkoviska pri obchodoch (Obr. \ref{fig:SD3}), mračno bodov ulice so trolejbusovou zastávkou (Obr. \ref{fig:SD4}) a mračno bodov dedinskej časti (Obr. \ref{fig:SD5}) boli namerané pomocou Hesai XT-32 \acrshort{lidar}-u. V prípade prvých štyroch súborov dát bol \acrshort{lidar} pripevnený na streche auta, zatiaľ čo v posledom bol pripevnený na dronovi a dáta boli získane zo vzduchu.
-\newline\indent  Kvôli jednoduchosti sa budú po zvyšok práce jednotlivé mračná bodov označovať ako $SDx$, kde x je číslo súboru dát.
+\noindent Pred samotnou implementáciou navrhnutého riešenia si v krátkosti predstavíme mračná bodov, s ktorými budeme pracovať. Pre účely tejto práce nám bolo poskytnutých päť rozdielnych mračien bodov, pričom dve boli použité na vývoj a testovanie, a zvyšné boli použité na validáciu a overenie riešenia.
+\newline\indent Pre získanie poskytnutých mračien bodov boli použité dva rozdielne \acrshort{lidar}-y. Mračno bodov mestskej časti s bytovkami (Obr. \ref{fig:SD1}) a mračno bodov mestskej časti s kruhovým odjazdom (Obr. \ref{fig:SD2}) boli namerané pomocou Optech CL-360 \acrshort{lidar}-u, zatiaľ čo mračno bodov parkoviska pri obchodoch (Obr. \ref{fig:SD3}), mračno bodov ulice so trolejbusovou zastávkou (Obr. \ref{fig:SD4}) a mračno bodov dedinskej časti (Obr. \ref{fig:SD5}) boli namerané pomocou Hesai XT-32 \acrshort{lidar}-u. V prípade prvých štyroch súborov dát bol \acrshort{lidar} pripevnený na streche auta, zatiaľ čo v posledom bol pripevnený na dronovi a dáta boli získane zo vzduchu.
+\newline\indent  Pre jednoduchosť sa budú po zvyšok práce jednotlivé mračná bodov označovať, ako $SDx$, kde x je číslo súboru dát.
 
 \begin{figure}[!htbp]
   \centering
@@ -334,8 +335,8 @@
 \noindent V tejto kapitole sa budeme zaoberať konkrétnou implementáciou vyššie špecifikovaných cieľov. Na implementáciu budeme používať programovací jazyk C++ v prostredí Visual Studio, pričom sa hlavne zameriame na využitie existujúcich implementácií algoritmov z \acrshort{pcl} knižnice.
 
 \subsection{Odstránenie odľahlých bodov}
-\noindent Ako už bolo uvedené v úvodnej kapitole, mračná bodov často obsahujú body, ktoré nereprezentujú reálny povrch objektov a nazývame ich odľahlé. Tieto body vznikajú z rôznych dôvodov ako sú šum v systéme snímača, prekrytie snímača, lesklé alebo priehľadné povrchy objektov a mnoho ďalších. Odfiltrovanie týchto bodov je dôležitým krokom pri spracovaní mračien bodov, nakoľko ich odstránením nie len znížime celkový počet bodov, ale aj zabezpečíme, že nasledovné kroky budú mať vyššiu úspešnosť, či už ide o segmentáciu alebo samotnú rekonštrukciu povrchu. 
-\newline\indent Pre samotné odstránenie odľahlých bodov nám \acrshort{pcl} knižnica ponúka dve rýchle a efektívne metódy, \acrshort{ror} (Radial outlier removal) a \acrshort{sor} (Statistical outlier removal). Prvá s týchto metód nám ponúka odstránenie bodov, ktoré nemajú minimálny počet susedov v definovanom rádiuse. Táto metóda je ale parametricky závislá od hustoty mračna bodov a pre rozdielne súbory dát nefunguje rovnako, a preto sme sa rozhodli, že budeme pokračovať so \acrshort{sor} metódou. Táto metóda počíta so priemernou vzdialenosťou každého bodu a jeho K najbližších susedov a na základe toho vyhodnocuje, ktoré body sú odľahlé (presnejšie vysvetlené v kapitole \ref{section::sor}). 
+\noindent Ako už bolo uvedené v úvodnej kapitole, mračná bodov často obsahujú body, ktoré nereprezentujú reálny povrch objektov a nazývame ich odľahlé. Tieto body vznikajú z rôznych dôvodov, ako sú šum v systéme snímača, prekrytie snímača, lesklé alebo priehľadné povrchy objektov a mnoho ďalších. Odfiltrovanie týchto bodov je dôležitým krokom pri spracovaní mračien bodov, nakoľko ich odstránením nie len znížime celkový počet bodov, ale aj zabezpečíme, že nasledovné kroky budú mať vyššiu úspešnosť, či už ide o segmentáciu alebo samotnú rekonštrukciu povrchu. 
+\newline\indent Pre samotné odstránenie odľahlých bodov nám \acrshort{pcl} knižnica ponúka dve rýchle a efektívne metódy, \acrshort{ror} (Radial outlier removal) a \acrshort{sor} (Statistical outlier removal). Prvá s týchto metód nám ponúka odstránenie bodov, ktoré nemajú minimálny počet susedov v definovanom rádiuse. Táto metóda je ale parametricky závislá od hustoty mračna bodov a pre rozdielne súbory dát nefunguje rovnako, a preto sme sa rozhodli, že budeme pokračovať so \acrshort{sor} metódou. Táto metóda počíta so priemernou vzdialenosťou každého bodu a jeho K najbližších susedov, na základe čoho vyhodnocuje, ktoré body sú odľahlé (presnejšie vysvetlené v kapitole \ref{section::sor}). 
 \newline\indent Metóda nám ponúka nastavenie počtu najbližších susedov a násobiteľ prahu štandardnej odchýlky. Tieto dva parametre nám umožňujú nastavenie agresívnosti filtru a po vyskúšaní viacerých kombinácií, sme dospeli ku hodnotám:
 \begin{itemize}
     \setlength\itemsep{0.2em}
@@ -378,9 +379,9 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Separácia bodov zeme a objektov}
-\noindent Po odfiltrovaní odľahlých bodov je ďalším hlavným cieľom segmentovať mračno bodov na jednotlivé objekty. Pred samotnou segmentáciou je vhodné separovať body zeme a terénu od bodov jednotlivých objektov, nakoľko v drvivej väčšine prípadov sú tieto body navzájom spojené iba so samotnou zemou.
-\newline\indent Pre tento účel využijeme progresívny morfologický filter. Princíp tohto filtra spočíva vo využití matematickej operácie otvárania (kombinácia erózie a následnej dilatácie), ktorá sa aplikuje na body v okne. Ak je toto okno väčšie ako objekt reprezentovaný bodmi vo vnútri, objekt je odstránení, zatiaľ čo väčšie objekty sú zachované. Táto metóda začína vytvorením mriežky s počiatočnou veľkosťou okna, pričom odstraňuje menšie objekty. Postupným zväčšovaním tohto okna odstraňuje stále väčšie objekty, až kým nedosiahne maximálnu veľkosť okna, kedy by mali byť zachované len body zeme. \cite{morph_filter}
-\newline\indent V našej práci využijeme implementáciu z \acrshort{pcl} knižnice, konkrétne využijeme jeho aproximáciu, keďže jeho plná verzia je výpočtovo a časovo veľmi náročná. Metóda ponúka viacero nastaviteľných parametrov, pričom pre následujúcu konfiguráciu sme dosiahli najlepšie výsledky. 
+\noindent Po odfiltrovaní odľahlých bodov je ďalším hlavným cieľom segmentovať mračno bodov na jednotlivé objekty. Pred samotnou segmentáciou je vhodné separovať body zeme (terénu) od bodov jednotlivých objektov, nakoľko v drvivej väčšine prípadov, sú tieto body navzájom spojené iba so samotnou zemou.
+\newline\indent Pre tento účel využijeme progresívny morfologický filter. Princíp tohto filtra spočíva vo využití matematickej operácie otvárania (kombinácia erózie a následnej dilatácie), ktorá sa aplikuje na body v tzv. “okne”. Ak je toto okno väčšie ako objekt reprezentovaný bodmi vo vnútri, objekt je odstránení, zatiaľ čo väčšie objekty sú zachované. Táto metóda začína vytvorením mriežky s počiatočnou veľkosťou okna, pričom odstraňuje menšie objekty. Postupným zväčšovaním tohto okna odstraňuje stále väčšie objekty, až kým nedosiahne maximálnu veľkosť okna, kedy by mali byť zachované len body zeme. \cite{morph_filter}
+\newline\indent V našej práci využijeme implementáciu z \acrshort{pcl} knižnice, konkrétne využijeme jeho aproximáciu, keďže jeho plná verzia je výpočtovo a časovo veľmi náročná. Metóda ponúka viacero nastaviteľných parametrov, pričom pre následujúcu konfiguráciu sme dosiahli najlepšie výsledky (viď. Obr. \ref{fig:ground_sep}). 
 
 \begin{itemize}
     \setlength\itemsep{0.2em}
@@ -423,9 +424,9 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Zhlukovanie bodov objektov do supervoxelov}
-\noindent Pre účely použitia nasledujúcej segmentačnej metódy, je potrebne mračno bodov zoskupiť do takzvaných supervoxelov, ktoré predstavujú významovo väčšie celky, ktoré majú podobné vlastnosti, zatiaľ čo sa snažia nepresahovať hranice objektov. Tieto zhluky taktiež predstavujú vyššiu úroveň reprezentácie mračna bodov, čím redukujú výpočtovú náročnosť ďalších procesov, zatiaľ čo uchovávajú dôležité štrukturálne informácie. 
+\noindent Pre účely použitia nasledujúcej segmentačnej metódy, je potrebne mračno bodov zoskupiť do tzv. supervoxelov, ktoré predstavujú významovo väčšie celky, ktoré majú podobné vlastnosti, zatiaľ čo sa snažia nepresahovať hranice objektov. Tieto zhluky taktiež predstavujú vyššiu úroveň reprezentácie mračna bodov, čím redukujú výpočtovú náročnosť ďalších procesov, zatiaľ čo uchovávajú dôležité štrukturálne informácie. 
 \newline\indent Zoskupenie mračna bodov vykonáme pomocou \acrshort{pcl} knižnice, ktorá obsahuje triedu Supervoxel Clustering. Táto trieda vykonáva zhlukovanie využitím \acrshort{vccs} (Voxel Cloud Connectivity Segmentation), čo je nová metóda, ktorá využíva rastový variant k-means zhlukovania, pričom body označuje priamo do voxelov štruktúry oktálového stromu. Pomocou oktálového stromu efektívne uchováva graf súslednosti 26 susedov (spojený hranou, tvárou alebo vrcholom), pričom tento graf je vo veľkej miere použitý pre rast regiónov zhlukov, ako aj pre uchovanie súslednosti výsledných supervoxelov. Rast supervoxelov je riadený normalizovanými priestorovými, farebnými a normálovými vzdialenosťami, pričom prvá meria priestorový rozsah, druhá meria rozdiel farby v RGB priestore a posledná meria uhol medzi normálami povrchu. \cite{supervoxelClustering}
-\newline\indent Trieda Super-voxel Clustering ponúkala nastavenie piatich parametrov, pričom hodnota rozlíšenia voxelov, rozlíšenia počiatočných bodov a dôležitosť normál hrala najvýznamnejšiu úlohu, pre dosiahnutie požadovaných výsledkov. Výsledná konfigurácia je následovná:
+\newline\indent Trieda Super-voxel Clustering ponúkala nastavenie piatich parametrov, pričom hodnota rozlíšenia voxelov, rozlíšenia počiatočných bodov a dôležitosť normál hrala najvýznamnejšiu úlohu. Výsledná konfigurácia parametrov je nasledovná:
 
 \begin{itemize}
     \setlength\itemsep{0.2em}
@@ -446,8 +447,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \vfill\clearpage
 
 \subsection{Segmentácia mračna bodov}
-\noindent Výsledkom predošlých krokov je samotná segmentácia mračna bodov patriaceho objektom. Táto segmentácia nám rozdelí body mračna na jednotlivé objekty, čo následne umožní individuálny prístup pri ďalších  krokoch ako sú pod-vzorkovanie alebo rekonštrukcia povrchu. Vďaka segmentácií budeme mať väčšiu kontrolu a dosiahneme lepšie výsledky.
-\newline\indent Pre segmentáciu mračna bodov využijeme \acrshort{pcl} implementáciu CPC (Constrained Planar Cuts) metódy. Táto metóda využíva graf súsledností vytvorený v predošlom kroku pomocou \acrshort{vccs} na to, aby získala informáciu o lokálnych konkávnostiach/konvexnostiach, pomocou čoho vytvára EEC (Euclidean Edge Cloud). Toto mračno hrán reprezentuje každý bod, ako hranu grafu súslednosti , pričom uchováva smer a veľkosť hrany (konvexný alebo konkávny). Na základe tejto reprezentácie je možné využiť geometricky obmedzený deliaci model, pre nájdenie možných rezov. Pre určenie roviny rezu je použitý vážený \acrshort{ransac}, ktorý sa snaží maximalizovať hodnotiacu funkciu, pričom body so konkávnym smerom hrany sú uprednostňované pred  tými so konvexnou. Mračno bodov je na základe tejto roviny rekurzívne rezané, až pokým nie sú dosiahnuté ukončovacie podmienky, čím získavame výsledné segmentované mračno bodov. \cite{CPCsegmentation}
+\noindent Výsledkom predošlých krokov je samotná segmentácia mračna bodov objektov. Táto segmentácia nám rozdelí body mračna na jednotlivé objekty, čo následne umožní individuálny prístup pri ďalších krokoch, ako sú podvzorkovanie alebo rekonštrukcia povrchu. Vďaka segmentácií budeme mať väčšiu kontrolu a dosiahneme lepšie výsledky.
+\newline\indent Pre segmentáciu mračna bodov využijeme \acrshort{pcl} implementáciu \acrshort{cpc} (Constrained Planar Cuts) metódy. Táto metóda využíva graf súsledností vytvorený v predošlom kroku pomocou \acrshort{vccs}, na to aby získala informáciu o lokálnych konkávnostiach/konvexnostiach, pomocou čoho vytvára EEC (Euclidean Edge Cloud). Toto mračno hrán reprezentuje každý bod, ako hranu grafu súslednosti, pričom uchováva veľkosť hrany a jej smer (konvexný alebo konkávny). Na základe tejto reprezentácie, je možné využiť geometricky obmedzený deliaci model, pre nájdenie možných rezov. Pre určenie roviny rezu je použitý vážený \acrshort{ransac}, ktorý sa snaží maximalizovať hodnotiacu funkciu, pričom body s konkávnym smerom hrany sú uprednostňované pred tými so konvexnou. Mračno bodov je na základe tejto roviny rekurzívne rezané, až pokým nie sú dosiahnuté ukončovacie podmienky, čím získavame výsledné segmentované mračno bodov. \cite{CPCsegmentation}
 \newline\indent Samotná \acrshort{pcl} implementácia ponúka viacero nastaviteľných parametrov, pričom rôzne konfigurácie majú svoje výhody a nevýhody. Výsledná konfigurácia vyzerá následovne:
 
 \begin{itemize}
@@ -479,8 +480,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \noindent Ďalším krokom pred samotnou rekonštrukciou povrchu je podvzorkovanie mračna bodov. Tento krok nám zníži celkový počet bodov, čo zabezpečí nie len zníženie pamäťovej náročnosti, ale aj zníženie výpočtového času pri rekonštrukcií povrchu. Pre tento účel budeme používať dve odlišné metódy, pričom budeme rozdielne pristupovať ku bodom zeme a ku bodom objektov.
 \subsubsection{Podvzorkovanie bodov objektov}
 \noindent Ako prvými sa budeme zaoberať bodmi objektov, ktoré obsahujú pomerne veľa detailov, ktoré chceme zachovať, a preto zvolíme adaptívny prístup podvzorkovania.
-\newline\indent Pre tento účel využijeme \acrshort{don} (Difference of Normals), pomocou ktorého klasifikujeme jednotlivé body objektu podľa ich dôležitosti. Táto metóda je založená na odhade normál pomocou dvoch rôznych rádiusov, v ktorých vyhodnocuje body. Myšlienka je tá, že ak je odhad normál robený na rovnom povrchu, pre obidve rádiusy bude smer normály podobný, a tým pádom ich diferencia bude taktiež minimálna. Naopak ak je tento odhad robený na zakrivenom povrchu ich smer bude rozdielny, a tým pádom aj ich diferencia bude veľká (vid. Obr. \ref{fig:Don_principle}). Na základe veľkosti novej normály (0 - 1), ktorá vznikla diferenciou, vieme určiť úroveň zakrivenia povrchu v danom bode, a teda môžeme dané body klasifikovať podľa ich úrovne dôležitosti, pričom viac zakrivený povrch je dôležitejší.
-\newline\indent Pre samotné podvzorkovanie využijeme voxelovú mriežku, ktorá rozdelí priestor bodov na rovnomerné voxely, pričom vždy zachová iba bod najbližší ku ťažisku voxelu. Pre rôzne triedy dôležitosti využijeme rôzne rozlíšenie voxelovej mriežky, ktoré prislúcha dôležitosti danej triedy. Objekty sme rozdelili do štyroch tried a podvzorkovali sme ich pri nasledovnej konfigurácií parametrov:
+\newline\indent Pre tento účel využijeme \acrshort{don} (Difference of Normals), pomocou ktorého klasifikujeme jednotlivé body objektu podľa ich dôležitosti. Táto metóda je založená na odhade normál pomocou dvoch rôznych rádiusov, v ktorých vyhodnocuje body. Myšlienka je tá, že ak je odhad normál robený na rovnom povrchu, pre obidve rádiusy bude smer normály podobný, a tým pádom ich diferencia bude minimálna. Naopak ak je tento odhad robený na zakrivenom povrchu ich smer bude rozdielny, a tým pádom aj ich diferencia bude veľká (vid. Obr. \ref{fig:Don_principle}). Na základe veľkosti novej normály (0 - 1), ktorá vznikla diferenciou, vieme určiť úroveň zakrivenia povrchu v danom bode, a teda môžeme dané body klasifikovať podľa ich úrovne dôležitosti, pričom viac zakrivený povrch je dôležitejší.
+\newline\indent Pre samotné podvzorkovanie využijeme voxelovú mriežku, ktorá rozdelí priestor bodov na rovnomerné voxely, pričom vždy zachová iba bod najbližší ku ťažisku voxelu. Pre rôzne triedy dôležitosti sme využili rôzne rozlíšenie voxelovej mriežky, ktoré prináleží dôležitosti danej triedy. Objekty sme rozdelili do štyroch tried a podvzorkovali sme ich pri nasledovnej konfigurácií parametrov:
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
@@ -506,8 +507,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \vfill\clearpage
 
 \subsubsection{Podvzorkovanie bodov zeme}
-\noindent Po podvzorkovaní bodom objektov ostávajú iba body zeme. Tieto body v drvivej väčšine neobsahujú toľko detailov, ako body objektov, a preto na ich podvzorkovanie využijeme iba druhú časť predošlého postupu, a teda podvzorkujeme ich pomocou voxelovej mriežky s fixným rozlíšením, čo zabezpečí vysokú úroveň podvzorkovania.
-\newline\indent Toto rozhodnutie sme urobili hlavne z dôvodu, že body zeme obsahujú hlavne rovinné plochy, ktoré majú medzi sebou pomerne hladký priebeh. Ak by sme chceli využiť predošlí postup aj na body zeme, zbytočne by sme zvýšili ponechaný počet bodov, nakoľko oblasti s nízkou vegetáciou, ako je tráva, obsahujú pomerne nerovný povrch, pričom aj pri ponechaní viacerých bodov, sú zložité na dôveryhodnú rekonštrukciu povrchu. 
+\noindent Po podvzorkovaní bodom objektov ostávajú iba body zeme. Tieto body v drvivej väčšine neobsahujú toľko detailov ako body objektov, a preto na ich podvzorkovanie využijeme iba druhú časť predošlého postupu, a teda podvzorkujeme ich pomocou voxelovej mriežky s fixným rozlíšením, čo zabezpečí vysokú úroveň podvzorkovania.
+\newline\indent Toto rozhodnutie sme urobili hlavne z dôvodu, že body zeme obsahujú hlavne rovinné plochy, ktoré majú medzi sebou pomerne hladký prechod. Ak by sme chceli využiť predošlí postup aj na body zeme, zbytočne by sme zvýšili ponechaný počet bodov, nakoľko oblasti s nízkou vegetáciou, ako je tráva, obsahujú pomerne nerovný povrch, pričom aj pri ponechaní viacerých bodov, sú zložité na dôveryhodnú rekonštrukciu povrchu. 
 \newline\indent Konfigurácia pre podvzorkovanie bodov zeme je nasledovná:
 
 \begin{itemize}
@@ -550,13 +551,13 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Rekonštrukcia povrchu}
-\noindent Predošlým predspracovaním dostávame podvzorkované mračno bodov očistené od odľahlých bodov, ktoré je zároveň segmentované na jednotlivé objekty, vďaka čomu môžeme prejsť na samotnú rekonštrukciu povrchu. Prvým krokom pri rekonštrukcií povrchu bude výber použitej metódy, ktorá dosahuje najlepšie výsledky.  
+\noindent Predošlým predspracovaním dostávame podvzorkované mračno bodov, očistené od odľahlých bodov, ktoré je zároveň segmentované na jednotlivé objekty, vďaka čomu môžeme prejsť na samotnú rekonštrukciu povrchu. Prvým krokom pri rekonštrukcií povrchu bude výber použitej metódy, ktorá dosahuje najlepšie výsledky.  
 
 \subsubsection{Výber metódy}
-\noindent Pri výbere metódy na rekonštrukciu sa zameriame na metódy, ktoré ponúka \acrshort{pcl} knižnica, a to sú Poissonová rekonštrukcia, Marching cubes (Hoppe) a \acrshort{gpt} (Greedy projection trinagulation). Principiálne fungovanie prvých dvoch bolo bližšie vysvetlené v kapitolách \ref{sec:poisson}, \ref{sec:marching_cubes} a metódu \acrshort{gpt} si v krátkosti vysvetlíme teraz. 
-\newline\indent Fungovanie tejto metódy je pomerne jednoduché a vieme ju rozdeliť do štyroch základných krokov. Prvým krokom je nájdenie lokálnych susedstiev pre každý bod, ktoré je zložené z $K$ najbližších susedov. Následne je vykonaný odhad normál každého referenčného bodu, pomocou čoho je vytvorená rovina, ktorá je kolmá na smer normály a všetky body zo susedstva sú projektované na túto rovinu.  Na tejto rovine je použitý priestorovo rastúci algoritmus, ktorý sa z počiatočného trojuholníku rozrastá, až kým nie je skompletizovaný celý povrch, pričom dodržuje obmedzenia. Na záver sa projektovaná reprezentácia vráti do pôvodného 3D priestoru, čím dostávame výsledný povrch. \cite{GreedyTriangulation}
+\noindent Pri výbere metódy na rekonštrukciu sa zameriame na metódy, ktoré ponúka \acrshort{pcl} knižnica, a to sú Poissonová rekonštrukcia, Marching cubes (Hoppe) a \acrshort{gpt} (Greedy projection trinagulation). Principiálne fungovanie prvých dvoch bolo bližšie vysvetlené v kapitolách \ref{sec:poisson}, \ref{sec:marching_cubes} a \acrshort{gpt} metódu si v krátkosti vysvetlíme teraz. 
+\newline\indent Fungovanie tejto metódy je pomerne jednoduché a vieme ju rozdeliť do štyroch základných krokov. Prvým krokom je nájdenie lokálnych susedstiev pre každý bod, ktoré je zložené z $K$ najbližších susedov. Následne je vykonaný odhad normál každého referenčného bodu, pomocou čoho je vytvorená rovina, ktorá je kolmá na smer normály a všetky body zo susedstva sú projektované na túto rovinu. Na tejto rovine je použitý priestorovo rastúci algoritmus, ktorý sa z počiatočného trojuholníku rozrastá, až kým nie je skompletizovaný celý povrch, pričom dodržuje obmedzenia. Na záver sa projektovaná reprezentácia vráti do pôvodného 3D priestoru, čím dostávame výsledný povrch. \cite{GreedyTriangulation}
 \newline\indent Pri výbere používanej metódy sa zameriame na hodnotiace faktory, ako sú dôveryhodnosť rekonštruovaného povrchu, časová náročnosť a výpočtová náročnosť (obmedzenia hardvéru). Na obrázku \ref{fig:mesh_compararison} môžeme vidieť dosiahnuté výsledky jednotlivých metód, ktoré boli upravené pre potreby porovnávania. Čo sa týka dôveryhodnosti najlepšie výsledky dosahuje Poissonová metóda, ktorá vytvára hladký vodotesný povrch, ktorý dobre zachytáva aj menšie detaily. Porovnateľne dobrá je aj \acrshort{gpt} metóda, ktorá je ale parametricky závislá od veľkosti a hustoty objektu, čo vedie ku nežiadaným dieram v povrchu. Posledná je Marching cubes metóda, ktorá vytvára kockovaný povrch, ktorý nie je prirodzený a vedie ku skresľovaniu výzoru objektu.
-\newline\indent V prípade časovej a výpočtovej náročnosti bola najlepšia \acrshort{gpt} metóda, ktorá povrch ukážkového objektu zrekonštruovala najrýchlejšie (1,35s), pričom porovnateľne rýchla bola ja Poissonová rekonštrukcia (1,74s), ktorá ale následne potrebovala, ďalšie úpravy. Najpomalšia bola Marching cubes (16,26s), ktorá ako jediná mála hardvérový problém a nebolo ju možné skúsiť na objektoch s väčším množstvom bodov. 
+\newline\indent V prípade časovej a výpočtovej náročnosti bola najlepšia \acrshort{gpt} metóda, ktorá povrch ukážkového objektu zrekonštruovala najrýchlejšie (1,35s), pričom porovnateľne rýchla bola aj Poissonová rekonštrukcia (1,74s), ktorá ale následne potrebovala ďalšie úpravy. Najpomalšia bola Marching cubes (16,26s), ktorá ako jediná mála hardvérový problém a nebolo ju možné skúsiť na objektoch s väčším množstvom bodov. 
 \newline\indent S predošlých výsledkov bolo rozhodnuté, že sa budeme pokračovať s Poissonovou metódou rekonštrukcie povrchu, nakoľko vizuálne dosahovala najlepšie výsledky a nie je parametricky závislá od hustoty mračna bodov. Metóda má ale svoje nedostatky, ktoré budú prebrané v ďalšej podkapitole. 
 
 \begin{figure}[!htbp]
@@ -568,12 +569,12 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 
 \subsubsection{Odstránenie nedostatkov}
 \noindent V predošlej podkapitole bolo rozhodnuté, že rekonštrukcia povrchu bude vykonávaná pomocou Poissonovej rekonštrukčnej metódy, nakoľko dosahovala najlepšie výsledky. Tieto výsledky boli ale dosiahnuté, až po odstránení niekoľkých nedostatkov. 
-\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}), ktoré vytvorili falošnú plochu a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe princípu fungovania Poissonovej metódy, pričom ukončenie jej vytvárania, je riadené pomocou hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov a vyhľadávanie najbližšieho suseda pomocou kd-stromu. Pre každý vrchol polygónu nájdeme najbližšieho suseda v pôvodnom mračne bodov a na základe určeného prahu vzdialenosti vyhodnotíme, či sa jedná o falošný polygón, ktorý následne odstránime.
+\newline\indent Prvým dôležitým nedostatkom bolo vytváranie nadbytočných polygónov (viď. Obr. \ref{fig:mesh_bad_polygons}), ktoré vytvorili falošnú plochu, a tým pádom zničili dôveryhodnosť rekonštrukcie. Táto plocha je vytvorená na základe princípu fungovania Poissonovej metódy, pričom ukončenie jej vytvárania, je riadené pomocou hraničnej (z ang. boundary) podmienky, ktorá ale v \acrshort{pcl} knižnici nie je nastaviteľná. Existuje viacero spôsobov, ako túto plochu odstrániť, pričom v našom prípade využijeme pôvodné mračno bodov a vyhľadávanie najbližšieho suseda pomocou kd-stromu. Pre každý vrchol polygónu nájdeme najbližšieho suseda v pôvodnom mračne bodov a na základe určeného prahu vzdialenosti vyhodnotíme, či sa jedná o falošný polygón, ktorý následne odstránime.
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=13cm]{img/mesh_bad_polygons.png}
-  \caption{Podvzorkované mračno bodov (hore) Plocha s nadbytočnými polygónmi (dole) ($SD1$)} 
+  \caption{Podvzorkované mračno bodov (hore), plocha s nadbytočnými polygónmi (dole) ($SD1$)} 
   \label{fig:mesh_bad_polygons}
 \end{figure} 
 
@@ -582,11 +583,11 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=13cm]{img/mesh_no_segmentation.png}
-  \caption{(hore) Rekonštrukcia celého povrchu naraz (dole) Rekonštrukcia individuálnych objektov ($SD1$)} 
+  \caption{Rekonštrukcia celého povrchu naraz (hore), rekonštrukcia individuálnych objektov (dole) ($SD1$)} 
   \label{fig:mesh_no_segmentation}
 \end{figure} 
 
-\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku ďalšiemu problému (Obr. \ref{fig:mesh_bad_normals}). Pri odhade normál nastáva nejasnosť, či sa majú normály otočiť o 180 stupňov alebo nie, pričom o tom rozhoduje umiestnenie tzv. hľadiska. Použité sady dát boli získané s pohyblivého vozidla, pričom objekty nasnímali z viacerých uhlov, čo znamená, že každý objekt má niekoľko hľadísk. Nesprávne umiestnenie hľadiska má za následok vznik trhlín, čo sa ale dá vo veľkej miere vyriešiť pomocou umiestnenia hľadiska do ťažiska menších objektov alebo naopak ďaleko od väčších objektov.
+\indent Poissonová metóda je založená na správnom odhade normál, čo viedlo ku ďalšiemu problému (Obr. \ref{fig:mesh_bad_normals}). Pri odhade normál nastáva nejasnosť, či majú byť normály otočené o 180 stupňov alebo nie, pričom o tom rozhoduje umiestnenie tzv. hľadiska. Použité sady dát boli získané s pohyblivého vozidla, pričom objekty nasnímali z viacerých uhlov, čo znamená, že každý objekt má niekoľko hľadísk. Nesprávne umiestnenie hľadiska má za následok vznik trhlín, čo sa ale dá vo veľkej miere vyriešiť, pomocou umiestnenia hľadiska do ťažiska menších objektov alebo naopak ďaleko od väčších objektov.
 
 \begin{figure}[ht]
   \centering
@@ -595,25 +596,25 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
   \label{fig:mesh_bad_normals}
 \end{figure} 
 
-\indent Posledný problém Poissonovej metódy bolo vytvorenie príliš veľkého počtu polygónov aj napriek predošlému podvzorkovaniu. Tento problém sme vyriešili pridaním kvadratickej decimácie vrcholov polygónov (viď. kapitola \ref{sec:decimation}), ktorá zabezpečila zníženie pamäťovej náročnosti povrchu a zachovanie detailov (viď. Obr. \ref{fig:decimation_results}), pričom predošlé podvzorkovanie zlepšilo efektivitu zachovania detailov.
+\indent Posledný problém Poissonovej metódy, bolo vytvorenie príliš veľkého počtu polygónov, aj napriek predošlému podvzorkovaniu. Tento problém sme vyriešili pridaním kvadratickej decimácie vrcholov polygónov (viď. kapitola \ref{sec:decimation}), ktorá zabezpečila zníženie pamäťovej náročnosti povrchu a súčasné zachovanie detailov (viď. Obr. \ref{fig:decimation_results}), pričom predošlé podvzorkovanie zlepšilo jeho efektivitu.
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=16cm, height=5.25cm]{img/decimation_results.png}
-  \caption{Porovnanie originálneho objektu (vľavo) so zdecimovaným (vpravo) pri znížení pamäťovej náročnosti o 80\%} 
+  \caption{Porovnanie originálneho objektu (vľavo) so zdecimovaným (vpravo) pri znížení pamäťovej náročnosti o 70\%} 
   \label{fig:decimation_results}
 \end{figure} 
 
-\indent Po odstránení predošlých problémov dosiahla rekonštrukcia vysokú úroveň zníženia pamäťovej náročnosti (viď. Tab. \ref{table:mesh_results}) a súčastného zachovania detailov. Celý postup rekonštrukcie bol vykonaný pre následujúcu konfiguráciu parametrov:
+\indent Po odstránení predošlých problémov, dosiahla rekonštrukcia vysoké zníženie pamäťovej náročnosti (viď. Tab. \ref{table:mesh_results}) a súčasné zachovania detailov. Celý postup rekonštrukcie bol vykonaný pre následujúcu konfiguráciu parametrov:
 
 \begin{itemize}
   \setlength\itemsep{0.2em}
   \item Hĺbka oktálového stromu (objekty, zem) = 9 ; 13
-  \item Hĺbka riešenia Laplcovej rovnice = 50
-  \item Hĺbka extrahovaného iso povrchu = 50
+  \item Hĺbka riešenia Laplcovej rovnice = 10
+  \item Hĺbka extrahovaného izo povrchu = 10
+  \item Počet vzoriek na uzol (pre vytvorenie ďalšej úrovne v oktálovom strome) = 2
   \item Prah vzdialenosti falošného polygónu = 0,013
-  \item Prah počtu bodov veľký, malý objekt = 40 000
-  \item Redukčný faktor decimácie = 0,8-0,95
+  \item Redukčný faktor decimácie = 0,70-0,95
 \end{itemize}
 
 \begin{table} [!h]
@@ -642,8 +643,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{table}
 
 \subsection{Textúrovanie povrchu}
-\noindent V poslednej časti sa zameriame na textúrovanie povrchu pomocou dát z kamery. Vytvorený povrch obohatíme o vizuálny realizmus, tak že mu pridáme informácie o farbe, drsnosti a ďalších rôznych detailov, pomocou čoho nadobudne hĺbku a zvýši tak predstavu o priestore.
-\newline\indent Ako prvým krokom textúrovania je namapovanie jednotlivých vrcholov polygónov na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
+\noindent V poslednej časti sa zameriame na textúrovanie povrchu pomocou dát z kamery. Vytvorený povrch obohatíme o vizuálny realizmus, tak že mu pridáme informácie o farbe, drsnosti a ďalších rôznych atribútoch, pomocou čoho nadobudne hĺbku a zvýši tak predstavu o priestore.
+\newline\indent Ako prvý krok textúrovania, je namapovanie jednotlivých vrcholov polygónov, na príslušné UV súradnice z kamerovej fotky. Pre tento účel potrebujeme transformovať vrcholy polygónov do súradnicového systému kamery (použitím poskytnutých transformácií), čím zabezpečíme, že kamera je v počiatku súradnicového systému a následná projekcia bude jednoduchšia. Na obrázku \ref{fig:texture_camera_image}, môžeme vidieť, že ide o 360 stupňový ekvidistantný (z ang. equirectangular) typ fotky, čo znamená, že dané vrcholy polygónov projektujeme na jednotkovú guľu, pričom ich UV súradnice sú rovné normalizovaným polárnym súradniciam gule, a teda môžeme ich získať pomocou následujúceho vzťahu:
 
 \begin{equation}
   U = \frac{atan2\left(\dfrac{pt_y}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}} , \dfrac{pt_x}{\sqrt{pt_x^2 + pt_y^2 + pt_z^2}}\right)} {2\Pi} + 0,5
@@ -655,8 +656,8 @@ pre ktoré sme dosiahli dobrý pomer odstránenia nepotrebných (riedkych) bodov
 \end{equation} 
 \\
 \noindent kde $pt$ je vrchol polygónu a UV súradnice sú normalizované v rozsahu (0-1).
-\newline\indent Keď už vieme mapovať súradnice fotky na súradnice polygónov, musíme vyriešiť, ako textúrovať povrch z viacerých fotiek. Vo väčšine prípadov objekty bližšie ku kamere bývajú ostrejšie, zatiaľ čo vzdialenejšie objekty, začínajú byť skreslené a rozmazané. Z tohto dôvodu si pre každý polygón ukladáme informáciu o najbližšej kamere, z ktorej ho následne otextujeme, čím zabezpečíme požadovaný výsledok (Obr. \ref{fig:texture_process}a).
-\newline\indent Predošlým krokom sme zabezpečili pomerne dobrý výsledok, ale takýmto spôsobom dochádza ku textúrovaniu povrchov, ktoré v skutočnosti kamera nevidí. Využijeme preto \acrshort{pcl} implementáciu sledovania lúčov (z ang. ray tracing), ktorá je založená na reprezentácií pomocou oktálového stromu. Metóda vysiela lúč z bodu kamery do jednotlivých vrcholov polygónov a zisťuje, či dochádza ku kolízií s inými polygónmi (voxelmi), ktoré ležia medzi nimi. Takto vieme zabezpečiť, aby bol texturovaný polygón skutočne viditeľný z danej kamery a predídeme sa tým falošnej projekcií textúry na nevidené povrchy (Obr. \ref{fig:texture_process}b).
+\newline\indent Keď už vieme mapovať súradnice fotky na súradnice polygónov, musíme vyriešiť, ako textúrovať povrch z viacerých fotiek. Vo väčšine prípadov, objekty bližšie ku kamere bývajú ostrejšie, zatiaľ čo vzdialenejšie objekty, začínajú byť skreslené a rozmazané. Z tohto dôvodu si pre každý polygón ukladáme informáciu o najbližšej kamere, z ktorej ho následne otextujeme, čím zabezpečíme požadovaný výsledok (Obr. \ref{fig:texture_process}a).
+\newline\indent Predošlým krokom sme zabezpečili pomerne dobrý výsledok, ale takýmto spôsobom dochádza ku textúrovaniu povrchov, ktoré v skutočnosti kamera nevidí. Využijeme preto \acrshort{pcl} implementáciu sledovania lúčov (z ang. ray tracing), ktorá je založená na reprezentácií pomocou oktálového stromu. Metóda vysiela lúč z bodu kamery do jednotlivých vrcholov polygónov a zisťuje, či dochádza ku kolízií s inými polygónmi (voxelmi), ktoré ležia medzi nimi. Takto vieme zabezpečiť, aby bol texturovaný polygón skutočne viditeľný z danej kamery a predídeme tým falošnej projekcií textúry na nevidené povrchy (Obr. \ref{fig:texture_process}b).
 \newline\indent Posledný problém, ktorý sme riešili, bolo odstránenie statickej prekážky. Mohli sme si všimnúť, že na použitých fotkách sa nachádza samotné auto, z ktorého boli zbierané dáta a nakoľko sa toto auto vždy nachádza najbližšie ku kamere, zanechávalo po sebe falošnú textúru na ceste. Tento problém sme vyriešili manuálnym zadefinovaním polygónu, ktorý obkresľuje okraje auta (Obr. \ref{fig:texture_camera_image}) a následnou detekciou, či daná UV koordinácia leží vo vnútri tohto polygónu, sme príslušné polygóny povrchu automaticky označili za nevidené, pričom neskôr boli otexturované z rozdielnej fotky (Obr. \ref{fig:texture_process}c).
 \newline\indent Pre celý predošlý postup sme využívali \acrshort{pcl} knižnicu, ktorá do istej miery ponúkala rozhranie pre mapovanie a textúrovanie povrchu, pričom výsledky boli dosiahnuté pri následujúcej konfigurácií parametrov:
 
