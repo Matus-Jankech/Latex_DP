@@ -422,8 +422,8 @@
       \strng{authornamehash}{20e167521d2b7ed283c76ba3ce37dc9a}
       \strng{authorfullhash}{20e167521d2b7ed283c76ba3ce37dc9a}
       \strng{authorfullhashraw}{20e167521d2b7ed283c76ba3ce37dc9a}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Detekcia známych objektov v mračne bodov a ich filtrácia : diplomová práca. Bratislava : STU}
@@ -753,8 +753,8 @@
       \strng{authornamehash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
       \strng{authorfullhash}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
       \strng{authorfullhashraw}{2cc6c9d13da3dd8ad4c63dfaa5197eb0}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Information Processing Systems}
@@ -1166,6 +1166,70 @@
       \field{year}{2015}
       \field{pages}{5207\bibrangedash 5215}
       \range{pages}{9}
+    \endentry
+    \entry{DoN_segmentation}{online}{}{}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labeltitlesource}{title}
+      \field{title}{Difference of Normals Based Segmentation}
+      \verb{urlraw}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/don_segmentation.html
+      \endverb
+      \verb{url}
+      \verb https://pcl.readthedocs.io/projects/tutorials/en/latest/don_segmentation.html
+      \endverb
+      \warn{\item online entry 'DoN_segmentation' (includes/bibliography.bib): Invalid format '2024-4-13' of date field 'urldate' - ignoring}
+    \endentry
+    \entry{GreedyTriangulation}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=c746b48b7fd8b7b9878ed6bb35a371f3}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={Ning},
+           giveni={N\bibinitperiod}}}%
+        {{hash=88748cc14977f5286755f33f5e55cfb7}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Baohua},
+           giveni={B\bibinitperiod}}}%
+        {{hash=21b6969d672728cb4ea4381d1d8706b5}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Jun},
+           giveni={J\bibinitperiod}}}%
+        {{hash=66e527290427a72ff86abefaa1c3fae5}{%
+           family={Zhan},
+           familyi={Z\bibinitperiod},
+           given={Ketian},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ba5e1401c5fe7a8804f2b5d6ebb4d6c0}{%
+           family={Lai},
+           familyi={L\bibinitperiod},
+           given={Shuang},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{fullhash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{fullhashraw}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{bibnamehash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{authorbibnamehash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{authornamehash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{authorfullhash}{345837946b7efaf40d4661e24f4e11e3}
+      \strng{authorfullhashraw}{345837946b7efaf40d4661e24f4e11e3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computers and Electronics in Agriculture}
+      \field{month}{12}
+      \field{title}{Pose estimation and adaptable grasp configuration with point cloud registration and geometry understanding for fruit grasp planning}
+      \field{volume}{179}
+      \field{year}{2020}
+      \field{pages}{105818}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.compag.2020.105818
+      \endverb
     \endentry
   \enddatalist
 \endrefsection
