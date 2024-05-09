@@ -1,0 +1,9 @@
+Projekt použitý pre vytvorenie tejto práce (odkaz v prílohe B), bol vypracovaný v C++ jazyku v prostredí Visual Studio 2022. Pre úspešné spojazdnenie a ovládanie projektu, je potrebné postupovať podľa následujúcich krokov: 
+
+\begin{enumerate}
+    \item\textbf{Použité knižnice} - Ako prvým krokom je spojazdnenie knižníc na používanom zariadení. V tejto práci sme použili knižnicu $PCL-1.13.1$, ktorá je jadrom celého projektu a je ju možné nainštalovať pomocou ``All in one installer-u'' dostupnom na internete. Následne je voliteľne nainštalovať $OpenCv$ knižnicu, ktorá bola použitá pre zobrazenie fotiek v kapitole o textúrovaní povrchu a je taktiež dostupná na internete.
+    \item\textbf{Rozloženie projektu} - Projekt sa skladá z dvoch hlavných súborov:
+    \newline $cloud\_handler.cpp$ - V tomto súbore sa nachádzajú konkrétne implementácie jednotlivých algoritmov, ktoré boli použité v práci. Algoritmy patria hlavnej triede $CloudHandler$, ktorá slúži ako rozhranie a ponúka jednoduchú prácu s mračnami bodov, ako aj rekonštrukciou povrchu.
+    \newline $main.cpp$ - V tomto súbore sa nachádzajú pomocné funkcie, ktoré  slúžili na testovanie jednotlivých algoritmov, ako aj na vykresľovanie potrebných prípadov. Nachádza sa tu aj postupné volanie konkrétnych algoritmov, ktoré zabezpečí vytvorenie rekonštruovaného povrchu.
+    \item\textbf{Spustenie projektu} - Pre spustenie postupu uvedenom v práci, je v hlavnom adresári projektu potrebné vytvoriť adresár (napr. zdroje). Cestu ku tomuto adresáru je potrebné vložiť do premennej $resource\_path\_$ a následne sa do neho môže vytvoriť ďalší podadresár, ktorý bude obsahovať všetky medzikroky postupu. Do podadresáru je potrebné vložiť mračno bodov vo formáte .ply a následne zavolať funkciu $calculate\_all$, v ktorej treba nastaviť premennú $base\_path$ s príslušným menom podadresáru. Po vykonaní predošlých krokov, by mal zbehnúť celý postup a vygenerovať výsledný povrch.
+\end{enumerate}
